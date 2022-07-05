@@ -10,7 +10,7 @@ const App: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
       <ErrorBoundary fallback={<h1 style={{ color: "red" }}>Error</h1>}>
         <React.Suspense fallback={<h1>loading</h1>}>
           <FuzzyContext.Provider
-            value={React.useState<FuzzyContextValue>({ data: [], open: true })}
+            value={React.useState<FuzzyContextValue>({ data: [], open: false })}
           >
             <BrowserRouter>{children}</BrowserRouter>
           </FuzzyContext.Provider>

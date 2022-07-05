@@ -9,7 +9,6 @@ import type { FuzzyFile } from "statik";
 const Wrapper: React.FC = () => {
   const { teaching } = useParams<{ teaching?: Teachings }>();
   const [_, setFuzzy] = React.useContext(FuzzyContext);
-  console.log(teaching);
   const { data, error } = useSWR<FuzzyFile[]>(
     teaching ? FUZZY_URL(teaching) : null
   );
