@@ -1,16 +1,59 @@
 import * as React from "react";
+import { Link, useParams } from "react-router-dom";
 import useSWR from "swr";
 
+import type { File, Directory } from "statik";
 import { STATIK_URL, Teachings } from "../const";
 
-const Teaching: React.FC<{ teaching: Teachings }> = ({ teaching }) => {
-  console.log(STATIK_URL(teaching, "/"));
-  const { data } = useSWR(STATIK_URL(teaching, "/"), { suspense: true });
+interface Entry {
+  kind: "file" | "directory";
+  data: File | Directory;
+}
+
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
+const Teaching: React.FC = () => {
+  const { teaching, path } = useParams<{
+    teaching: Teachings;
+    path?: string;
+  }>();
+  console.log(STATIK_URL(teaching!, "/" + (path || "")));
+  const { data } = useSWR<Directory>(
+    STATIK_URL(teaching!, "/" + (path || "")),
+    fetcher,
+    {
+      suspense: true,
+    }
+  );
+  console.log(data);
+  const { files, directories } = data!;
+  const entries: Entry[] = [
+    ...((files || []).map((file) => ({ kind: "file", data: file })) as Entry[]),
+    ...((directories || []).map((dir) => ({
+      kind: "directory",
+      data: dir,
+    })) as Entry[]),
+  ];
 
   return (
     <div>
-      teaching: {teaching}
-      {data?.toString()}
+      <h1>
+        {teaching} - {data?.name}
+      </h1>
+      <div className="grid">
+        {entries.map((entry, i) => (
+          <React.Fragment key={i}>
+            <div>
+              {entry.kind == "file" ? (
+                <a href={entry.data.url}>{entry.data.name}</a>
+              ) : (
+                <Link to={entry.data.name}>{entry.data.name}</Link>
+              )}
+            </div>
+            <div>{entry.data.size}</div>
+            <div>{entry.data.time.toString()}</div>
+          </React.Fragment>
+        ))}
+      </div>
     </div>
   );
 };

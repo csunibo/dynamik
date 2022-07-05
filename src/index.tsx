@@ -1,34 +1,31 @@
 import * as React from "react";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Teachings } from "./const";
 
 import Home from "./pages/home";
 import NotFound from "./pages/not-found";
 import Teaching from "./pages/teaching";
 
-render(
+const App: React.FC<React.PropsWithChildren<{}>> = ({ children }) => (
   <React.StrictMode>
-    <BrowserRouter>
-      <ErrorBoundary fallback={<h1 style={{ color: "red" }}>Error</h1>}>
-        <React.Suspense fallback={<h1>loading</h1>}>
-          <Routes>
-            <Route index element={<Home />} />
-            {Object.values(Teachings).map((teaching, i) => (
-              <Route
-                key={i}
-                path={`/${teaching}/`}
-                element={<Teaching teaching={teaching} />}
-              />
-            ))}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </React.Suspense>
-      </ErrorBoundary>
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById("root")
+    <ErrorBoundary fallback={<h1 style={{ color: "red" }}>Error</h1>}>
+      <React.Suspense fallback={<h1>loading</h1>}>
+        <BrowserRouter>{children}</BrowserRouter>
+      </React.Suspense>
+    </ErrorBoundary>
+  </React.StrictMode>
+);
+
+createRoot(document.getElementById("root")!).render(
+  <App>
+    <Routes>
+      <Route index element={<Home />} />
+      <Route path="/:teaching/:path" element={<Teaching />} />
+      <Route path="/:teaching" element={<Teaching />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  </App>
 );
 
 if (import.meta.hot) {

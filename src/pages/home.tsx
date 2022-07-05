@@ -6,11 +6,15 @@ import { Teachings } from "../const";
 const Home: React.FC = () => (
   <div>
     <h1>Home</h1>
-    {Object.values(Teachings).map((teaching, i) => (
-      <Link key={i} to={`/${teaching}`}>
-        {teaching}
-      </Link>
-    ))}
+    <ul>
+      {Object.values(Teachings).map((teaching, i) => (
+        <li>
+          <Link key={i} to={`/${teaching}`}>
+            {teaching}
+          </Link>
+        </li>
+      ))}
+    </ul>
   </div>
 );
 
