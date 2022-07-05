@@ -13,6 +13,7 @@ export default {
         ...(process.versions.pnp ? { tsc: "yarn pnpify tsc" } : {}),
       },
     ],
+    "@snowpack/plugin-postcss",
   ],
   routes: [
     {
@@ -29,7 +30,7 @@ export default {
     /* ... */
   },
   devOptions: {
-    /* ... */
+    tailwindConfig: "./tailwind.config.js",
   },
   buildOptions: {
     /* ... */
