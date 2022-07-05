@@ -1,17 +1,36 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import './index.css';
+import * as React from "react";
+import { render } from "react-dom";
+import { ErrorBoundary } from "react-error-boundary";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Teachings } from "./const";
 
-ReactDOM.render(
+import Home from "./pages/home";
+import NotFound from "./pages/not-found";
+import Teaching from "./pages/teaching";
+
+render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <ErrorBoundary fallback={<h1 style={{ color: "red" }}>Error</h1>}>
+        <React.Suspense fallback={<h1>loading</h1>}>
+          <Routes>
+            <Route index element={<Home />} />
+            {Object.values(Teachings).map((teaching, i) => (
+              <Route
+                key={i}
+                path={`/${teaching}/`}
+                element={<Teaching teaching={teaching} />}
+              />
+            ))}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </React.Suspense>
+      </ErrorBoundary>
+    </BrowserRouter>
   </React.StrictMode>,
-  document.getElementById('root'),
+  document.getElementById("root")
 );
 
-// Hot Module Replacement (HMR) - Remove this snippet to remove HMR.
-// Learn more: https://snowpack.dev/concepts/hot-module-replacement
 if (import.meta.hot) {
   import.meta.hot.accept();
 }
