@@ -1,3 +1,5 @@
+import swr from "swr";
+
 export enum Teachings {
   ALGORITMI_E_STRUTTURE_DI_DATI = "algoritmi-e-strutture-di-dati",
   ALGEBRA_E_GEOMETRIA = "algebra-e-geometria",
@@ -16,3 +18,11 @@ export const BASE_URL = `https://csunibo.github.io`;
 export const API_URL = (teaching: Teachings) => `${BASE_URL}/${teaching}`;
 export const STATIK_URL = (teaching: Teachings, path: string) =>
   `${BASE_URL}/${teaching}${path}${path.endsWith("/") ? "" : "/"}statik.json`;
+export const FUZZY_URL = (teaching: Teachings) =>
+  `${BASE_URL}/${teaching}/fuzzy.json`;
+
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
+export const useSWR = <T>(url: string | null) =>
+  swr<T>(url, fetcher, {
+    suspense: true,
+  });

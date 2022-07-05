@@ -1,11 +1,12 @@
 /** @type {import("snowpack").SnowpackUserConfig } */
 export default {
   mount: {
-    public: { url: "/", static: true },
+    public: { url: "/" },
     src: { url: "/dist" },
   },
   plugins: [
     "@snowpack/plugin-react-refresh",
+    "@snowpack/plugin-postcss",
     [
       "@snowpack/plugin-typescript",
       {
@@ -13,7 +14,6 @@ export default {
         ...(process.versions.pnp ? { tsc: "yarn pnpify tsc" } : {}),
       },
     ],
-    "@snowpack/plugin-postcss",
   ],
   routes: [
     {

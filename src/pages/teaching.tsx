@@ -1,30 +1,20 @@
 import * as React from "react";
 import { Link, useParams } from "react-router-dom";
-import useSWR from "swr";
 
 import type { File, Directory } from "statik";
-import { STATIK_URL, Teachings } from "../const";
+import { useSWR, STATIK_URL, Teachings } from "../const";
 
 interface Entry {
   kind: "file" | "directory";
   data: File | Directory;
 }
 
-const fetcher = (url: string) => fetch(url).then((r) => r.json());
 const Teaching: React.FC = () => {
   const { teaching, path } = useParams<{
     teaching: Teachings;
     path?: string;
   }>();
-  console.log(STATIK_URL(teaching!, "/" + (path || "")));
-  const { data } = useSWR<Directory>(
-    STATIK_URL(teaching!, "/" + (path || "")),
-    fetcher,
-    {
-      suspense: true,
-    }
-  );
-  console.log(data);
+  const { data } = useSWR<Directory>(STATIK_URL(teaching!, "/" + (path || "")));
   const { files, directories } = data!;
   const entries: Entry[] = [
     ...((files || []).map((file) => ({ kind: "file", data: file })) as Entry[]),
