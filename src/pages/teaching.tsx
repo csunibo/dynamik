@@ -10,10 +10,11 @@ interface Entry {
 }
 
 const Teaching: React.FC = () => {
-  const { teaching, path } = useParams<{
+  const { teaching, ...others } = useParams<{
     teaching: Teachings;
-    path?: string;
+    "*"?: string;
   }>();
+  const path = others["*"];
   const { data } = useSWR<Directory>(STATIK_URL(teaching!, "/" + (path || "")));
   const { files, directories } = data!;
   const entries: Entry[] = [
@@ -36,7 +37,9 @@ const Teaching: React.FC = () => {
               {entry.kind == "file" ? (
                 <a href={entry.data.url}>{entry.data.name}</a>
               ) : (
-                <Link to={entry.data.name}>{entry.data.name}</Link>
+                <Link to={(path || "") + "/" + entry.data.name}>
+                  {entry.data.name}
+                </Link>
               )}
             </div>
             <div>{entry.data.size}</div>

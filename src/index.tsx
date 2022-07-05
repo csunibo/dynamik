@@ -15,7 +15,7 @@ createRoot(document.getElementById("root")!).render(
     <Routes>
       <Route index element={<Home />} />
       <Route path="/:teaching" element={<Wrapper />}>
-        <Route path=":path" element={<Teaching />} />
+        <Route path="*" element={<Teaching />} />
         <Route path="" element={<Teaching />} />
       </Route>
       <Route path="*" element={<NotFound />} />
