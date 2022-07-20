@@ -11,7 +11,6 @@ import Teaching from "./pages/teaching";
 
 createRoot(document.getElementById("root")!).render(
   <App>
-    <Wrapper />
     <Routes>
       <Route index element={<Home />} />
       <Route path="/:teaching" element={<Wrapper />}>

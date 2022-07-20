@@ -15,7 +15,7 @@ export interface FuzzyContextValue {
 const debounceInterval = 250;
 
 export const FuzzyContext = React.createContext<
-  [FuzzyContextValue, React.Dispatch<React.SetStateAction<FuzzyContextValue>>]
+  [FuzzyContextValue, React.Dispatch<FuzzyContextValue>]
 >([
   {
     data: [],
@@ -32,7 +32,7 @@ const Fuzzy: React.FC = () => {
   const [query, setQuery] = React.useState("");
   const fuse = React.useMemo(
     () =>
-      new Fuse(fuzzy.data!, {
+      new Fuse(fuzzy.data || [], {
         shouldSort: true,
         keys: ["name", "path", "mime"],
       }),
@@ -43,7 +43,6 @@ const Fuzzy: React.FC = () => {
     () => fuse.search(debouncedQuery),
     [fuse, debouncedQuery]
   );
-  console.log(fuzzy.data, results);
 
   return (
     <Transition appear show={fuzzy.open} as={React.Fragment}>

@@ -2,7 +2,6 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 
 import { Teachings } from "../const";
-import Fuzzy from "../components/fuzzy";
 
 const Home: React.FC = () => (
   <div>
@@ -14,7 +13,6 @@ const Home: React.FC = () => (
         </li>
       ))}
     </ul>
-    <Fuzzy />
   </div>
 );
 

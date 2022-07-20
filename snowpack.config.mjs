@@ -26,13 +26,7 @@ export default {
     /* Example: Bundle your final build: */
     // "bundle": true,
   },
-  packageOptions: {
-    /* ... */
-  },
   devOptions: {
     tailwindConfig: "./tailwind.config.js",
-  },
-  buildOptions: {
-    /* ... */
   },
 };
