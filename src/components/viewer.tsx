@@ -1,35 +1,26 @@
 import * as React from "react";
-import { Document, Page } from "react-pdf";
 
-export type ViewsContextValue = string[];
+import type { File } from "statik";
+
+export type ViewsContextValue = File[];
 
 export const ViewsContext = React.createContext<
   [ViewsContextValue, React.Dispatch<ViewsContextValue>]
 >([[], void 0 as any]);
 
-const options = {
-  cMapUrl: "cmaps/",
-  cMapPacked: true,
-  standardFontDataUrl: "standard_fonts/",
-};
-
-const Viewer: React.FC<{ url: string }> = ({ url }) => {
-  const [numPages, setNumPages] = useState(null);
-
-  function onDocumentLoadSuccess({ numPages: nextNumPages }) {
-    setNumPages(nextNumPages);
-  }
-
+const Viewer: React.FC<File> = (file) => {
+  const { url } = file;
+  const [views, setViews] = React.useContext(ViewsContext);
+  const close = React.useCallback(() => {
+    setViews(views.filter((f) => f.url != file.url));
+  }, [file]);
   return (
-    <Document
-      file={url}
-      onLoadSuccess={onDocumentLoadSuccess}
-      options={options}
-    >
-      {Array.from({ length: numPages }).map((_, index) => (
-        <Page key={index} pageNumber={index + 1} />
-      ))}
-    </Document>
+    <div className="flex flex-col w-full h-full">
+      <div>
+        <button onClick={close}>close</button>
+      </div>
+      <iframe className="flex flex-1" src={url} />
+    </div>
   );
 };
 
