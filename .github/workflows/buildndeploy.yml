@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      BASE_PATH: /${{ github.repository }}
+      BASE_PATH: /dynamik
 
     steps:
       - name: Checkout 🛎️
