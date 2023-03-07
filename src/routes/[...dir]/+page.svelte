@@ -27,7 +27,7 @@
 		{@const directories = data.manifest.directories}
 		{#each directories as dir}
 			<li>
-				<a href={dir.path}>{dir.name}</a>
+				<a href={$page.url + '/' + dir.path}>{dir.name}</a>
 			</li>
 		{/each}
 	{/if}
