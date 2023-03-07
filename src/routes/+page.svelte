@@ -1,14 +1,17 @@
 <script lang="ts">
+	import teachings from '$lib/teachings';
 </script>
 
-<h1>Informatica</h1>
-<h2>Primo anno</h2>
 <ul>
-    <li><a href="architettura-degli-elaboratori">Archittettura degli elaboratori</a></li>
-    <li><a href="logica-per-informatica">Logica per l'informatica</a></li>
+	{#each teachings as teaching}
+		<li>
+			<a href={teaching.url}>
+				{#if teaching.name}
+					{teaching.name}
+				{:else}
+					{teaching.url}
+				{/if}
+			</a>
+		</li>
+	{/each}
 </ul>
-
-
-<h2>Secondo anno</h2>
-
-<h2>Terzo anno</h2>
