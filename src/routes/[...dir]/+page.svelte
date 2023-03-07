@@ -1,33 +1,37 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
+	import { base } from '$app/paths';
+	import { onDestroy } from 'svelte';
 
 	export let data: PageData;
 
 	let parentPath = '/';
-	page.subscribe((page) => {
-		const path = page.url.pathname.split('/');
+	const pageUnsubscribe = page.subscribe((page) => {
+		const path = page.params.dir.split('/');
+
 		path.pop();
-		return path.join('/');
+
+		parentPath = base + '/' + path.join('/');
 	});
 
-	$: isOrigin = $page.url.pathname === '/';
+	onDestroy(() => {
+		pageUnsubscribe();
+	});
 </script>
 
 <code>{$page.url.pathname}</code>
 
 <ul>
-	{#if !isOrigin}
-		<li>
-			<a href={parentPath}>..</a>
-		</li>
-	{/if}
+	<li>
+		<a href={parentPath}>..</a>
+	</li>
 
 	{#if data.manifest.directories}
 		{@const directories = data.manifest.directories}
 		{#each directories as dir}
 			<li>
-				<a href={$page.url + '/' + dir.path}>{dir.name}</a>
+				<a href={$page.url + '/' + dir.name}>{dir.name}</a>
 			</li>
 		{/each}
 	{/if}

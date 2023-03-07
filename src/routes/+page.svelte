@@ -5,8 +5,9 @@
 
 <ul>
 	{#each teachings as teaching}
+		{@const href = new URL(teaching.url, $page.url).toString()}
 		<li>
-			<a href={$page.url + '/' + teaching.url}>
+			<a {href}>
 				{#if teaching.name}
 					{teaching.name}
 				{:else}
