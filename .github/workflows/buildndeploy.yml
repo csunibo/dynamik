@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  build-and-deploy:
+  build:
     concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
 
