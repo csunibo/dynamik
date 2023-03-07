@@ -7,13 +7,14 @@
 	let markdown: HTMLElement;
 
 	onMount(async () => {
+		await import('katex');
 		// @ts-expect-error - auto-render is not in the types
-		const autoRender = await import('katex/dist/contrib/auto-render');
+		const { renderMathInElement } = await import('katex/dist/contrib/auto-render');
 		await import('katex/dist/katex.min.css');
 		const { marked } = await import('marked');
 		const html = await marked(data.body, { async: true });
 		markdown.innerHTML = html;
-		autoRender(markdown);
+		renderMathInElement(markdown);
 	});
 </script>
 
