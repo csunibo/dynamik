@@ -9,4 +9,6 @@ declare global {
 	}
 }
 
+module
+
 export {};
