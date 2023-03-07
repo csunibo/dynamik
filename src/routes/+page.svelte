@@ -1,11 +1,11 @@
 <script lang="ts">
 	import teachings from '$lib/teachings';
-	import { page } from '$app/stores';
+	import { base } from '$app/paths';
 </script>
 
 <ul>
 	{#each teachings as teaching}
-		{@const href = new URL(teaching.url, $page.url).toString()}
+		{@const href = base + teaching.url}
 		<li>
 			<a {href}>
 				{#if teaching.name}
