@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PageData } from '../$types';
+	import type { PageData } from './$types';
 	import type { File } from '$lib/api';
 	import { page } from '$app/stores';
 	import { base } from '$app/paths';
@@ -15,7 +15,7 @@
 		parentPath = base + '/' + path.join('/');
 	});
 
-	const getDestUrl = (file: File) => $page.url + '/' + file.name;
+	const getDestUrl = (file: File) => `${$page.url}/${file.name}`;
 
 	onDestroy(() => {
 		pageUnsubscribe();
