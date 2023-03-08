@@ -2,14 +2,17 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import { getHighlighter, setCDN } from 'shiki';
-	setCDN('/node_modules/shiki/');
 
 	export let data: PageData;
 
 	let code: HTMLElement;
+
 	onMount(async () => {
-		// TODO
-		const highlighter = await getHighlighter({ theme: 'dark-plus', langs: ['c'] });
+		setCDN('https://unpkg.com/shiki/');
+
+		const highlighter = await getHighlighter({
+			theme: 'dark-plus'
+		});
 		code.innerHTML = highlighter.codeToHtml(data.body, { lang: 'c' });
 	});
 </script>
