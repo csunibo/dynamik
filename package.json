@@ -33,8 +33,5 @@
 		"vite": "^4.0.0"
 	},
 	"packageManager": "pnpm@7.29.0",
-	"type": "module",
-	"dependencies": {
-		"marked-katex-extension": "^1.0.2"
-	}
+	"type": "module"
 }
