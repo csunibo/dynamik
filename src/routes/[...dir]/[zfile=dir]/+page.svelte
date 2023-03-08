@@ -15,6 +15,8 @@
 		parentPath = base + '/' + path.join('/');
 	});
 
+	const isExternal = (file: File) => file.mime === 'text/statik-link';
+
 	onDestroy(() => {
 		pageUnsubscribe();
 	});
@@ -38,11 +40,16 @@
 	{#if data.manifest.files}
 		{@const files = data.manifest.files}
 		{#each files as file}
-			{@const href = `${$page.url}/${file.name}`}
 			<li>
-				<a {href}>
-					{file.name}
-				</a>
+				{#if isExternal(file)}
+					<a href={file.url} target="_blank" rel="noreferrer">
+						{file.name} 🔗
+					</a>
+				{:else}
+					<a href="{$page.url}/{file.name}">
+						{file.name}
+					</a>
+				{/if}
 			</li>
 		{/each}
 	{/if}
