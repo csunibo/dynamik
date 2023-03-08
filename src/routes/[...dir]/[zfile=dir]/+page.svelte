@@ -15,8 +15,6 @@
 		parentPath = base + '/' + path.join('/');
 	});
 
-	const getDestUrl = (file: File) => `${$page.url}/${file.name}`;
-
 	onDestroy(() => {
 		pageUnsubscribe();
 	});
@@ -40,7 +38,7 @@
 	{#if data.manifest.files}
 		{@const files = data.manifest.files}
 		{#each files as file}
-			{@const href = getDestUrl(file)}
+			{@const href = `${$page.url}/${file.name}`}
 			<li>
 				<a {href}>
 					{file.name}
