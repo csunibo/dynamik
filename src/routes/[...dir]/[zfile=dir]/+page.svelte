@@ -4,6 +4,7 @@
 	import { page } from '$app/stores';
 	import { base } from '$app/paths';
 	import { onDestroy } from 'svelte';
+	import { building } from '$app/environment';
 
 	export let data: PageData;
 
@@ -55,9 +56,11 @@
 	{/if}
 </ul>
 
-<details>
-	<summary>Debug</summary>
-	<pre>
-		{JSON.stringify(data.manifest, null, 2)}
-	</pre>
-</details>
+{#if !building}
+	<details>
+		<summary>Debug</summary>
+		<pre>
+			{JSON.stringify(data.manifest, null, 2)}
+		</pre>
+	</details>
+{/if}
