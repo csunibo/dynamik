@@ -5,7 +5,10 @@ export const load = (async ({ fetch, params }) => {
 	const res = await fetch(ASSET_URL(params.dir + '/' + params.file));
 	const body = await res.text();
 
+	const extension = params.file.split('.').pop();
+
 	return {
-		body
+		body,
+		extension
 	};
 }) satisfies PageLoad;
