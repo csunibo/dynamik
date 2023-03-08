@@ -1,21 +1,30 @@
 export interface Statik extends Directory {
-	directories?: Directory[];
-	files?: File[];
+  directories?: Directory[];
+  files?: File[];
 }
 
 export interface Directory {
-	url: string;
-	time: string;
-	name: string;
-	path: string;
-	size: string;
+  name: string;
+  path: string;
+  size: string;
+  time: Date;
+  url: string;
 }
 
 export interface File {
-	url: string;
-	time: string;
-	name: string;
-	path: string;
-	size: string;
-	mime: string;
+  mime: string;
+  name: string;
+  path: string;
+  size: string;
+  time: Date;
+  url: string;
+}
+
+export type Fuzzy = FuzzyFile[]
+
+export interface FuzzyFile {
+  mime: string;
+  name: string;
+  path: string;
+  url: string;
 }

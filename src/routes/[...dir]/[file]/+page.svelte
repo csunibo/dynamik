@@ -10,18 +10,12 @@
 	let parentPath = '/';
 	const pageUnsubscribe = page.subscribe((page) => {
 		const path = page.params.dir.split('/');
-		path.push(page.params.file)
+		path.push(page.params.file);
 		path.pop();
 		parentPath = base + '/' + path.join('/');
 	});
 
-	const getDestUrl = (file: File) => {
-		if (file.name.endsWith('.md')) {
-			return $page.url + '/' + file.name;
-		} else {
-			return file.url;
-		}
-	};
+	const getDestUrl = (file: File) => $page.url + '/' + file.name;
 
 	onDestroy(() => {
 		pageUnsubscribe();

@@ -5,7 +5,7 @@
 
 <ul>
 	{#each teachings as teaching}
-		{@const href = base + '/' +	 teaching.url}
+		{@const href = base + '/' + teaching.url}
 		<li>
 			<a {href}>
 				{#if teaching.name}
