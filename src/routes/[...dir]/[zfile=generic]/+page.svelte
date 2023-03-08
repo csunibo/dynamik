@@ -1,16 +1,9 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { marked } from 'marked';
-	import markedKatex from '$lib/marked-katex';
-	marked.use(markedKatex());
-
-	import 'katex/dist/katex.min.css';
-
 	export let data: PageData;
-	console.log(data);
 </script>
 
-<iframe src={data.url} />
+<iframe title="Embedded resource" src={data.url} />
 
 <style>
 	iframe {

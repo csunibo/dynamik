@@ -5,8 +5,6 @@
 	import markedKatex from '$lib/marked-katex';
 	marked.use(markedKatex());
 
-	import 'katex/dist/katex.min.css';
-
 	export let data: PageData;
 
 	let markdown: HTMLElement;
@@ -18,3 +16,7 @@
 </script>
 
 <markdown bind:this={markdown} />
+
+<style>
+	@import 'katex/dist/katex.min.css';
+</style>
