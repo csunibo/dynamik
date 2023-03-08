@@ -2,12 +2,14 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import { marked } from 'marked';
+	import tocbot from 'tocbot';
 	// @ts-expect-error - auto-render is not in the type definitions
 	import autoRender from 'katex/dist/contrib/auto-render.mjs';
 
 	export let data: PageData;
 
 	let markdown: HTMLElement;
+	let toc: HTMLElement;
 
 	onMount(async () => {
 		markdown.innerHTML = await marked(data.body, { async: true });
@@ -19,11 +21,38 @@
 				{ left: '\\(', right: '\\)', display: false }
 			]
 		});
+
+		// build the table of contents by finding all the headings
+		tocbot.init({
+			tocSelector: '#toc',
+			contentSelector: '#markdown',
+			headingSelector: 'h2, h3, h4',
+			orderedList: false
+		});
 	});
 </script>
 
-<markdown bind:this={markdown} />
+<div class="container">
+	<markdown id="markdown" bind:this={markdown} />
+	<div id="toc" bind:this={toc} />
+</div>
 
 <style>
-	@import 'katex/dist/katex.min.css';
+	@import 'katex/dist/katex.css';
+
+	.container {
+		font-family: Arial, Helvetica, sans-serif;
+
+		display: grid;
+		grid-template-columns: 1fr 3fr 1fr;
+		grid-gap: 1rem;
+		margin: 0 2rem;
+	}
+	#markdown {
+		grid-column: 2;
+	}
+
+	#toc {
+		grid-column: 3;
+	}
 </style>
