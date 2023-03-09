@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
-	import { marked } from 'marked';
 	import tocbot from 'tocbot';
 	// @ts-expect-error - auto-render is not in the type definitions
 	import autoRender from 'katex/dist/contrib/auto-render.mjs';
