@@ -12,7 +12,7 @@
 	let toc: HTMLElement;
 
 	onMount(async () => {
-		markdown.innerHTML = await marked(data.body, { async: true });
+		markdown.innerHTML = data.rendered;
 		autoRender(markdown, {
 			delimiters: [
 				{ left: '$$', right: '$$', display: true },
