@@ -32,7 +32,7 @@
 
 <main class="container m-auto grid gap-4 grid-cols-[4fr,1fr]">
 	<section class="prose m-auto" id="markdown" bind:this={markdown} role="document" />
-	<section id="toc" bind:this={toc} role="contentinfo" />
+	<section class="prose" id="toc" bind:this={toc} role="contentinfo" />
 </main>
 
 <style>

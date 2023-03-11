@@ -5,6 +5,7 @@
 
 	export let data: File | Directory;
 	export let base: URL;
+	let url: string | undefined;
 	let isFile: boolean = false;
 	if ((data as File).mime) {
 		isFile = true;
@@ -26,9 +27,9 @@
 			{/if}
 		{:else}
 			<span>file</span>
-			<a class="link" href={base + '/' + data.name}>{data.name}</a>
+			<a class="link" href={url || base + '/' + data.name}>{data.name}</a>
 		{/if}
 		<span class="whitespace-nowrap">{data.size}</span>
-		<span class="hidden md:block">{data.time}</span>
+		<span class="hidden md:block">{data.time || '-'}</span>
 	</div>
 </div>

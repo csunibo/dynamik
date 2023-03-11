@@ -22,17 +22,22 @@
 	});
 </script>
 
-<main class="container m-auto">
+<main class="md:container md:m-auto p-4">
 	<code>{$page.url.pathname}</code>
 	<div
 		class="grid gap-4 grid-cols-[min-content,auto,min-content] md:grid-cols-[min-content,auto,min-content,min-content]"
 	>
-		<div class="contents">
-			<span>dir</span>
-			<a href={parentPath}>..</a>
-			<span>-</span>
-			<span>-</span>
-		</div>
+		<Line
+			data={{
+				name: '..',
+				path: '',
+				size: '-',
+				time: '-',
+				url: ''
+			}}
+			url={parentPath}
+			base={$page.url}
+		/>
 		{#if data.manifest.directories}
 			{@const directories = data.manifest.directories}
 			{#each directories as dir}
