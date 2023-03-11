@@ -1,7 +1,5 @@
 export type Teaching = {
-	name?: string;
-	year?: number;
-	corso?: string;
+	name: string;
 	url: string;
 };
 
@@ -24,11 +22,40 @@ const TEACHINGS: Course[] = [
 			{
 				year: 1,
 				teachings: [
-					{ url: 'algoritmi-e-strutture-di-dati', name: 'Algoritmi e strutture dati' },
-					{ url: 'algebra-e-geometria', name: 'Algebra e geometria' },
-					{ url: 'programmazione', name: 'Programmazione' },
-					{ url: 'analisi-matematica', name: 'Analisi matematica' },
-					{ url: 'logica-per-informatica', name: 'Logica per informatica' }
+					{ name: 'Architettura degli elaboratori', url: 'architettura-degli-elaboratori' },
+					{ name: "Logica per l'informatica", url: 'logica-per-informatica' },
+					{ name: 'Programmazione', url: 'programmazione' },
+					{ name: 'Algebra e geometria', url: 'algebra-e-geometria' },
+					{ name: 'Algoritmi e strutture dati', url: 'algoritmi-e-strutture-di-dati' },
+					{ name: 'Analisi matematica', url: 'analisi-matematica' }
+				]
+			},
+			{
+				year: 2,
+				teachings: [
+					{ name: 'Calcolo numerico', url: 'calcolo-numerico' },
+					{ url: 'ottimizzazione-combinatoria', name: 'Ottimizzazione combinatoria' },
+					{
+						name: 'Calcolo delle probabilità e statistica',
+						url: 'calcolo-delle-probabilita-e-statistica'
+					},
+					{ name: 'Tecnologie web', url: 'tecnologie-web' },
+					{ name: 'Linguaggi di programmazione', url: 'linguaggi-di-programmazione' },
+					{ name: 'Reti di calcolatori', url: 'reti-di-calcolatori' },
+					{ name: 'Sistemi operativi', url: 'sistemi-operativi' }
+				]
+			},
+			{
+				year: 3,
+				teachings: [
+					{ name: 'Basi di dati', url: 'basi-di-dati' },
+					{ name: 'Ingegneria del software', url: 'ingegneria-del-software' },
+					{
+						name: "Introduzione all'apprendimento automatico",
+						url: 'introduzione-apprendimento-automatico'
+					},
+					{ name: 'Fondamenti di cybersecurity', url: 'fondamenti-di-cybersecurity' },
+					{ name: 'Informatica teorica', url: 'informatica-teorica' }
 				]
 			}
 		]
