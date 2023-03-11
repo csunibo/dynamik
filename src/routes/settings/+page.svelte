@@ -5,7 +5,7 @@
 	let themes = derived(settings, ({ theme }) => allThemes.filter((t) => t != theme));
 </script>
 
-<main class="container-md m-auto m-8">
+<main class="md:container md:m-auto p-4">
 	<h1 class="text-3xl font-bold my-8">Settings</h1>
 
 	<div class="form-control my-4">
