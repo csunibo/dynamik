@@ -6,12 +6,12 @@
 </script>
 
 <main class="md:container md:m-auto p-4">
-	<h1 class="text-3xl font-bold my-8">Settings</h1>
+	<h1 class="text-3xl font-bold my-8 text-primary">Settings</h1>
 
 	<div class="form-control my-4">
 		<label class="label">
 			<span class="label-text">Theme</span>
-			<select class="select select-bordered" bind:value={$settings.theme}>
+			<select class="select select-primary" bind:value={$settings.theme}>
 				<option disabled selected>{$settings.theme}</option>
 				{#each $themes as theme}
 					<option>{theme}</option>

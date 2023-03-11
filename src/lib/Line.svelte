@@ -17,17 +17,17 @@
 		{#if isFile}
 			<span>dir</span>
 			{#if isExternal(data)}
-				<a class="link" href={data.url} target="_blank" rel="noreferrer">
+				<a class="link text-primary" href={data.url} target="_blank" rel="noreferrer">
 					{data.name} (link)
 				</a>
 			{:else}
-				<a class="link" href="{base}/{data.name}">
+				<a class="link text-primary" href="{base}/{data.name}">
 					{data.name}
 				</a>
 			{/if}
 		{:else}
 			<span>file</span>
-			<a class="link" href={url || base + '/' + data.name}>{data.name}</a>
+			<a class="link text-primary" href={url || base + '/' + data.name}>{data.name}</a>
 		{/if}
 		<span class="whitespace-nowrap">{data.size}</span>
 		<span class="hidden md:block">{data.time || '-'}</span>
