@@ -11,11 +11,8 @@
 
 	onMount(async () => {
 		const lang = data.extension;
-
-		console.info('Found language:', lang);
-
 		const selectedLang = BUNDLED_LANGUAGES.filter(
-			(bundle) => bundle.id === lang || bundle.aliases?.includes(bundle)
+			(bundle) => bundle.id === lang || bundle.aliases?.includes(lang)
 		);
 
 		const highlighter = await getHighlighter({
