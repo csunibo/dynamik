@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import tocbot from 'tocbot';
-	// @ts-expect-error - auto-render is not in the type definitions
 	import autoRender from 'katex/dist/contrib/auto-render.mjs';
 
 	export let data: PageData;
@@ -31,27 +30,11 @@
 	});
 </script>
 
-<div class="container">
-	<markdown id="markdown" bind:this={markdown} />
-	<div id="toc" bind:this={toc} />
-</div>
+<main class="container m-auto grid gap-4 grid-cols-[4fr,1fr]">
+	<section class="prose m-auto" id="markdown" bind:this={markdown} role="document" />
+	<section id="toc" bind:this={toc} role="contentinfo" />
+</main>
 
 <style>
 	@import 'katex/dist/katex.css';
-
-	.container {
-		font-family: Arial, Helvetica, sans-serif;
-
-		display: grid;
-		grid-template-columns: 1fr 3fr 1fr;
-		grid-gap: 1rem;
-		margin: 0 2rem;
-	}
-	#markdown {
-		grid-column: 2;
-	}
-
-	#toc {
-		grid-column: 3;
-	}
 </style>

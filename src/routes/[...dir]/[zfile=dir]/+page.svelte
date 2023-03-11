@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import type { PageData } from './$types';
 	import type { File } from '$lib/api';
 	import { page } from '$app/stores';
 	import { base } from '$app/paths';
-	import { onDestroy } from 'svelte';
 	import { dev } from '$app/environment';
+	import Line from '$lib/Line.svelte';
 
 	export let data: PageData;
 
@@ -16,45 +17,36 @@
 		parentPath = base + '/' + path.join('/');
 	});
 
-	const isExternal = (file: File) => file.mime === 'text/statik-link';
-
 	onDestroy(() => {
 		pageUnsubscribe();
 	});
 </script>
 
-<code>{$page.url.pathname}</code>
-
-<ul>
-	<li>
-		<a href={parentPath}>..</a>
-	</li>
-
-	{#if data.manifest.directories}
-		{@const directories = data.manifest.directories}
-		{#each directories as dir}
-			<li>
-				<a href={$page.url + '/' + dir.name}>{dir.name}</a>
-			</li>
-		{/each}
-	{/if}
-	{#if data.manifest.files}
-		{@const files = data.manifest.files}
-		{#each files as file}
-			<li>
-				{#if isExternal(file)}
-					<a href={file.url} target="_blank" rel="noreferrer">
-						{file.name} 🔗
-					</a>
-				{:else}
-					<a href="{$page.url}/{file.name}">
-						{file.name}
-					</a>
-				{/if}
-			</li>
-		{/each}
-	{/if}
-</ul>
+<main class="container m-auto">
+	<code>{$page.url.pathname}</code>
+	<div
+		class="grid gap-4 grid-cols-[min-content,auto,min-content] md:grid-cols-[min-content,auto,min-content,min-content]"
+	>
+		<div class="contents">
+			<span>dir</span>
+			<a href={parentPath}>..</a>
+			<span>-</span>
+			<span>-</span>
+		</div>
+		{#if data.manifest.directories}
+			{@const directories = data.manifest.directories}
+			{#each directories as dir}
+				<Line data={dir} base={$page.url} />
+			{/each}
+		{/if}
+		{#if data.manifest.files}
+			{@const files = data.manifest.files}
+			{#each files as file}
+				<Line data={file} base={$page.url} />
+			{/each}
+		{/if}
+	</div>
+</main>
 
 {#if dev}
 	<details>

@@ -1,7 +1,7 @@
-<script lang="ts">
-</script>
-
 <slot />
 
-<style lang="scss">
+<style>
+	@tailwind base;
+	@tailwind components;
+	@tailwind utilities;
 </style>
