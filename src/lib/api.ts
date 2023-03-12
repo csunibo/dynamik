@@ -11,13 +11,8 @@ export interface Directory {
 	url: string;
 }
 
-export interface File {
+export interface File extends Directory {
 	mime: string;
-	name: string;
-	path: string;
-	size: string;
-	time: string;
-	url: string;
 }
 
 export type Fuzzy = FuzzyFile[];

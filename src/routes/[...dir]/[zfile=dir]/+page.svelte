@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
 	import type { PageData } from './$types';
-	import type { File } from '$lib/api';
 	import { page } from '$app/stores';
 	import { base } from '$app/paths';
 	import { dev } from '$app/environment';
-	import Line from '$lib/Line.svelte';
+	import Line from '$lib/components/Line.svelte';
 
 	export let data: PageData;
 
@@ -31,23 +30,22 @@
 			data={{
 				name: '..',
 				path: '',
-				size: '-',
-				time: '-',
+				size: '',
+				time: '',
 				url: ''
 			}}
-			url={parentPath}
-			base={$page.url}
+			customUrl={parentPath}
 		/>
 		{#if data.manifest.directories}
 			{@const directories = data.manifest.directories}
 			{#each directories as dir}
-				<Line data={dir} base={$page.url} />
+				<Line data={dir} />
 			{/each}
 		{/if}
 		{#if data.manifest.files}
 			{@const files = data.manifest.files}
 			{#each files as file}
-				<Line data={file} base={$page.url} />
+				<Line data={file} />
 			{/each}
 		{/if}
 	</div>
