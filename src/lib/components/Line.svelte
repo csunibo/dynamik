@@ -7,10 +7,11 @@
 	import localizedFormat from 'dayjs/plugin/localizedFormat';
 	import localeIt from 'dayjs/locale/it';
 	import { onMount } from 'svelte';
+	dayjs.locale(localeIt);
+	dayjs.extend(localizedFormat);
 
 	export let data: File | Directory;
 	export let customUrl: string | undefined = undefined;
-
 	const isExternal = (data: File | Directory) => {
 		if ('mime' in data) {
 			return data.mime === 'text/statik-link';
@@ -30,10 +31,6 @@
 
 	let isFile = 'mime' in data;
 
-	onMount(() => {
-		dayjs.locale(localeIt);
-		dayjs.extend(localizedFormat);
-	});
 </script>
 
 <div class="contents">
