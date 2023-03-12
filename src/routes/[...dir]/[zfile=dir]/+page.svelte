@@ -21,10 +21,10 @@
 	});
 </script>
 
-<main class="md:container md:m-auto p-4">
+<main class="max-lg:container max-lg:m-auto p-4 mx-auto max-w-screen-lg">
 	<code>{$page.url.pathname}</code>
 	<div
-		class="grid gap-4 grid-cols-[min-content,auto,min-content] md:grid-cols-[min-content,auto,min-content,max-content]"
+		class="grid gap-4 grid-cols-dir md:grid-cols-dir-full"
 	>
 		<Line
 			data={{

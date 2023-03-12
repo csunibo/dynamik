@@ -2,7 +2,13 @@
 module.exports = {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
-		extend: {}
+		extend: {
+			gridTemplateColumns: {
+				"dir": "min-content,auto,min-content",
+				"dir-full": "min-content,auto,min-content,max-content"
+			}
+		},
+
 	},
 	plugins: [require('@tailwindcss/typography'), require('daisyui')],
 	daisyui: {
