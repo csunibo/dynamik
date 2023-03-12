@@ -10,7 +10,6 @@
 	let toc: HTMLElement;
 
 	onMount(async () => {
-		markdown.innerHTML = data.rendered;
 		autoRender(markdown, {
 			delimiters: [
 				{ left: '$$', right: '$$', display: true },
@@ -31,7 +30,9 @@
 </script>
 
 <main class="container m-auto grid gap-4 grid-cols-[4fr,1fr]">
-	<section class="prose m-auto" id="markdown" bind:this={markdown} role="document" />
+	<section class="prose m-auto" id="markdown" bind:this={markdown} role="document">
+		{@html data.rendered}
+	</section>
 	<section class="prose" id="toc" bind:this={toc} role="contentinfo" />
 </main>
 
