@@ -1,5 +1,16 @@
-export const BASE_URL = `https://csunibo.github.io`;
+const ORG = 'csunibo';
 
-export const STATIK_URL = (path: string) => `${BASE_URL}/${path}/statik.json`;
-export const ASSET_URL = (path: string) => `${BASE_URL}/${path}`;
-export const FUZZY_URL = (path: string) => `${BASE_URL}/${path}/fuzzy.json`;
+const GH_PAGES_BASE_URL = `https://${ORG}.github.io`;
+const GH_BASE_URL = `https://github.com/${ORG}`;
+export const STATIK_URL = (path: string) => `${GH_PAGES_BASE_URL}/${path}/statik.json`;
+export const ASSET_URL = (path: string) => `${GH_PAGES_BASE_URL}/${path}`;
+export const FUZZY_URL = (path: string) => `${GH_PAGES_BASE_URL}/${path}/fuzzy.json`;
+export const EDIT_URLS = (path: string) => {
+	const [, repo, ...rest] = path.split('/');
+	const filePath = rest.join('/');
+	return {
+		github: `${GH_BASE_URL}/${repo}/blob/main/${filePath}`,
+		github_edit: `${GH_BASE_URL}/${repo}/edit/main/${filePath}`,
+		github_dev: `${GH_BASE_URL}/${repo}/blob/main/${filePath}`
+	};
+};

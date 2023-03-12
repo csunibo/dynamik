@@ -3,6 +3,11 @@
 	import type { PageData } from './$types';
 	import tocbot from 'tocbot';
 	import autoRender from 'katex/dist/contrib/auto-render.mjs';
+	import { formatDate } from '$lib/date';
+	import settings from '$lib/settings';
+	import { EDIT_URLS } from '../../../lib/const';
+	import { page } from '$app/stores';
+	import { crossfade, fade } from 'svelte/transition';
 
 	export let data: PageData;
 
@@ -35,6 +40,26 @@
 	</section>
 	<section class="prose" id="toc" bind:this={toc} role="contentinfo" />
 </main>
+
+<div class="my-4 prose prose-slate italic max-w-none text-center mx-10">
+	{#await data.info.fileInfo then info}
+		{@const editUrls = EDIT_URLS($page.url.pathname)}
+		<p transition:fade>
+			<span>
+				Last edited on
+				<span>{formatDate($settings, info.time)}</span>
+				<span>
+					- View on
+					<a href={editUrls.github} target="_blank" rel="noopener noreferrer"> github.com </a>
+					- Edit on
+					<a href={editUrls.github_edit} target="_blank" rel="noopener noreferrer"> github.com </a>
+					or on
+					<a href={editUrls.github_dev} target="_blank" rel="noopener noreferrer"> github.dev </a>
+				</span>
+			</span>
+		</p>
+	{/await}
+</div>
 
 <style>
 	@import 'katex/dist/katex.css';
