@@ -24,7 +24,7 @@
 <main class="md:container md:m-auto p-4">
 	<code>{$page.url.pathname}</code>
 	<div
-		class="grid gap-4 grid-cols-[min-content,auto,min-content] md:grid-cols-[min-content,auto,min-content,min-content]"
+		class="grid gap-4 grid-cols-[min-content,auto,min-content] md:grid-cols-[min-content,auto,min-content,max-content]"
 	>
 		<Line
 			data={{

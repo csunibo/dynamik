@@ -26,4 +26,14 @@
 			<input type="checkbox" class="toggle toggle-primary" bind:checked={$settings.newTab} />
 		</label>
 	</div>
+
+	<div class="form-control my-4">
+		<label class="cursor-pointer label">
+			<span class="label-text">
+				Display dates as
+				<a href="https://en.wikipedia.org/wiki/ISO_8601" class="link">ISO8601</a>
+			</span>
+			<input type="checkbox" class="toggle toggle-primary" bind:checked={$settings.isoDates} />
+		</label>
+	</div>
 </main>

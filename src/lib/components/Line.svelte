@@ -1,7 +1,12 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
 	import { page } from '$app/stores';
+	import settings from '$lib/settings';
 	import type { File, Directory } from '$lib/api';
+
+	import localizedFormat from 'dayjs/plugin/localizedFormat';
+	import localeIt from 'dayjs/locale/it';
+	import { onMount } from 'svelte';
 
 	export let data: File | Directory;
 	export let customUrl: string | undefined = undefined;
@@ -16,10 +21,19 @@
 
 	const formatDate = (date: string) => {
 		const dayjsDate = dayjs(date);
-		return dayjsDate.format('YYYY-MM-DD') + '\u00a0' + dayjsDate.format('HH:mm');
+		if ($settings.isoDates) {
+			return dayjsDate.toISOString().substring(0, 19);
+		} else {
+			return dayjsDate.format('LLL');
+		}
 	};
 
 	let isFile = 'mime' in data;
+
+	onMount(() => {
+		dayjs.locale(localeIt);
+		dayjs.extend(localizedFormat);
+	});
 </script>
 
 <div class="contents">

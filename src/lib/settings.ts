@@ -6,11 +6,13 @@ type Theme = (typeof themes)[number];
 export interface Settings {
 	theme: Theme;
 	newTab: boolean;
+	isoDates: boolean;
 }
 
 const settings = persisted<Settings>('settings', {
 	theme: 'halloween',
-	newTab: false
+	newTab: false,
+	isoDates: true
 });
 
 export default settings;
