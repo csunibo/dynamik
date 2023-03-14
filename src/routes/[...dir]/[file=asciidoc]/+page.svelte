@@ -8,11 +8,14 @@
 	let docContainer: HTMLElement;
 
 	onMount(() => {
-		const asciidoctor = window.Asciidoctor();
-		docContainer.innerHTML = asciidoctor.convert(data.body, {
-			attributes: { showtitle: true }
+		// FIXME: This is a hack to get the asciidoctor script to load
+		document.addEventListener('DOMContentLoaded', () => {
+			const asciidoctor = window.Asciidoctor();
+			docContainer.innerHTML = asciidoctor.convert(data.body, {
+				attributes: { showtitle: true }
+			});
+			autoRender(docContainer);
 		});
-		autoRender(docContainer);
 	});
 </script>
 
