@@ -8,23 +8,26 @@
 	let docContainer: HTMLElement;
 
 	onMount(() => {
-		// FIXME: This is a hack to get the asciidoctor script to load
-		document.addEventListener('DOMContentLoaded', () => {
-			const asciidoctor = window.Asciidoctor();
-			docContainer.innerHTML = asciidoctor.convert(data.body, {
-				attributes: { showtitle: true }
-			});
-			autoRender(docContainer);
+		const asciidoctor = new Asciidoctor();
+		docContainer.innerHTML = asciidoctor.convert(data.body, {
+			attributes: { showtitle: true }
+		}) as string;
+		autoRender(docContainer, {
+			throwOnError: false
 		});
 	});
 </script>
 
 <svelte:head>
 	<script
-		src="https://cdn.jsdelivr.net/npm/@asciidoctor/core@2.2.6/dist/browser/asciidoctor.min.js"
+		src=" https://cdn.jsdelivr.net/npm/@asciidoctor/core@2.2.6/dist/browser/asciidoctor.min.js "
 	></script>
 </svelte:head>
 
 <main class="container m-auto grid gap-4 grid-cols-[4fr,1fr]">
 	<section class="prose m-auto" id="markdown" bind:this={docContainer} role="document" />
 </main>
+
+<style>
+	@import 'katex/dist/katex.css';
+</style>
