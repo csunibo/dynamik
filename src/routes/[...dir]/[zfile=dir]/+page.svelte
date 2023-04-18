@@ -16,16 +16,32 @@
 		parentPath = base + '/' + path.join('/');
 	});
 
+	$: urlParts = $page.url.pathname.split('/').slice(1);
+
+	const getPartHref = (part: string) =>
+		$page.url.pathname
+			.split('/')
+			.slice(0, $page.url.pathname.split('/').indexOf(part) + 1)
+			.join('/');
+
 	onDestroy(() => {
 		pageUnsubscribe();
 	});
 </script>
 
-<main class="max-lg:container max-lg:m-auto p-4 mx-auto max-w-screen-lg">
-	<code>{$page.url.pathname}</code>
-	<div
-		class="grid gap-4 grid-cols-dir md:grid-cols-dir-full"
-	>
+<main class="max-lg:container max-lg:m-auto p-4 mx-auto max-w-screen-md">
+	<div class="my-5">
+		<div class="text-sm breadcrumbs">
+			<ul>
+				<li>🏠<a href="/">Dynamik</a></li>
+				{#each urlParts as part}
+					{@const href = getPartHref(part)}
+					<li><a {href}>{part}</a></li>
+				{/each}
+			</ul>
+		</div>
+	</div>
+	<div class="grid gap-4 grid-cols-dir md:grid-cols-dir-full">
 		<Line
 			data={{
 				name: '..',
@@ -52,9 +68,9 @@
 </main>
 
 {#if dev}
-	<details>
+	<details class="m-10">
 		<summary>Debug</summary>
-		<pre>
+		<pre class="code">
 			{JSON.stringify(data.manifest, null, 2)}
 		</pre>
 	</details>

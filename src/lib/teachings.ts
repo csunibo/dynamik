@@ -11,6 +11,7 @@ export type TeachingYear = {
 export type Course = {
 	id: string;
 	name: string;
+	icon: string;
 	years: TeachingYear[];
 };
 
@@ -18,6 +19,7 @@ const TEACHINGS: Course[] = [
 	{
 		id: 'informatica',
 		name: 'Informatica',
+		icon: "🧑‍💻",
 		years: [
 			{
 				year: 1,
@@ -63,6 +65,7 @@ const TEACHINGS: Course[] = [
 	{
 		id: 'ingegneria',
 		name: 'Ingegneria Informatica',
+		icon: "👨‍🔧",
 		years: [
 			{
 				year: 1,

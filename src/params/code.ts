@@ -1,14 +1,18 @@
 import type { ParamMatcher } from '@sveltejs/kit';
 import { BUNDLED_LANGUAGES } from 'shiki';
 
-const EXTRA_BUNDLED_LANGUAGES = [
-  ...BUNDLED_LANGUAGES.map((bundle) => [bundle.id, ...(bundle.aliases || [])]).flat(),
-  'txt',
-  'c++',
-  'tsx',
-  'jsx',
-  'hdl'
-].filter((lang) => lang != 'md');
+const IGNORED_LANGUAGES = ['md', 'html'];
 
-export const match = ((file) =>
-  EXTRA_BUNDLED_LANGUAGES.includes(file.split('.').pop() || '')) satisfies ParamMatcher;
+const EXTRA_BUNDLED_LANGUAGES = [
+	...BUNDLED_LANGUAGES.map((bundle) => [bundle.id, ...(bundle.aliases || [])]).flat(),
+	'txt',
+	'c++',
+	'tsx',
+	'jsx',
+	'hdl'
+];
+
+export const match = ((file) => {
+	const ext = file.split('.').pop() || '';
+	return EXTRA_BUNDLED_LANGUAGES.includes(ext) && !IGNORED_LANGUAGES.includes(ext);
+}) satisfies ParamMatcher;

@@ -5,10 +5,10 @@ import DOMPurify from 'dompurify';
 import type { File, Statik } from '$lib/api';
 
 export const load = (async ({ fetch, params }) => {
-	const res = await fetch(ASSET_URL(params.dir + '/' + params.file));
-	const body = await res.text();
-	const rendered = await marked(body, { async: true });
-	const clean = DOMPurify.sanitize(rendered);
+	const fileContentReq = await fetch(ASSET_URL(params.dir + '/' + params.file));
+	const fileContent = await fileContentReq.text();
+	const mdRendered = await marked(fileContent, { async: true });
+	const mdClean = DOMPurify.sanitize(mdRendered);
 
 	const fileInfo: Promise<File> = fetch(ASSET_URL(params.dir + '/statik.json'))
 		.then((res) => res.json())
@@ -19,7 +19,7 @@ export const load = (async ({ fetch, params }) => {
 		});
 
 	return {
-		rendered: clean,
+		rendered: mdClean,
 		info: { fileInfo }
 	};
 }) satisfies PageLoad;
