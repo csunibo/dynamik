@@ -1,12 +1,14 @@
 import type { PageLoad } from './$types';
 import { ASSET_URL } from '$lib/const';
 import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 import type { File, Statik } from '$lib/api';
 
 export const load = (async ({ fetch, params }) => {
 	const res = await fetch(ASSET_URL(params.dir + '/' + params.file));
 	const body = await res.text();
 	const rendered = await marked(body, { async: true });
+	const clean = DOMPurify.sanitize(rendered);
 
 	const fileInfo: Promise<File> = fetch(ASSET_URL(params.dir + '/statik.json'))
 		.then((res) => res.json())
@@ -17,7 +19,7 @@ export const load = (async ({ fetch, params }) => {
 		});
 
 	return {
-		rendered,
+		rendered: clean,
 		info: { fileInfo }
 	};
 }) satisfies PageLoad;
