@@ -29,6 +29,7 @@
 		"eslint": "^8.38.0",
 		"eslint-config-prettier": "^8.8.0",
 		"eslint-plugin-svelte3": "^4.0.0",
+		"fuse.js": "^6.6.2",
 		"katex": "^0.16.6",
 		"marked": "^4.3.0",
 		"postcss": "^8.4.22",
