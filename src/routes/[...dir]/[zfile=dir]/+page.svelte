@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
-	import type { PageData } from './$types';
+	import { onDestroy } from 'svelte';
+	import Fuse from 'fuse.js';
+
 	import { page } from '$app/stores';
 	import { base } from '$app/paths';
-	import { dev } from '$app/environment';
-	import Line from '$lib/components/Line.svelte';
-	import type { File } from '$lib/api';
 
-	import Fuse from 'fuse.js';
+	import Line from '$lib/components/Line.svelte';
+	import type { FuzzyFile } from '$lib/api';
 	import { GH_PAGES_BASE_URL } from '$lib/const';
 
+	import type { PageData } from './$types';
 	export let data: PageData;
 
-	let searchActive: boolean = false;
+	let searchActive = false;
 	let searchInput: HTMLInputElement;
 	let resultList: HTMLUListElement;
 
@@ -24,18 +24,20 @@
 		parentPath = base + '/' + path.join('/');
 	});
 
-	let query = '';
-	let fuse: Fuse<File>;
+	let searchQuery = '';
+	let fuse: Fuse<FuzzyFile> = new Fuse(data.fuzzy, {
+		keys: ['name']
+	});
+	let active = 0;
+
 	$: fuseResult = fuse
-		? fuse.search(query, {
+		? fuse.search(searchQuery, {
 				limit: 7
 		  })
 		: [];
 
-	let active = 0;
-
+	// Set first result as "active"
 	$: {
-		// Set first result as "active"
 		if (fuseResult) {
 			active = 0;
 		}
@@ -48,13 +50,6 @@
 			.split('/')
 			.slice(0, $page.url.pathname.split('/').indexOf(part) + 1)
 			.join('/');
-
-	onMount(async () => {
-		const fuseData = (await data.streaming.allFiles) ?? [];
-		fuse = new Fuse(fuseData, {
-			keys: ['name']
-		});
-	});
 
 	onDestroy(() => {
 		pageUnsubscribe();
@@ -131,13 +126,13 @@
 <label for="my-modal" class="modal cursor-pointer" role="search">
 	<label class="modal-box relative">
 		<input
-			class="input input-bordered input-primary w-full"
+			class="input input-bordered input-primary w-full mb-2"
 			type="text"
 			placeholder="Search..."
 			bind:this={searchInput}
-			bind:value={query}
+			bind:value={searchQuery}
 		/>
-		{#if query != ''}
+		{#if searchQuery != ''}
 			<ul class="menu p-2" bind:this={resultList}>
 				{#each fuseResult as item, i}
 					<li>
@@ -150,11 +145,3 @@
 		{/if}
 	</label>
 </label>
-{#if dev}
-	<details class="m-10">
-		<summary>Debug</summary>
-		<pre class="code">
-			{JSON.stringify(data.manifest, null, 2)}
-		</pre>
-	</details>
-{/if}

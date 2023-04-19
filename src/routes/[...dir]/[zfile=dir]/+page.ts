@@ -1,11 +1,8 @@
 import type { PageLoad } from './$types';
-import type { File, Statik } from '$lib/api';
-import { STATIK_URL } from '$lib/const';
+import type { Fuzzy, Statik } from '$lib/api';
+import { FUZZY_URL, STATIK_URL } from '$lib/const';
 
-type RecursiveStatik = Statik & {
-	sub?: RecursiveStatik[];
-};
-async function getManifest(path: string): Promise<Statik> {
+async function getManifest(fetch: typeof window.fetch, path: string): Promise<Statik> {
 	const res = await fetch(STATIK_URL(path));
 	if (!res.ok) {
 		throw new Error(`Failed to load manifest at ${STATIK_URL(path)}`);
@@ -14,45 +11,28 @@ async function getManifest(path: string): Promise<Statik> {
 	return manifest;
 }
 
-async function getRecursiveManifest(path: string): Promise<RecursiveStatik | undefined> {
-	try {
-		const manifest = await getManifest(path);
-
-		let directoryManifests: RecursiveStatik[] = [];
-		if (manifest.directories) {
-			for (const dir of manifest.directories) {
-				const newManifest = await getRecursiveManifest(path + '/' + dir.path);
-				if (newManifest) directoryManifests.push(newManifest);
-			}
-		}
-
-		return {
-			...manifest,
-			sub: directoryManifests
-		};
-	} catch (e) {
-		return undefined;
+async function getFuzzy(fetch: typeof window.fetch, path: string): Promise<Fuzzy> {
+	const res = await fetch(FUZZY_URL(path));
+	if (!res.ok) {
+		console.error(`Failed to load fuzzy at ${FUZZY_URL(path)}`);
+		return [];
 	}
-}
-
-function recursivelyGetFiles(manifest: RecursiveStatik): File[] {
-	const files = manifest.files?.map((file) => file) ?? [];
-	const subFiles = manifest.sub?.map((sub) => recursivelyGetFiles(sub))?.flat() ?? [];
-	return [...files, ...subFiles];
+	return await res.json();
 }
 
 export const load = (async ({ fetch, params }) => {
+	// Get the relative path using params
 	const path = params.dir ? params.dir + '/' + params.zfile : params.zfile;
-	const manifest = await getManifest(path);
 
-	// For each directory, recursively load the manifest
-	const recursiveManifest = getRecursiveManifest(path);
-	const allFiles = recursiveManifest.then((manifest) => manifest && recursivelyGetFiles(manifest));
+	// Load the manifest
+	const manifest = await getManifest(fetch, path);
+
+	// Load the fuzzy search index
+	const fuzzyPath = path.split('/').slice(0, 1).join('/');
+	const fuzzy = await getFuzzy(fetch, fuzzyPath);
 
 	return {
 		manifest,
-		streaming: {
-			allFiles
-		}
+		fuzzy
 	};
 }) satisfies PageLoad;
