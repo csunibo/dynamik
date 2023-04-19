@@ -83,29 +83,24 @@
 
 <svelte:body on:keydown={keydown} />
 
-<main class="max-lg:container max-lg:m-auto p-4 mx-auto max-w-screen-md">
-	<div class="my-5">
-		<div class="text-sm breadcrumbs">
-			<ul>
-				<li>🏠<a href="/">Dynamik</a></li>
-				{#each urlParts as part}
-					{@const href = getPartHref(part)}
-					<li><a {href}>{part}</a></li>
-				{/each}
-			</ul>
+<main class="max-w-5xl p-4 mx-auto">
+	<div class="navbar bg-neutral text-neutral-content rounded-box shadow-sm px-5 mb-5">
+		<div class="navbar-start">
+			<div class="text-sm breadcrumbs">
+				<ul>
+					<li>🏠<a href="/">Dynamik</a></li>
+					{#each urlParts as part}
+						{@const href = getPartHref(part)}
+						<li><a {href}>{part}</a></li>
+					{/each}
+				</ul>
+			</div>
 		</div>
+		<div class="navbar-center" />
+		<div class="navbar-end" />
 	</div>
-	<div class="grid gap-4 grid-cols-dir md:grid-cols-dir-full">
-		<Line
-			data={{
-				name: '..',
-				path: '',
-				size: '',
-				time: '',
-				url: ''
-			}}
-			customUrl={parentPath}
-		/>
+
+	<div class="grid gap-4 grid-cols-dir md:grid-cols-dir-full mx-4">
 		{#if data.manifest.directories}
 			{@const directories = data.manifest.directories}
 			{#each directories as dir}
