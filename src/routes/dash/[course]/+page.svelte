@@ -2,8 +2,16 @@
 	import { base } from '$app/paths';
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
+	import type { Teaching, TeachingYear } from '$lib/teachings';
 
 	export let data: PageData;
+
+	let activeYears: Teaching[] = [];
+
+	onMount(async () => {
+		activeYears = (await data.streaming?.activeCourses) ?? [];
+	});
 </script>
 
 {#if !data.course}
@@ -35,9 +43,10 @@
 				</li>
 
 				{#each year.teachings as teaching}
+					{@const disabled = !activeYears.includes(teaching)}
 					{@const href = base + '/' + teaching.url}
-					<li>
-						<a {href}>
+					<li class:disabled>
+						<a href={disabled ? null : href}>
 							{#if teaching.name}
 								{teaching.name}
 							{:else}
