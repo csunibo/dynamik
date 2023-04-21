@@ -15,12 +15,12 @@
 	<div class="contents">
 		{#if external}
 			<span><code>link</code></span>
-			<a class="link link-hover text-primary" href="{$page.url}/{data.name}">
+			<a class="link link-hover text-primary" href={data.url} target="_blank" rel="noreferrer">
 				{data.name}
 			</a>
 		{:else if isFile}
 			<span><code>file</code></span>
-			<a class="link link-hover text-primary" href={data.url} target="_blank" rel="noreferrer">
+			<a class="link link-hover text-primary" href="{$page.url}/{data.name}">
 				{data.name}
 			</a>
 		{:else}
