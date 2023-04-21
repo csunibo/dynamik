@@ -128,10 +128,14 @@
 		/>
 		{#if searchQuery != ''}
 			<ul class="menu p-2" bind:this={resultList}>
-				{#each fuseResult as item, i}
+				{#each fuseResult as result, i}
+					{@const href =
+						result.item.mime === 'text/statik-link'
+							? result.item.url
+							: base + result.item.url.split(GH_PAGES_BASE_URL)[1]}
 					<li>
-						<a href={base + item.item.url.split(GH_PAGES_BASE_URL)[1]} class:active={i === active}>
-							{item.item.name}
+						<a {href} class:active={i === active}>
+							{result.item.name}
 						</a>
 					</li>
 				{/each}
