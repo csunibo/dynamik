@@ -7,25 +7,22 @@
 	export let data: File | Directory;
 	export let customUrl: string | undefined = undefined;
 
-	const isExternal = (data: File | Directory) =>
-		'mime' in data ? data.mime === 'text/statik-link' : false;
-
-	let isFile = 'mime' in data;
+	$: isFile = 'mime' in data;
+	$: external = 'mime' in data ? data.mime === 'text/statik-link' : false;
 </script>
 
 <div class="contents">
 	<div class="contents">
-		{#if isFile}
+		{#if external}
+			<span><code>link</code></span>
+			<a class="link link-hover text-primary" href="{$page.url}/{data.name}">
+				{data.name}
+			</a>
+		{:else if isFile}
 			<span><code>file</code></span>
-			{#if isExternal(data)}
-				<a class="link link-hover text-primary" href={data.url} target="_blank" rel="noreferrer">
-					{data.name} (link)
-				</a>
-			{:else}
-				<a class="link link-hover text-primary" href="{$page.url}/{data.name}">
-					{data.name}
-				</a>
-			{/if}
+			<a class="link link-hover text-primary" href={data.url} target="_blank" rel="noreferrer">
+				{data.name}
+			</a>
 		{:else}
 			<span><code>dir</code></span>
 			<a class="link link-hover text-primary" href={customUrl ?? $page.url + '/' + data.name}>

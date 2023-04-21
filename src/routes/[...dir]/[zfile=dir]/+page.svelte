@@ -85,7 +85,7 @@
 
 <main class="max-w-5xl p-4 mx-auto">
 	<div class="navbar bg-neutral text-neutral-content rounded-box shadow-sm px-5 mb-5">
-		<div class="navbar-start">
+		<div class="navbar-center">
 			<div class="text-sm breadcrumbs">
 				<ul>
 					<li>🏠<a href="/">Dynamik</a></li>
@@ -96,7 +96,6 @@
 				</ul>
 			</div>
 		</div>
-		<div class="navbar-center" />
 		<div class="navbar-end" />
 	</div>
 
