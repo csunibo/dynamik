@@ -1,3 +1,5 @@
+const { addDynamicIconSelectors } = require('@iconify/tailwind');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
@@ -10,7 +12,7 @@ module.exports = {
 		},
 
 	},
-	plugins: [require('@tailwindcss/typography'), require('daisyui')],
+	plugins: [require('@tailwindcss/typography'), require('daisyui'), addDynamicIconSelectors()],
 	daisyui: {
 		themes: ['halloween', 'retro']
 	}

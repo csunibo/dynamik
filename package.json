@@ -12,12 +12,14 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
+		"@iconify-json/material-symbols": "^1.1.40",
+		"@iconify/tailwind": "^0.1.2",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/adapter-static": "^2.0.2",
 		"@sveltejs/adapter-vercel": "^2.4.2",
 		"@sveltejs/kit": "^1.15.7",
 		"@tailwindcss/typography": "^0.5.9",
-		"@types/dompurify": "^3.0.1",
+		"@types/dompurify": "^3.0.2",
 		"@types/katex": "^0.16.0",
 		"@types/marked": "^4.0.8",
 		"@typescript-eslint/eslint-plugin": "^5.59.0",
@@ -26,14 +28,14 @@
 		"daisyui": "^2.51.5",
 		"dayjs": "^1.11.7",
 		"dompurify": "^3.0.2",
-		"eslint": "^8.38.0",
+		"eslint": "^8.39.0",
 		"eslint-config-prettier": "^8.8.0",
 		"eslint-plugin-svelte3": "^4.0.0",
 		"fuse.js": "^6.6.2",
 		"katex": "^0.16.6",
 		"marked": "^4.3.0",
-		"postcss": "^8.4.22",
-		"prettier": "^2.8.7",
+		"postcss": "^8.4.23",
+		"prettier": "^2.8.8",
 		"prettier-plugin-svelte": "^2.10.0",
 		"shiki": "^0.14.1",
 		"svelte": "^3.58.0",
@@ -43,7 +45,7 @@
 		"tocbot": "^4.21.0",
 		"tslib": "^2.5.0",
 		"typescript": "^5.0.4",
-		"vite": "^4.2.2"
+		"vite": "^4.3.1"
 	},
 	"packageManager": "pnpm@7.29.0",
 	"type": "module"

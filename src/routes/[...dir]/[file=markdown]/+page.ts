@@ -1,13 +1,16 @@
 import type { PageLoad } from './$types';
 import { ASSET_URL } from '$lib/const';
 import { marked } from 'marked';
-import DOMPurify from 'dompurify';
+import * as DOMPurify from 'dompurify';
 import type { File, Statik } from '$lib/api';
+
+export const ssr = false;
 
 export const load = (async ({ fetch, params }) => {
 	const fileContentReq = await fetch(ASSET_URL(params.dir + '/' + params.file));
 	const fileContent = await fileContentReq.text();
 	const mdRendered = await marked(fileContent, { async: true });
+
 	const mdClean = DOMPurify.sanitize(mdRendered);
 
 	const fileInfo: Promise<File> = fetch(ASSET_URL(params.dir + '/statik.json'))
