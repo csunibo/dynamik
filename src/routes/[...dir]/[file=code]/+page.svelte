@@ -3,7 +3,7 @@
 	import type { PageData } from './$types';
 
 	import { BUNDLED_LANGUAGES, getHighlighter, setCDN } from 'shiki';
-	setCDN('https://unpkg.com/shiki/');
+	setCDN('https://cdn.jsdelivr.net/npm/shiki/');
 
 	export let data: PageData;
 
