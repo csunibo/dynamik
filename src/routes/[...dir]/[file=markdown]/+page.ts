@@ -11,7 +11,9 @@ export const load = (async ({ fetch, params }) => {
 	const fileContent = await fileContentReq.text();
 	const mdRendered = await marked(fileContent, { async: true });
 
-	const mdClean = DOMPurify.sanitize(mdRendered);
+	// TODO: sanitize the rendered markdown
+	// const mdClean = DOMPurify.sanitize(mdRendered);
+	const mdClean = mdRendered;
 
 	const fileInfo: Promise<File> = fetch(ASSET_URL(params.dir + '/statik.json'))
 		.then((res) => res.json())
