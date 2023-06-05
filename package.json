@@ -16,7 +16,7 @@
 		"@iconify/tailwind": "^0.1.2",
 		"@sveltejs/adapter-auto": "^2.0.1",
 		"@sveltejs/adapter-static": "^2.0.2",
-		"@sveltejs/adapter-vercel": "^2.4.2",
+		"@sveltejs/adapter-vercel": "^3.0.1",
 		"@sveltejs/kit": "^1.15.8",
 		"@tailwindcss/typography": "^0.5.9",
 		"@types/dompurify": "^3.0.2",
