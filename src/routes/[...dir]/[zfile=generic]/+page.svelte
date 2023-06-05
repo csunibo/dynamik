@@ -1,9 +1,17 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
+
 	export let data: PageData;
+
+	let iframe: HTMLIFrameElement;
+	onMount(() => {
+		// Focus the iframe
+		iframe.contentWindow?.focus();
+	});
 </script>
 
-<iframe title="Embedded resource" src={data.url} />
+<iframe bind:this={iframe} title="Embedded resource" src={data.url} />
 
 <style>
 	iframe {
