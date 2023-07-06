@@ -4,17 +4,17 @@ import { BUNDLED_LANGUAGES } from 'shiki';
 const IGNORED_LANGUAGES = ['md', 'html'];
 
 const EXTRA_BUNDLED_LANGUAGES = [
-  ...BUNDLED_LANGUAGES.map((bundle) => [bundle.id, ...(bundle.aliases || [])]).flat(),
-  'txt',
-  'c++',
-  'tsx',
-  'jsx',
-  'hdl'
+	...BUNDLED_LANGUAGES.map((bundle) => [bundle.id, ...(bundle.aliases || [])]).flat(),
+	'txt',
+	'c++',
+	'tsx',
+	'jsx',
+	'hdl'
 ];
 
 export const match = ((file) => {
-  const ext = file.split('.').pop() || '';
-  return (
-    /\./g.test(file) && EXTRA_BUNDLED_LANGUAGES.includes(ext) && !IGNORED_LANGUAGES.includes(ext)
-  );
+	const ext = file.split('.').pop() || '';
+	return (
+		/\./g.test(file) && EXTRA_BUNDLED_LANGUAGES.includes(ext) && !IGNORED_LANGUAGES.includes(ext)
+	);
 }) satisfies ParamMatcher;

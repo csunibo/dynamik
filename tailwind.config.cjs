@@ -6,11 +6,10 @@ module.exports = {
 	theme: {
 		extend: {
 			gridTemplateColumns: {
-				"dir": "min-content,auto,min-content",
-				"dir-full": "min-content,auto,min-content,max-content"
+				dir: 'min-content,auto,min-content',
+				'dir-full': 'min-content,auto,min-content,max-content'
 			}
-		},
-
+		}
 	},
 	plugins: [require('@tailwindcss/typography'), require('daisyui'), addDynamicIconSelectors()],
 	daisyui: {

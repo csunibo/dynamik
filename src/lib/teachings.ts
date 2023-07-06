@@ -19,7 +19,7 @@ const TEACHINGS: Course[] = [
 	{
 		id: 'informatica',
 		name: 'Informatica',
-		icon: "🧑‍💻",
+		icon: '🧑‍💻',
 		years: [
 			{
 				year: 1,
@@ -65,7 +65,7 @@ const TEACHINGS: Course[] = [
 	{
 		id: 'ingegneria',
 		name: 'Ingegneria Informatica',
-		icon: "👨‍🔧",
+		icon: '👨‍🔧',
 		years: [
 			{
 				year: 1,
