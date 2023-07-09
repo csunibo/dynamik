@@ -7,6 +7,10 @@
 	};
 </script>
 
+<svelte:head>
+	<title>Dynamik | Homepage</title>
+</svelte:head>
+
 <div class="flex justify-center">
 	<div class="container max-w-5xl">
 		<h1 class="text-4xl m-10 font-semibold text-center">Benvenuto su Dynamik! 👋</h1>

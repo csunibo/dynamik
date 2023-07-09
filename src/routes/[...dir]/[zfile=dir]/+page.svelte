@@ -81,6 +81,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Dynamik | {urlParts[urlParts.length-1]}</title>
+</svelte:head>
+
 <svelte:body on:keydown={keydown} />
 
 <main class="max-w-5xl p-4 mx-auto">

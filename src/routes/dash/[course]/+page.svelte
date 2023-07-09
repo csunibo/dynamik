@@ -3,7 +3,7 @@
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import type { Teaching, TeachingYear } from '$lib/teachings';
+	import type { Teaching } from '$lib/teachings';
 
 	export let data: PageData;
 
@@ -13,6 +13,10 @@
 		activeYears = (await data.streaming?.activeCourses) ?? [];
 	});
 </script>
+
+<svelte:head>
+	<title>Dynamik | {data.course?.name}</title>
+</svelte:head>
 
 {#if !data.course}
 	<h1>Corso non trovato</h1>
