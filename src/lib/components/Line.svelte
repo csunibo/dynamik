@@ -30,7 +30,7 @@
 			</a>
 		{/if}
 
-		<span class="whitespace-nowrap">
+		<span class="whitespace-nowrap text-right">
 			{isFile && data.size ? data.size : '-'}
 		</span>
 		<span class="hidden md:block">
