@@ -101,7 +101,7 @@ const TEACHINGS: Course[] = [
   {
     id: 'informatica-magistrale',
     name: 'Informatica Magistrale',
-    icon: '👨‍🔧',
+    icon: '🧑‍🏫',
     years: [
       {
         year: 1,
