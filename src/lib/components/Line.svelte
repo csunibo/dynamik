@@ -14,23 +14,23 @@
 <div class="contents">
 	<div class="contents">
 		{#if external}
-			<span><code>link</code></span>
+			<span><code>🔗</code></span>
 			<a class="link link-hover text-primary" href={data.url} target="_blank" rel="noreferrer">
 				{data.name}
 			</a>
 		{:else if isFile}
-			<span><code>file</code></span>
+			<span><code>📄</code></span>
 			<a class="link link-hover text-primary" href="{$page.url}/{data.name}">
 				{data.name}
 			</a>
 		{:else}
-			<span><code>dir</code></span>
+			<span><code>📁</code></span>
 			<a class="link link-hover text-primary" href={customUrl ?? $page.url + '/' + data.name}>
 				{data.name}
 			</a>
 		{/if}
 
-		<span class="whitespace-nowrap text-right">
+		<span class="whitespace-nowrap text-right text-xs self-center">
 			{isFile && data.size ? data.size : '-'}
 		</span>
 		<span class="hidden md:block">

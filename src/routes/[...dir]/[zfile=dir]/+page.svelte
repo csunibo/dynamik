@@ -88,9 +88,9 @@
 <svelte:body on:keydown={keydown} />
 
 <main class="max-w-5xl p-4 mx-auto">
-	<div class="navbar bg-neutral text-neutral-content rounded-box shadow-sm px-5 mb-5">
+	<div class="navbar flex bg-neutral-800 hover:bg-neutral-700 transition-colors duration-300 text-neutral-content rounded-box shadow-sm px-5 mb-5">
 		<div class="navbar-center">
-			<div class="text-sm breadcrumbs">
+			<div class="text-xs breadcrumbs sm:text-sm">
 				<ul>
 					<li>🏠<a href="/">Dynamik</a></li>
 					{#each urlParts as part}
@@ -103,7 +103,7 @@
 		<div class="navbar-end" />
 	</div>
 
-	<div class="grid gap-4 grid-cols-dir md:grid-cols-dir-full mx-4">
+	<div class="grid gap-5 grid-cols-dir md:grid-cols-dir-full mx-4 text-lg">
 		{#if data.manifest.directories}
 			{@const directories = data.manifest.directories}
 			{#each directories as dir}
