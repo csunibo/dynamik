@@ -29,7 +29,7 @@
 				</a>
 			</div>
 			<div class="navbar-center">
-				<h1 class="text-xl font-semibold">
+				<h1 class="text-xl font-semibold text-base-content">
 					Dashboard di {data.course.name}
 				</h1>
 			</div>
@@ -45,12 +45,12 @@
 				<li class="menu-title">
 					<span class="text-2xl mt-5 italic">{year.year} anno</span>
 				</li>
-				<hr class="mb-5">
+				<div class="divider mt-0"></div>
 				<div class="flex flex-row flex-wrap">
 					{#each year.teachings as teaching}
 						{@const disabled = !activeYears.includes(teaching)}
 						{@const href = base + '/' + teaching.url}
-						<li class:disabled class="flex xs:flex-1 justify-center items-center m-2 border-2 rounded-md">
+						<li class:disabled class="flex xs:flex-1 justify-center border-base-content items-center m-2 border-2 rounded-md">
 							<a href={disabled ? null : href} class="text-center text-lg">
 								{#if teaching.name}
 									{teaching.name}
