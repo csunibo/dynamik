@@ -22,7 +22,7 @@
 	<h1>Corso non trovato</h1>
 {:else}
 	<div class="max-w-5xl p-4 mx-auto">
-		<div class="navbar flex bg-neutral-800 hover:bg-neutral-700 transition-colors duration-300	 text-neutral-content rounded-box shadow-sm px-5 mb-5">
+		<div class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
 			<div class="navbar-start">
 				<a class="btn btn-square btn-ghost" href={$page.url.toString()}>
 					{data.course.icon}
@@ -43,14 +43,14 @@
 		<ul class="menu p-2">
 			{#each data.course.years as year}
 				<li class="menu-title">
-					<span class="text-2xl mt-5  italic">{year.year} anno</span>
+					<span class="text-2xl mt-5 italic">{year.year} anno</span>
 				</li>
 				<hr class="mb-5">
 				<div class="flex flex-row flex-wrap">
 					{#each year.teachings as teaching}
 						{@const disabled = !activeYears.includes(teaching)}
 						{@const href = base + '/' + teaching.url}
-						<li class:disabled class="flex xs:flex-1 justify-center items-center m-2 border-2 border-gray-500 rounded-md">
+						<li class:disabled class="flex xs:flex-1 justify-center items-center m-2 border-2 rounded-md">
 							<a href={disabled ? null : href} class="text-center text-lg">
 								{#if teaching.name}
 									{teaching.name}

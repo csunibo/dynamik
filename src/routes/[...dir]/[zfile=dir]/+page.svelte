@@ -88,7 +88,7 @@
 <svelte:body on:keydown={keydown} />
 
 <main class="max-w-5xl p-4 mx-auto">
-	<div class="navbar flex bg-neutral-800 hover:bg-neutral-700 transition-colors duration-300 text-neutral-content rounded-box shadow-sm px-5 mb-5">
+	<div class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
 		<div class="navbar-center">
 			<div class="text-xs breadcrumbs sm:text-sm">
 				<ul>
