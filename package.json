@@ -46,7 +46,7 @@
 		"tocbot": "^4.21.0",
 		"tslib": "^2.6.0",
 		"typescript": "^5.1.6",
-		"vite": "^4.4.1"
+		"vite": "^4.4.7"
 	},
 	"packageManager": "pnpm@8.6.1",
 	"type": "module"
