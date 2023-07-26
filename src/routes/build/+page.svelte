@@ -1,7 +1,7 @@
 <script lang="ts">
 	import TEACHINGS from '$lib/teachings';
 
-	const WORKFLOW_NAMES = ['check', 'build-and-deploy'];
+	const WORKFLOW_NAMES = ['filenames', 'build-and-deploy'];
 
 	const PROJECTS = [
 		{
