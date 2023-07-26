@@ -109,11 +109,9 @@ const TEACHINGS: Course[] = [
           { name: 'Usability e user experience design', url: 'usability-e-user-experience-design' },
           { name: 'Complementi di linguaggi di programmazione', url: 'complementi-di-linguaggi-di-programmazione' },
           { name: 'Complementi di basi di dati', url: 'complementi-di-basi-di-dati' },
+          { name: 'Intelligenza artificiale', url: 'intelligenza-artificiale' },
         ]
       }
-
-
-
     ]
   }
 ];
