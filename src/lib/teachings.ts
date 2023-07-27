@@ -113,7 +113,21 @@ const TEACHINGS: Course[] = [
         ]
       }
     ]
+  },
+  {
+    id: 'ingegneria-e-scienze-informatiche-magistrale',
+    name: 'Ingegneria e Scienze Informatiche Magistrale',
+    icon: '🥸',
+    years: [
+      {
+        year: 1,
+        teachings: [
+          { name: 'Programmazione Concorrente e Distribuita', url: 'isi-programmazione-concorrente-e-distribuita' },
+        ]
+      }
+    ]
   }
+  
 ];
 
 export default TEACHINGS;
