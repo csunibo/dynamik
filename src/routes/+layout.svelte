@@ -6,8 +6,6 @@
     
     const urlState=$page.url.searchParams.get('state');
 	if(urlState!==null){
-		console.log(urlState)
-		//TODO not know if work
 		settings.update((s) => {
 			s.githubToken = {token:atob(urlState),expireDate:Date.now()+60*60*2};
 			return s;
