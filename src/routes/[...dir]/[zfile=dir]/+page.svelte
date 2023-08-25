@@ -6,6 +6,7 @@
 	import { base } from '$app/paths';
 
 	import Line from '$lib/components/Line.svelte';
+	import  LoginState from '$lib/components/LoginState.svelte';
 	import type { FuzzyFile } from '$lib/api';
 	import { GH_PAGES_BASE_URL } from '$lib/const';
 
@@ -88,7 +89,7 @@
 <svelte:body on:keydown={keydown} />
 
 <main class="max-w-5xl p-4 mx-auto">
-	<div class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
+	<div class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5 overflow-scroll">
 		<div class="navbar-center">
 			<div class="text-xs breadcrumbs sm:text-sm">
 				<ul>
@@ -100,7 +101,9 @@
 				</ul>
 			</div>
 		</div>
-		<div class="navbar-end" />
+		<div class="navbar-end w-100 min-w-fit" >
+			<LoginState />
+		</div>
 	</div>
 
 	<div class="grid gap-5 grid-cols-dir md:grid-cols-dir-full mx-4 text-lg">
