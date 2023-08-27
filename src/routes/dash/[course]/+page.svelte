@@ -4,13 +4,20 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import type { Teaching } from '$lib/teachings';
+	import { getLoginUrl, getWhoAmI } from '$lib/upld';
 
 	export let data: PageData;
 
 	let activeYears: Teaching[] = [];
 
+	let login:
+		| Promise<{ error: string } | { username: string; name: string; avatarUrl: string }>
+		| undefined;
+
 	onMount(async () => {
 		activeYears = (await data.streaming?.activeCourses) ?? [];
+
+		login = getWhoAmI(fetch);
 	});
 </script>
 
@@ -22,11 +29,17 @@
 	<h1>Corso non trovato</h1>
 {:else}
 	<div class="max-w-5xl p-4 mx-auto">
-		<div class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
+		<nav class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
 			<div class="navbar-start">
-				<a class="btn btn-square btn-ghost" href={$page.url.toString()}>
-					{data.course.icon}
-				</a>
+				{#if login}
+					{#await login then login}
+						{#if 'error' in login}
+							<a class="btn btn-square btn-ghost" href={getLoginUrl($page.url)}> Login </a>
+						{:else}
+							<img src={login.avatarUrl} alt="User avatar" class="w-10 rounded-xl" />
+						{/if}
+					{/await}
+				{/if}
 			</div>
 			<div class="navbar-center">
 				<h1 class="text-xl font-semibold text-base-content">
@@ -38,7 +51,7 @@
 					⬆️
 				</button>
 			</div>
-		</div>
+		</nav>
 
 		<ul class="menu p-2">
 			{#each data.course.years as year}
@@ -50,7 +63,10 @@
 					{#each year.teachings as teaching}
 						{@const disabled = !activeYears.includes(teaching)}
 						{@const href = base + '/' + teaching.url}
-						<li class:disabled class="flex xs:flex-1 justify-center border-base-content items-center m-2 border-2 rounded-md">
+						<li
+							class:disabled
+							class="flex xs:flex-1 justify-center border-base-content items-center m-2 border-2 rounded-md"
+						>
 							<a href={disabled ? null : href} class="text-center text-lg">
 								{#if teaching.name}
 									{teaching.name}
@@ -60,7 +76,7 @@
 							</a>
 						</li>
 					{/each}
-					</div>
+				</div>
 			{/each}
 		</ul>
 	</div>
