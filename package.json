@@ -35,7 +35,7 @@
 		"fuse.js": "^6.6.2",
 		"katex": "^0.16.8",
 		"marked": "^7.0.5",
-		"postcss": "^8.4.28",
+		"postcss": "^8.4.29",
 		"prettier": "^3.0.2",
 		"prettier-plugin-svelte": "^3.0.3",
 		"shiki": "^0.14.3",
