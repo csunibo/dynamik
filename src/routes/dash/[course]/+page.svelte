@@ -69,7 +69,12 @@
 						>
 							<a href={disabled ? null : href} class="text-center text-lg">
 								{#if teaching.name}
-									{teaching.name}
+								<div>
+									{teaching.name} 
+									{#if teaching.telegram}
+									<a  href="https://t.me/{teaching.telegram}">👥</a>
+									{/if}
+								</div>
 								{:else}
 									{teaching.url}
 								{/if}
