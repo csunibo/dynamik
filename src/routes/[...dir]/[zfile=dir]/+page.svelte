@@ -57,14 +57,14 @@
 
 	function keydown(e: KeyboardEvent) {
 		if (e.key === 'Escape') {
-			if (searchActive) searchActive = false;
+      searchActive = false;
 		} else if (e.key === 'k' && e.ctrlKey) {
 			e.preventDefault();
-			if (!searchActive) searchActive = true;
-
+			searchActive = true;
 			setTimeout(() => {
 				searchInput.focus();
 			}, 100);
+
 		} else if (e.key === 'ArrowDown' && resultList) {
 			e.preventDefault();
 			active = active < resultList.children.length - 1 ? active + 1 : active;
@@ -87,18 +87,26 @@
 
 <svelte:body on:keydown={keydown} />
 
-<main class="max-w-5xl p-4 mx-auto">
+<main class="max-w-6xl p-4 mx-auto">
 	<div class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
 		<div class="navbar-center">
-			<div class="text-xs breadcrumbs sm:text-sm">
+			<div class="lg:text-lg breadcrumbs text-sm">
 				<ul>
-					<li>🏠<a href="/">Dynamik</a></li>
+					<li>🏠<a class="ml-1" href="/">Dynamik</a></li>
 					{#each urlParts as part}
 						{@const href = getPartHref(part)}
 						<li><a {href}>{part}</a></li>
 					{/each}
 				</ul>
 			</div>
+            <button class="lg:ml-2 p-2 rounded btn-ghost" title="ctrl + k" on:click|preventDefault={() => {
+                searchActive = !searchActive;
+                setTimeout(() => {
+                  searchInput.focus();
+                }, 100);
+              }}>
+             🔍 
+            </button>
 		</div>
 		<div class="navbar-end" />
 	</div>
@@ -147,3 +155,4 @@
 		{/if}
 	</label>
 </label>
+
