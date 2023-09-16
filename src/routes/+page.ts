@@ -1,7 +1,8 @@
+import TEACHINGS from '$lib/teachings';
 import type { PageLoad } from './$types';
-import TEACHINGS from '../config/courses.json';
 
 export const load = (async () => {
+	console.debug(TEACHINGS)
 	return {
 		courses: TEACHINGS
 	};

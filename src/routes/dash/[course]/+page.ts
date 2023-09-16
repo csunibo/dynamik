@@ -1,7 +1,7 @@
 import type { PageLoad } from './$types';
 import type { Course, Teaching, TeachingYear } from '$lib/teachings';
 import { getManifest } from '$lib/api';
-import TEACHINGS from '../../../config/courses.json';
+import TEACHINGS from '$lib/teachings';
 
 async function getActiveCourse(fetch: typeof window.fetch, teaching: Teaching) {
 	try {

@@ -1,6 +1,5 @@
 <script lang="ts">
-	import TEACHINGS from '../../config/courses.json';
-
+	import TEACHINGS from '$lib/teachings';
 	const WORKFLOW_NAMES = ['filenames', 'build-and-deploy'];
 
 	const PROJECTS = [
