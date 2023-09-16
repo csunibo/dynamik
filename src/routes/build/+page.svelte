@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TEACHINGS from '$lib/teachings';
+	import TEACHINGS from '../../config/courses.json' assert { type: 'json' };
 
 	const WORKFLOW_NAMES = ['filenames', 'build-and-deploy'];
 
