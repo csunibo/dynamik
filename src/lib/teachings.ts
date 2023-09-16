@@ -15,7 +15,5 @@ export type Course = {
 	years: TeachingYear[];
 };
 
-
-
-import * as TEACHINGS from "../../config/courses.json" assert { type: "json" };
+import TEACHINGS from '../config/courses.json' assert { type: 'json' };
 export default TEACHINGS as Course[];
