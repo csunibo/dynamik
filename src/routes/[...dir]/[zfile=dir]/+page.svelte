@@ -61,10 +61,10 @@
 		} else if (e.key === 'k' && e.ctrlKey) {
 			e.preventDefault();
 			if (!searchActive) searchActive = true;
-
 			setTimeout(() => {
 				searchInput.focus();
 			}, 100);
+
 		} else if (e.key === 'ArrowDown' && resultList) {
 			e.preventDefault();
 			active = active < resultList.children.length - 1 ? active + 1 : active;
@@ -79,6 +79,13 @@
 			}
 		}
 	}
+	
+	function viewMobileFinder() {
+		searchActive = !searchActive;
+		setTimeout(() => {
+			searchInput.focus();
+		}, 100);
+	}
 </script>
 
 <svelte:head>
@@ -87,20 +94,25 @@
 
 <svelte:body on:keydown={keydown} />
 
-<main class="max-w-5xl p-4 mx-auto">
+<main class="max-w-6xl p-4 mx-auto">
 	<div class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
 		<div class="navbar-center">
-			<div class="text-xs breadcrumbs sm:text-sm">
+			<div class="lg:text-lg breadcrumbs text-sm">
 				<ul>
-					<li>🏠<a href="/">Dynamik</a></li>
+					<li>🏠<a class="ml-1" href="/">Dynamik</a></li>
 					{#each urlParts as part}
 						{@const href = getPartHref(part)}
 						<li><a {href}>{part}</a></li>
 					{/each}
 				</ul>
 			</div>
+           
 		</div>
-		<div class="navbar-end" />
+		<div class="flex flex-1  justify-end mr-2" > 
+			<button class="lg:ml-2 p-1 bg-base-300  rounded-lg btn-ghost" title="ctrl + k" on:click|preventDefault={() => viewMobileFinder()}>
+				🔍 <kbd class="kbd-sm   hidden lg:inline-block">ctrl + k </kbd>  
+			</button>
+		</div>
 	</div>
 
 	<div class="grid gap-5 grid-cols-dir md:grid-cols-dir-full mx-4 text-lg">
@@ -147,3 +159,4 @@
 		{/if}
 	</label>
 </label>
+
