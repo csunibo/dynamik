@@ -57,10 +57,10 @@
 
 	function keydown(e: KeyboardEvent) {
 		if (e.key === 'Escape') {
-      searchActive = false;
+			if (searchActive) searchActive = false;
 		} else if (e.key === 'k' && e.ctrlKey) {
 			e.preventDefault();
-			searchActive = true;
+			if (!searchActive) searchActive = true;
 			setTimeout(() => {
 				searchInput.focus();
 			}, 100);
@@ -78,6 +78,13 @@
 				aEl.click();
 			}
 		}
+	}
+	
+	function viewMobileFinder() {
+		searchActive = !searchActive;
+		setTimeout(() => {
+			searchInput.focus();
+		}, 100);
 	}
 </script>
 
@@ -99,16 +106,13 @@
 					{/each}
 				</ul>
 			</div>
-            <button class="lg:ml-2 p-2 rounded btn-ghost" title="ctrl + k" on:click|preventDefault={() => {
-                searchActive = !searchActive;
-                setTimeout(() => {
-                  searchInput.focus();
-                }, 100);
-              }}>
-             🔍 
-            </button>
+           
 		</div>
-		<div class="navbar-end" />
+		<div class="flex flex-1  justify-end mr-2" > 
+			<button class="lg:ml-2 p-1 bg-base-300  rounded-lg btn-ghost" title="ctrl + k" on:click|preventDefault={() => viewMobileFinder()}>
+				🔍 <kbd class="kbd-sm   hidden lg:inline-block">ctrl + k </kbd>  
+			</button>
+		</div>
 	</div>
 
 	<div class="grid gap-5 grid-cols-dir md:grid-cols-dir-full mx-4 text-lg">
