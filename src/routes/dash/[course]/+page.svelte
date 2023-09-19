@@ -63,23 +63,51 @@
 					{#each year.teachings as teaching}
 						{@const disabled = !activeYears.includes(teaching)}
 						{@const href = base + '/' + teaching.url}
-						<li
-							class:disabled
-							class="flex xs:flex-1 justify-center border-base-content items-center m-2 border-2 rounded-md"
-						>
-							<a href={disabled ? null : href} class="text-center text-lg">
-								{#if teaching.name}
-								<div>
-									{teaching.name} 
-									{#if teaching.telegram}
-									<a  href="https://t.me/{teaching.telegram}">👥</a>
-									{/if}
-								</div>
-								{:else}
-									{teaching.url}
-								{/if}
-							</a>
-						</li>
+						<a href={disabled ? null : href} class="text-center text-lg">
+							{#if teaching.name && !teaching.optional}
+								<li
+									class:disabled
+									class="flex xs:flex-1 justify-center border-base-content items-center m-2 border-2 rounded-md"
+								>
+									<div>
+										{teaching.name}
+										{#if teaching.telegram}
+											<a href="https://t.me/{teaching.telegram}">👥</a>
+										{/if}
+									</div>
+								</li>
+							{/if}
+						</a>
+					{/each}
+				</div>
+			{/each}
+		</ul>
+
+		<ul class="menu p-2">
+			{#each data.course.years as year}
+				<li class="menu-title">
+					<span class="text-2xl mt-5 italic">{year.year} anno facoltativi</span>
+				</li>
+				<div class="divider mt-0"></div>
+				<div class="flex flex-row flex-wrap">
+					{#each year.teachings as teaching}
+						{@const disabled = !activeYears.includes(teaching)}
+						{@const href = base + '/' + teaching.url}
+						<a href={disabled ? null : href} class="text-center text-lg">
+							{#if teaching.name && teaching.optional}
+								<li
+									class:disabled
+									class="flex xs:flex-1 justify-center border-base-content items-center m-2 border-2 rounded-md"
+								>
+									<div>
+										{teaching.name}
+										{#if teaching.telegram}
+											<a href="https://t.me/{teaching.telegram}">👥</a>
+										{/if}
+									</div>
+								</li>
+							{/if}
+						</a>
 					{/each}
 				</div>
 			{/each}
