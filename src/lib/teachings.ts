@@ -1,6 +1,7 @@
 export type Teaching = {
 	name: string;
 	url: string;
+	telegram?: string;
 };
 
 export type TeachingYear = {

@@ -64,21 +64,18 @@
 						{@const disabled = !activeYears.includes(teaching)}
 						{@const href = base + '/' + teaching.url}
 						<li
-							class:disabled
-							class="flex xs:flex-1 justify-center border-base-content items-center m-2 border-2 rounded-md"
+							class="flex flex-row xs:flex-1 justify-center border-base-content items-center m-2 border-2 rounded-md join"
 						>
-							<a href={disabled ? null : href} class="text-center text-lg">
+							<a href={disabled ? null : href} class="text-center text-lg join-item">
 								{#if teaching.name}
-								<div>
-									{teaching.name} 
-									{#if teaching.telegram}
-									<a  href="https://t.me/{teaching.telegram}">👥</a>
-									{/if}
-								</div>
+									{teaching.name}
 								{:else}
 									{teaching.url}
 								{/if}
 							</a>
+							{#if teaching.telegram}
+								<a href="https://t.me/{teaching.telegram}" class="text-center text-lg join-item border-l-2">👥</a>
+							{/if}
 						</li>
 					{/each}
 				</div>
