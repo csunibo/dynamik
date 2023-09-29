@@ -20,7 +20,6 @@ You can preview the production build with `pnpm preview`.
 
 ## Deployments
 
-- Vercel: https://dynamik.vercel.app/
+- Main: https://risorse.students.cs.unibo.it
 - GitHub Pages (slower, no SSR): https://csunibo.github.io/dynamik/
-
-A third deployment is in progress on our own server.
+- Vercel: https://dynamik.vercel.app/ (unadvertised)
