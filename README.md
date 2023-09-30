@@ -2,7 +2,14 @@
 
 ## Developing
 
-Once you've cloned the repository and installed dependencies with `pnpm install`, start a development server:
+Clone the repository, install dependencies and update git submodule:
+```bash
+pnpm install
+git submodule init
+git submodule update
+```
+
+start a development server:
 
 ```bash
 pnpm dev
