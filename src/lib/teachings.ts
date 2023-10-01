@@ -1,7 +1,7 @@
 export type Teaching = {
 	name: string;
 	url: string;
-	telegram: string;
+	telegram?: string;
 	optional: boolean;
 };
 
