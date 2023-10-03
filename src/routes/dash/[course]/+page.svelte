@@ -19,15 +19,22 @@
 		login = getWhoAmI(fetch);
 	});
 	
-	function filterCoursesOptional() {
-		const optionalCourses = data.course?.years.map(
-		year => ({...year, teachings: year.teachings.filter(teaching => teaching.optional)}));
-		const mandatoryCourses = data.course?.years.map(
-		year => ({...year, teachings: year.teachings.filter(teaching => !teaching.optional)}));
-		return [mandatoryCourses,optionalCourses]
+
+	function filterCoursesOptional(data: PageData, currentIndex = 0, result: {mandatory: TeachingYear[], optional: TeachingYear[]} = { mandatory: [], optional: [] }) {
+		if (currentIndex >= data.course?.years.length!) {
+			return result;
+		}
+
+		const year = data.course?.years[currentIndex];
+		const optionalTeachings = year?.teachings.filter((teaching: Teaching) => teaching.optional);
+		const mandatoryTeachings = year?.teachings.filter((teaching: Teaching) => !teaching.optional);
+		result.mandatory.push({ year: year?.year!, teachings: mandatoryTeachings! });
+		result.optional.push({ year: year?.year!, teachings: optionalTeachings! });
+		return filterCoursesOptional(data, currentIndex + 1, result);
 	}
 
-
+	$: filteredCourses = filterCoursesOptional(data)
+	
 </script>
 
 <svelte:head>
@@ -62,7 +69,7 @@
 			</div>
 		</nav>
 
-		<ListTeaching courses={filterCoursesOptional()[0]} activeYears={activeYears} base={base} optionalCourseViewTitle={false}/>
-		<ListTeaching courses={filterCoursesOptional()[1]} activeYears={activeYears} base={base} optionalCourseViewTitle={true}/>
+		<ListTeaching years={filteredCourses.mandatory} activeYears={activeYears} title={""}/>
+		<ListTeaching years={filteredCourses.optional} activeYears={activeYears} title={"facoltativi"}/>
 	</div>
 {/if}

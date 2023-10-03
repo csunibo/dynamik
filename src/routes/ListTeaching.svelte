@@ -1,18 +1,17 @@
 <script lang="ts">
-    import type { PageData } from './$types';
 	import type { Teaching, TeachingYear } from '$lib/teachings';
     import { base } from '$app/paths';
     
-    export let courses: TeachingYear[]
+    export let years: TeachingYear[]
     export let activeYears: Teaching[]
-    export let optionalCourseViewTitle: boolean
+    export let title: string
 </script>
 
 <ul class="menu p-2">
-    {#each courses as year}
+    {#each years as year}
     {#if year.teachings.length > 0}
         <li class="menu-title">
-            <span class="text-2xl mt-5 italic">{year.year} anno {optionalCourseViewTitle ? 'facoltativi' : ''}</span>
+            <span class="text-2xl mt-5 italic">{year.year} anno {title}</span>
         </li>
         <div class="divider mt-0"></div>
         <div class="flex flex-row flex-wrap">
@@ -25,7 +24,7 @@
                                 <a href={disabled ? null : href} class="text-center text-lg join-item">
                                     {teaching.name ? teaching.name : teaching.url}
                                 </a>
-                                {#if teaching.telegram}
+                                {#if teaching.telegram != null}
                                     <a href="https://t.me/{teaching.telegram}" class="text-center text-lg join-item border-l-2">👥</a>
                                 {/if}
                             </li>
