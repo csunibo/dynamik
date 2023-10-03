@@ -64,6 +64,7 @@
 						{@const disabled = !activeYears.includes(teaching)}
 						{@const href = base + '/' + teaching.url}
 						<li
+							class:disabled
 							class="flex flex-row xs:flex-1 justify-center border-base-content items-center m-2 border-2 rounded-md join"
 						>
 							<a href={disabled ? null : href} class="text-center text-lg join-item">
