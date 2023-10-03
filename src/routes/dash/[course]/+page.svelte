@@ -3,7 +3,7 @@
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import type { Teaching } from '$lib/teachings';
+	import type { Teaching, TeachingYear } from '$lib/teachings';
 	import { getLoginUrl, getWhoAmI } from '$lib/upld';
 	import ListTeaching from "../../ListTeaching.svelte";
 	
@@ -16,9 +16,18 @@
 
 	onMount(async () => {
 		activeYears = (await data.streaming?.activeCourses) ?? [];
-
 		login = getWhoAmI(fetch);
 	});
+	
+	function filterCoursesOptional() {
+		const optionalCourses = data.course?.years.map(
+		year => ({...year, teachings: year.teachings.filter(teaching => teaching.optional)}));
+		const mandatoryCourses = data.course?.years.map(
+		year => ({...year, teachings: year.teachings.filter(teaching => !teaching.optional)}));
+		return [mandatoryCourses,optionalCourses]
+	}
+
+
 </script>
 
 <svelte:head>
@@ -53,7 +62,7 @@
 			</div>
 		</nav>
 
-		<ListTeaching data={data} activeYears={activeYears} base={base} optionalCourseView={false}/>
-		<ListTeaching data={data} activeYears={activeYears} base={base} optionalCourseView={true}/>
+		<ListTeaching courses={filterCoursesOptional()[0]} activeYears={activeYears} base={base} optionalCourseViewTitle={false}/>
+		<ListTeaching courses={filterCoursesOptional()[1]} activeYears={activeYears} base={base} optionalCourseViewTitle={true}/>
 	</div>
 {/if}

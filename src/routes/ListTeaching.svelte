@@ -1,24 +1,24 @@
 <script lang="ts">
     import type { PageData } from './$types';
-	import type { Teaching } from '$lib/teachings';
+	import type { Teaching, TeachingYear } from '$lib/teachings';
     import { base } from '$app/paths';
     
-    export let data: PageData
+    export let courses: TeachingYear[]
     export let activeYears: Teaching[]
-    export let optionalCourseView: boolean
+    export let optionalCourseViewTitle: boolean
 </script>
 
 <ul class="menu p-2">
-    {#each data.course.years.filter(year => year.teachings.some(teaching => (optionalCourseView && teaching.optional) || (!optionalCourseView && !teaching.optional))) as year}
+    {#each courses as year}
+    {#if year.teachings.length > 0}
         <li class="menu-title">
-            <span class="text-2xl mt-5 italic">{year.year} anno {optionalCourseView ? 'facoltativi' : ''}</span>
+            <span class="text-2xl mt-5 italic">{year.year} anno {optionalCourseViewTitle ? 'facoltativi' : ''}</span>
         </li>
         <div class="divider mt-0"></div>
         <div class="flex flex-row flex-wrap">
             {#each year.teachings as teaching}
                 {@const disabled = !activeYears.includes(teaching)}
                 {@const href = base + '/' + teaching.url}
-                {#if (!optionalCourseView && !teaching.optional) || (optionalCourseView && teaching.optional)}
                     <a href={disabled ? null : href} class="text-center text-lg">
                         {#if teaching.name}
                             <li class="flex flex-row xs:flex-1 justify-center border-base-content items-center m-2 border-2 rounded-md join">
@@ -31,8 +31,9 @@
                             </li>
                         {/if}
                     </a>
-                {/if}
             {/each}
         </div>
+        {/if}
+
     {/each}
 </ul>
