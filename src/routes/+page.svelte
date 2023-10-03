@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import type { Course } from '$lib/teachings';
+	import Line from './Line.svelte';
 
 	export let data: {
 		courses: Course[];
@@ -17,16 +18,10 @@
 
 		<ul class="menu p-2 text-lg">
 			{#each data.courses as course}
-				<li>
-					<a class="py-10 justify-center" href="{base}/dash/{course.id}">
-						{course.icon}
-						{course.name}
-						{course.icon}
-					</a>
-				</li>
+				<Line name={course.name} icon={course.icon} href="{base}/dash/{course.id}" />
 			{/each}
 
-			<li><a class="py-10 justify-center" href="{base}/settings">🔧 Settings 🔧</a></li>
+			<Line name="Settings" icon="🔧" href="{base}/settings" />
 		</ul>
 	</div>
 </div>
