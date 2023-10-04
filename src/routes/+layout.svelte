@@ -33,9 +33,8 @@
 	<link rel="icon" href={unibo192png} sizes="192x192" />
 	<link rel="icon" href={unibo512png} sizes="512x512" />
 
-	<meta name="image" property="og:image" content={ogImagerec} />
-	<!-- <meta property="og:image:height" content="512" /> -->
-	<meta property="og:image:width" content="1050" />
+	<meta name="image" property="og:image" content={ogImage} />
+	<meta property="og:image:height" content="512" />
 </svelte:head>
 
 <slot />
