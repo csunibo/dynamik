@@ -16,12 +16,12 @@
 		{#if external}
 			<span><code>🔗</code></span>
 			<a class="link link-hover text-primary" href={data.url} target="_blank" rel="noreferrer">
-				{data.name}
+					{data.name}
 			</a>
 		{:else if isFile}
 			<span><code>📄</code></span>
 			<a class="link link-hover text-primary" href="{$page.url}/{data.name}">
-				{data.name}
+				{data.name} 
 			</a>
 		{:else}
 			<span><code>📁</code></span>
@@ -29,12 +29,12 @@
 				{data.name}
 			</a>
 		{/if}
-
 		<span class="whitespace-nowrap text-right text-xs self-center">
-			{isFile && data.size ? data.size : '-'}
+			{isFile && data.size ? data.size : '-'} 
+			<!-- <a class="text-lg ml-3" href="{$page.url}/{data.name}" download>📥</a> -->
 		</span>
 		<span class="hidden md:block">
-			{data.time ? formatDate($settings, data.time) : '-'}
+			{data.time ? formatDate($settings, data.time) : '-'} 
 		</span>
 	</div>
 </div>
