@@ -9,7 +9,7 @@
 
 <svelte:head>
 	<title>CSUnibo | Homepage</title>
-		<!-- OG meta graph -->
+	<!-- OG meta graph -->
 	<meta name="title" property="og:title" content="Risorse CSUnibo" />
 	<meta name="type" property="og:type" content="website" />
 	<meta name="description" property="og:description" content="Risorse per gli studenti dei corsi di laurea del dipartimento di informatica (DISI) dell'Università di Bologna"/>
