@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { base } from '$app/paths';
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import type { Teaching, TeachingYear } from '$lib/teachings';
+	import type { Course, Teaching } from '$lib/teachings';
 	import { getLoginUrl, getWhoAmI } from '$lib/upld';
-	import ListTeaching from "../../ListTeaching.svelte";
-	
+	import ListTeaching from './ListTeaching.svelte';
+
 	export let data: PageData;
 	let activeYears: Teaching[] = [];
 
@@ -18,23 +17,23 @@
 		activeYears = (await data.streaming?.activeCourses) ?? [];
 		login = getWhoAmI(fetch);
 	});
-	
 
-	function filterCoursesOptional(data: PageData, currentIndex = 0, result: {mandatory: TeachingYear[], optional: TeachingYear[]} = { mandatory: [], optional: [] }) {
-		if (currentIndex >= data.course?.years.length!) {
-			return result;
+	function filterCoursesOptional(course: Course) {
+		const mandatory = [];
+		const optional = [];
+
+		for (const year of course.years) {
+			const optionalTeachings = year.teachings.filter((teaching: Teaching) => teaching.optional);
+			const mandatoryTeachings = year.teachings.filter((teaching: Teaching) => !teaching.optional);
+
+			mandatory.push({ year: year.year, teachings: mandatoryTeachings });
+			optional.push({ year: year.year, teachings: optionalTeachings });
 		}
 
-		const year = data.course?.years[currentIndex];
-		const optionalTeachings = year?.teachings.filter((teaching: Teaching) => teaching.optional);
-		const mandatoryTeachings = year?.teachings.filter((teaching: Teaching) => !teaching.optional);
-		result.mandatory.push({ year: year?.year!, teachings: mandatoryTeachings! });
-		result.optional.push({ year: year?.year!, teachings: optionalTeachings! });
-		return filterCoursesOptional(data, currentIndex + 1, result);
+		return { mandatory, optional };
 	}
 
-	$: filteredCourses = filterCoursesOptional(data)
-	
+	$: filteredCourses = filterCoursesOptional(data.course);
 </script>
 
 <svelte:head>
@@ -66,7 +65,7 @@
 				<a class="btn btn-square btn-ghost" title="Indietro" href="/"> ⬆️ </a>
 			</div>
 		</nav>
-		<ListTeaching years={filteredCourses.mandatory} activeYears={activeYears} title={""}/>
-		<ListTeaching years={filteredCourses.optional} activeYears={activeYears} title={"facoltativi"}/>
+		<ListTeaching years={filteredCourses.mandatory} {activeYears} title={''} />
+		<ListTeaching years={filteredCourses.optional} {activeYears} title={'facoltativi'} />
 	</div>
 {/if}
