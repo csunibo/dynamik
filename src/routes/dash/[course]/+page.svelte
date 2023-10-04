@@ -63,12 +63,9 @@
 				</h1>
 			</div>
 			<div class="navbar-end">
-				<button class="btn btn-square btn-ghost" title="Indietro" on:click={() => history.back()}>
-					⬆️
-				</button>
+				<a class="btn btn-square btn-ghost" title="Indietro" href="/"> ⬆️ </a>
 			</div>
 		</nav>
-
 		<ListTeaching years={filteredCourses.mandatory} activeYears={activeYears} title={""}/>
 		<ListTeaching years={filteredCourses.optional} activeYears={activeYears} title={"facoltativi"}/>
 	</div>
