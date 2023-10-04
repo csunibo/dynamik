@@ -2,6 +2,7 @@ import type { PageLoad } from './$types';
 import type { Course, Teaching, TeachingYear } from '$lib/teachings';
 import { getManifest } from '$lib/api';
 import TEACHINGS from '$lib/teachings';
+import { error } from '@sveltejs/kit';
 
 async function getActiveCourse(fetch: typeof window.fetch, teaching: Teaching) {
 	try {
@@ -31,8 +32,8 @@ async function getActiveCourses(fetch: typeof window.fetch, course: Course) {
 export const load = (async ({ fetch, params }) => {
 	const course = TEACHINGS.find((c) => c.id === params.course);
 
-	if (!course) {
-		return { course: null };
+	if (course == null) {
+		throw error(404, `Course '${params.course}' not found`);
 	}
 
 	// Filter out inactive teachings

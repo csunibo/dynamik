@@ -1,7 +1,7 @@
 import type { PageLoad } from './$types';
 import { getManifest, getFuzzy } from '$lib/api';
 
-export const load = (async ({ fetch, params }) => {
+export const load: PageLoad = async ({ fetch, params }) => {
 	// Get the relative path using params
 	const path = params.dir ? params.dir + '/' + params.zfile : params.zfile;
 
@@ -16,4 +16,4 @@ export const load = (async ({ fetch, params }) => {
 		manifest,
 		fuzzy
 	};
-}) satisfies PageLoad;
+};
