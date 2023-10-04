@@ -19,6 +19,7 @@
 	import unibo512png from '$lib/assets/unibo512.png';
 
 	import ogImage from '$lib/assets/risorse.students.cs.unibo.it.png';
+	import ogImagerec from '$lib/assets/risorse.students.cs.unibo.it-rec.png';
 </script>
 
 <svelte:head>
@@ -32,8 +33,9 @@
 	<link rel="icon" href={unibo192png} sizes="192x192" />
 	<link rel="icon" href={unibo512png} sizes="512x512" />
 
-	<meta name="image" property="og:image" content={ogImage} />
-	<meta property="og:image:height" content="512" />
+	<meta name="image" property="og:image" content={ogImagerec} />
+	<!-- <meta property="og:image:height" content="512" /> -->
+	<meta property="og:image:width" content="1050" />
 </svelte:head>
 
 <slot />
