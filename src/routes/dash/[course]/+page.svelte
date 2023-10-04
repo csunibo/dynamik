@@ -22,19 +22,13 @@
 </script>
 
 <svelte:head>
-	<title>Dynamik | {data.course?.name}</title>
+	<title>Risorse CSUnibo | {data.course?.name}</title>
 	<!-- OG meta graph -->
 	<meta name="title" property="og:title" content="Risorse CSUnibo | {data.course?.name}" />
-	<meta name="type" property="og:type" content="website" />
 	<meta
 		name="url"
 		property="og:url"
 		content="https://risorse.students.cs.unibo.it/{data.course?.name}"
-	/>
-	<meta
-		name="image"
-		property="og:image"
-		content="/../static/img/risorse.students.cs.unibo.it.png"
 	/>
 	<meta name="description" property="og:description" content="Risorse di {data.course?.name}" />
 </svelte:head>
@@ -89,7 +83,10 @@
 								{/if}
 							</a>
 							{#if teaching.telegram}
-								<a href="https://t.me/{teaching.telegram}" class="text-center text-lg join-item border-l-2">👥</a>
+								<a
+									href="https://t.me/{teaching.telegram}"
+									class="text-center text-lg join-item border-l-2">👥</a
+								>
 							{/if}
 						</li>
 					{/each}
