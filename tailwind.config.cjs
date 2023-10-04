@@ -13,6 +13,6 @@ module.exports = {
 	},
 	plugins: [require('@tailwindcss/typography'), require('daisyui'), addDynamicIconSelectors()],
 	daisyui: {
-		themes: ['halloween', 'retro']
+		themes: ['halloween', 'retro', 'dracula']
 	}
 };

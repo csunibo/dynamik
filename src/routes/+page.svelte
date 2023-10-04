@@ -8,12 +8,12 @@
 </script>
 
 <svelte:head>
-	<title>Dynamik | Homepage</title>
+	<title>CSUnibo | Homepage</title>
 </svelte:head>
 
 <div class="flex justify-center">
 	<div class="container max-w-5xl">
-		<h1 class="text-4xl m-10 font-semibold text-center">Benvenuto su Dynamik! 👋</h1>
+		<h1 class="text-4xl m-10 font-semibold text-center">Benvenuto su CSUnibo!</h1>
 
 		<ul class="menu p-2 text-lg">
 			{#each data.courses as course}

@@ -1,6 +1,6 @@
 import { persisted } from 'svelte-local-storage-store';
 
-export const themes = ['halloween', 'retro'] as const;
+export const themes = ['halloween', 'retro', 'dracula'] as const;
 type Theme = (typeof themes)[number];
 
 export interface Settings {
