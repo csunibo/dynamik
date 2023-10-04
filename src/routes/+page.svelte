@@ -9,6 +9,12 @@
 
 <svelte:head>
 	<title>CSUnibo | Homepage</title>
+		<!-- OG meta graph -->
+	<meta name="title" property="og:title" content="Risorse CSUnibo" />
+	<meta name="type" property="og:type" content="website" />
+	<meta name="url" property="og:url" content="https://risorse.students.cs.unibo.it" />
+	<meta name="image" property="og:image" content="/../static/img/risorse.students.cs.unibo.it.png"/>
+	<meta name="description" property="og:description" content="Risorse per gli studenti dei corsi di laurea del dipartimento di informatica (DISI) dell'Università di Bologna"/>
 </svelte:head>
 
 <div class="flex justify-center">
