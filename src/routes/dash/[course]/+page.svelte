@@ -38,7 +38,15 @@
 </script>
 
 <svelte:head>
-	<title>Dynamik | {data.course?.name}</title>
+	<title>Risorse CSUnibo | {data.course?.name}</title>
+	<!-- OG meta graph -->
+	<meta name="title" property="og:title" content="Risorse CSUnibo | {data.course?.name}" />
+	<meta
+		name="url"
+		property="og:url"
+		content="https://risorse.students.cs.unibo.it/{data.course?.name}"
+	/>
+	<meta name="description" property="og:description" content="Risorse di {data.course?.name}" />
 </svelte:head>
 
 {#if !data.course}
