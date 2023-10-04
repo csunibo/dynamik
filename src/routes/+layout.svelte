@@ -33,6 +33,8 @@
 	<link rel="icon" href={unibo512png} sizes="512x512" />
 
 	<meta name="image" property="og:image" content={ogImage} />
+	<meta name="url" property="og:url" content="https://risorse.students.cs.unibo.it" />
+	<meta name="type" property="og:type" content="website" />
 </svelte:head>
 
 <slot />
