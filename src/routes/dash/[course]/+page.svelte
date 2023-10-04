@@ -3,11 +3,11 @@
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import type { Teaching } from '$lib/teachings';
+	import type { Teaching, TeachingYear } from '$lib/teachings';
 	import { getLoginUrl, getWhoAmI } from '$lib/upld';
-
+	import ListTeaching from "../../ListTeaching.svelte";
+	
 	export let data: PageData;
-
 	let activeYears: Teaching[] = [];
 
 	let login:
@@ -16,9 +16,25 @@
 
 	onMount(async () => {
 		activeYears = (await data.streaming?.activeCourses) ?? [];
-
 		login = getWhoAmI(fetch);
 	});
+	
+
+	function filterCoursesOptional(data: PageData, currentIndex = 0, result: {mandatory: TeachingYear[], optional: TeachingYear[]} = { mandatory: [], optional: [] }) {
+		if (currentIndex >= data.course?.years.length!) {
+			return result;
+		}
+
+		const year = data.course?.years[currentIndex];
+		const optionalTeachings = year?.teachings.filter((teaching: Teaching) => teaching.optional);
+		const mandatoryTeachings = year?.teachings.filter((teaching: Teaching) => !teaching.optional);
+		result.mandatory.push({ year: year?.year!, teachings: mandatoryTeachings! });
+		result.optional.push({ year: year?.year!, teachings: optionalTeachings! });
+		return filterCoursesOptional(data, currentIndex + 1, result);
+	}
+
+	$: filteredCourses = filterCoursesOptional(data)
+	
 </script>
 
 <svelte:head>
@@ -50,38 +66,7 @@
 				<a class="btn btn-square btn-ghost" title="Indietro" href="/"> ⬆️ </a>
 			</div>
 		</nav>
-
-		<ul class="menu p-2">
-			{#each data.course.years as year}
-				<li class="menu-title">
-					<span class="text-2xl mt-5 italic">{year.year} anno</span>
-				</li>
-				<div class="divider mt-0"></div>
-				<div class="flex flex-row flex-wrap">
-					{#each year.teachings as teaching}
-						{@const disabled = !activeYears.includes(teaching)}
-						{@const href = base + '/' + teaching.url}
-						<li
-							class:disabled
-							class="flex flex-row xs:flex-1 justify-center border-base-content items-center m-2 border-2 rounded-md join"
-						>
-							<a href={disabled ? null : href} class="text-center text-lg join-item">
-								{#if teaching.name}
-									{teaching.name}
-								{:else}
-									{teaching.url}
-								{/if}
-							</a>
-							{#if teaching.telegram}
-								<a
-									href="https://t.me/{teaching.telegram}"
-									class="text-center text-lg join-item border-l-2">👥</a
-								>
-							{/if}
-						</li>
-					{/each}
-				</div>
-			{/each}
-		</ul>
+		<ListTeaching years={filteredCourses.mandatory} activeYears={activeYears} title={""}/>
+		<ListTeaching years={filteredCourses.optional} activeYears={activeYears} title={"facoltativi"}/>
 	</div>
 {/if}

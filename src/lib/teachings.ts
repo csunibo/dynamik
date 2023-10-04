@@ -2,6 +2,7 @@ export type Teaching = {
 	name: string;
 	url: string;
 	telegram?: string;
+	optional?: boolean;
 };
 
 export type TeachingYear = {
