@@ -12,7 +12,7 @@
 	import type { PageData } from './$types';
 	export let data: PageData;
 	
-	import github_ico from '$lib/assets/github-mark-white.svg';	
+	import githubIco from '$lib/assets/github-mark-white.svg';	
 
 	let editUrls = EDIT_URLS($page.url.pathname);
 	let searchActive = false;
