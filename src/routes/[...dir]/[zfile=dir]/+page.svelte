@@ -7,11 +7,14 @@
 
 	import Line from '$lib/components/Line.svelte';
 	import type { FuzzyFile } from '$lib/api';
-	import { GH_PAGES_BASE_URL } from '$lib/const';
+	import { EDIT_URLS, GH_PAGES_BASE_URL } from '$lib/const';
 
 	import type { PageData } from './$types';
 	export let data: PageData;
+	
+	import github_ico from '$lib/assets/github-mark-white.svg';	
 
+	let editUrls = EDIT_URLS($page.url.pathname);
 	let searchActive = false;
 	let searchInput: HTMLInputElement;
 	let resultList: HTMLUListElement;
@@ -106,7 +109,11 @@
 					{/each}
 				</ul>
 			</div>
-           
+			<div class="flex flex-1  justify-content-start" > 
+				<a class="sm:ml-2 p-1 rounded-lg btn-ghost flex-shrink-0 w-8" href={editUrls.github}>
+					<img src={github_ico} alt="github logo"/>
+				</a>
+			</div>
 		</div>
 		<div class="flex flex-1  justify-end mr-2" > 
 			<button class="lg:ml-2 p-1 bg-base-300  rounded-lg btn-ghost" title="ctrl + k" on:click|preventDefault={() => viewMobileFinder()}>
