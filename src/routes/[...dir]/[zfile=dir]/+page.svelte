@@ -99,7 +99,7 @@
 		<div class="navbar-center">
 			<div class="lg:text-lg breadcrumbs text-sm">
 				<ul>
-					<li>🏠<a class="ml-1" href="/">Dynamik</a></li>
+					<li>🏠<a class="ml-1" href="/">Risorse</a></li>
 					{#each urlParts as part}
 						{@const href = getPartHref(part)}
 						<li><a {href}>{part}</a></li>

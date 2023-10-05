@@ -18,8 +18,10 @@
 
 <div class="flex justify-center">
 	<div class="container max-w-5xl">
-		<h1 class="text-4xl m-10 font-semibold text-center">Benvenuto su CSUnibo!</h1>
-
+		<div class="m-10">
+			<h1 class="text-4xl font-semibold text-center">Risorse</h1>
+			<h3 class="text-2 font-semibold text-center">Raccolte di materiali per lo studio da CSUnibo</h3>
+		</div>
 		<ul class="menu p-2 text-lg">
 			{#each data.courses as course}
 				<Line name={course.name} icon={course.icon} href="{base}/dash/{course.id}" />
