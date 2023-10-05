@@ -9,6 +9,13 @@ git submodule init
 git submodule update
 ```
 
+Create a `.env` file coping `.env.example` or paste:
+
+```bash
+# .env
+	VITE_UPLD_URL=''
+```
+
 start a development server:
 
 ```bash
