@@ -1,21 +1,21 @@
 <script lang="ts">
 	import TEACHINGS from '$lib/teachings';
-	const WORKFLOW_NAMES = ['check', 'build-and-deploy'];
+	const WORKFLOW_NAMES = ['filenames', 'build-and-deploy'];
 
 	const WORKFLOW_URL = (project: string, workflow: string) =>
 		`https://github.com/csunibo/${project}/actions/workflows/${workflow}.yml`;
 </script>
-  <div class="max-w-5xl p-4 mx-auto">
-    <nav class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
-      <div class="navbar-start">
-        <h1 class="text-xl font-semibold text-base-content">
-          Stato delle raccolte
-        </h1>
-      </div>
-      <div class="navbar-end">
-        <a class="btn btn-square btn-ghost" title="Indietro" href="/"> ⬆️ </a>
-      </div>
-    </nav>
+<main class="md:container md:m-auto p-4">
+  <nav class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
+    <div class="navbar-start">
+      <h1 class="text-xl font-semibold text-base-content">
+        Stato delle raccolte
+      </h1>
+    </div>
+    <div class="navbar-end">
+      <a class="btn btn-square btn-ghost" title="Indietro" href="/"> ⬆️ </a>
+    </div>
+  </nav>
   <div class="m-8">
     {#each TEACHINGS as course, i}
       {#if i > 0}
@@ -43,4 +43,4 @@
       {/each}
     {/each}
   </div>
-</div>
+</main>
