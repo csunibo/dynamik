@@ -1,9 +1,18 @@
 <script lang="ts">
+	import type { PageData } from './$types';
+	import type { Course, Teaching } from '$lib/teachings';
 	import TEACHINGS from '$lib/teachings';
-	const WORKFLOW_NAMES = ['filenames', 'build-and-deploy'];
 
+	const WORKFLOW_NAMES = ['filenames', 'build-and-deploy'];
 	const WORKFLOW_URL = (project: string, workflow: string) =>
 		`https://github.com/csunibo/${project}/actions/workflows/${workflow}.yml`;
+
+	export let data: PageData;
+	let activeYears: Teaching[] = [];
+
+	onMount(async () => {
+		activeYears = (await data.streaming?.activeCourses) ?? [];
+	});
 </script>
 <main class="md:container md:m-auto p-4">
   <nav class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
