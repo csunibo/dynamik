@@ -1,5 +1,5 @@
 import type { PageLoad } from './$types';
-import type { getActiveCourses } from '$lib/teachings';
+import { getActiveCourses } from '$lib/teachings';
 import TEACHINGS from '$lib/teachings';
 import { error } from '@sveltejs/kit';
 
