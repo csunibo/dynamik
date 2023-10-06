@@ -26,17 +26,20 @@
         <h3 class="text-center text-xl font-bold my-4">{years.year}</h3>
         <div class="grid grid-cols-4 gap-4">
           {#each years.teachings as teaching}
+					  {@const enabled = activeYears.includes(teaching)}
             <div>
               <h4 class="font-bold">{teaching.name}</h4>
-              <div class="flex gap-2">
-                {#each WORKFLOW_NAMES as workflow}
-                  {@const href = WORKFLOW_URL(teaching.url, workflow)}
-                  {@const src = `${href}/badge.svg`}
-                  <a {href}>
-                    <img {src} alt="Not found" />
-                  </a>
-                {/each}
-              </div>
+              {#if enabled}
+                <div class="flex gap-2">
+                  {#each WORKFLOW_NAMES as workflow}
+                    {@const href = WORKFLOW_URL(teaching.url, workflow)}
+                    {@const src = `${href}/badge.svg`}
+                    <a {href}>
+                      <img {src} alt="Not found" />
+                    </a>
+                  {/each}
+                </div>
+              {/if}
             </div>
           {/each}
         </div>
