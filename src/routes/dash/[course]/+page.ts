@@ -1,5 +1,5 @@
 import type { PageLoad } from './$types';
-import { getActiveCourses } from '$lib/teachings';
+import { getActiveTeachings } from '$lib/teachings';
 import TEACHINGS from '$lib/teachings';
 import { error } from '@sveltejs/kit';
 
@@ -11,12 +11,12 @@ export const load = (async ({ fetch, params }) => {
 	}
 
 	// Filter out inactive teachings
-	const activeCourses = getActiveCourses(fetch, course);
+	const activeTeachings = getActiveTeachings(fetch, course);
 
 	return {
 		course,
 		streaming: {
-			activeCourses
+			activeTeachings
 		}
 	};
 }) satisfies PageLoad;

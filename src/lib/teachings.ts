@@ -21,8 +21,7 @@ export type Course = {
 	years: TeachingYear[];
 };
 
-async function getActiveCourse(fetch: typeof window.fetch, teaching:
-  Teaching) {
+export async function isTeachingActive(fetch: typeof window.fetch, teaching: Teaching) {
 	try {
 		await getManifest(fetch, teaching.url);
 		return true;
@@ -31,14 +30,12 @@ async function getActiveCourse(fetch: typeof window.fetch, teaching:
 	}
 }
 
-export async function getActiveCourses(fetch: typeof window.fetch, course:
-  Course) {
-	const allTeachings = course.years.flatMap((year: TeachingYear) =>
-    year.teachings);
+export async function getActiveTeachings(fetch: typeof window.fetch, course: Course) {
+	const allTeachings = course.years.flatMap((year: TeachingYear) => year.teachings);
 	const activeTeachings: Teaching[] = [];
 
 	const promises = allTeachings.map(async (teaching: Teaching) => {
-		const isActive = await getActiveCourse(fetch, teaching);
+		const isActive = await isTeachingActive(fetch, teaching);
 		if (isActive) {
 			activeTeachings.push(teaching);
 		}

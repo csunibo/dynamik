@@ -14,7 +14,7 @@
 		| undefined;
 
 	onMount(async () => {
-		activeYears = (await data.streaming?.activeCourses) ?? [];
+		activeYears = (await data.streaming?.activeTeachings) ?? [];
 		login = getWhoAmI(fetch);
 	});
 

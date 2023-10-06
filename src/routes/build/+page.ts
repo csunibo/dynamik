@@ -1,9 +1,7 @@
 import type { PageLoad } from './$types';
-import { getActiveCourses } from '$lib/teachings';
+import { getActiveTeachings } from '$lib/teachings';
 import TEACHINGS from '$lib/teachings';
 
-export const load = (async ({ fetch, _ }) => {
-	streaming: {
-		activeCourses: TEACHINGS.map((c) => getActiveCourses(fetch, c));
-	}
-}) satisfies PageLoad;
+export const load = (async ({ fetch, _ }) => ({
+	activeTeachings: Promise.all(TEACHINGS.map((c) => getActiveTeachings(fetch, c)))
+})) satisfies PageLoad;

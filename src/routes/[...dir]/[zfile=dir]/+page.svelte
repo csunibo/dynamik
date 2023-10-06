@@ -64,7 +64,6 @@
 			setTimeout(() => {
 				searchInput.focus();
 			}, 100);
-
 		} else if (e.key === 'ArrowDown' && resultList) {
 			e.preventDefault();
 			active = active < resultList.children.length - 1 ? active + 1 : active;
@@ -79,7 +78,7 @@
 			}
 		}
 	}
-	
+
 	function viewMobileFinder() {
 		searchActive = !searchActive;
 		setTimeout(() => {
@@ -106,11 +105,14 @@
 					{/each}
 				</ul>
 			</div>
-           
 		</div>
-		<div class="flex flex-1  justify-end mr-2" > 
-			<button class="lg:ml-2 p-1 bg-base-300  rounded-lg btn-ghost" title="ctrl + k" on:click|preventDefault={() => viewMobileFinder()}>
-				🔍 <kbd class="kbd-sm   hidden lg:inline-block">ctrl + k </kbd>  
+		<div class="flex flex-1 justify-end mr-2">
+			<button
+				class="lg:ml-2 p-1 bg-base-300 rounded-lg btn-ghost"
+				title="ctrl + k"
+				on:click|preventDefault={() => viewMobileFinder()}
+			>
+				🔍 <kbd class="kbd-sm hidden lg:inline-block">ctrl + k </kbd>
 			</button>
 		</div>
 	</div>
@@ -159,4 +161,3 @@
 		{/if}
 	</label>
 </label>
-
