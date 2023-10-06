@@ -110,7 +110,7 @@
 				</ul>
 			</div>
 			<div class="flex flex-1  justify-content-start" > 
-				<a class="sm:ml-2 p-1 rounded-lg btn-ghost flex-shrink-0 w-8" href={editUrls.github}>
+				<a class="sm:ml-2 p-1 rounded-lg btn-ghost flex-shrink-0 w-8" href={editUrls.github_repo}>
 					<img src={githubIco} alt="github logo"/>
 				</a>
 			</div>
