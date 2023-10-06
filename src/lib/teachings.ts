@@ -21,7 +21,7 @@ export type Course = {
 	years: TeachingYear[];
 };
 
-export async function getActiveCourse(fetch: typeof window.fetch, teaching:
+async function getActiveCourse(fetch: typeof window.fetch, teaching:
   Teaching) {
 	try {
 		await getManifest(fetch, teaching.url);

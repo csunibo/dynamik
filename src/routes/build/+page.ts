@@ -1,9 +1,9 @@
 import type { PageLoad } from './$types';
-import { getActiveCourse } from '$lib/teachings';
+import { getActiveCourses } from '$lib/teachings';
 import TEACHINGS from '$lib/teachings';
 
-export const load = (async ({ fetch, params }) => {
+export const load = (async ({ fetch, _ }) => {
 	streaming: {
-		activeCourses: TEACHINGS.filter((t) => getActiveCourse(fetch, t));
+		activeCourses: TEACHINGS.map((c) => getActiveCourses(fetch, c));
 	}
 }) satisfies PageLoad;
