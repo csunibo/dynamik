@@ -26,9 +26,9 @@
 							<a href={disabled ? null : href} class="text-center text-lg join-item">
 								{teaching.name ? teaching.name : teaching.url}
 							</a>
-							{#if teaching.telegram != null && teaching.telegram !== ''}
+							{#if teaching.chat != null && teaching.chat !== ''}
 								<a
-									href="https://t.me/{teaching.telegram}"
+									href="https://{teaching.chat}"
 									class="text-center text-lg join-item border-l-2">👥</a
 								>
 							{/if}
