@@ -66,7 +66,7 @@
 			</div>
 			<div class="navbar-center">
 				<h1 class="text-xl font-semibold text-base-content">
-					Dashboard di {data.course.name}
+					{data.course.name}
 				</h1>
 			</div>
 			<div class="navbar-end">
