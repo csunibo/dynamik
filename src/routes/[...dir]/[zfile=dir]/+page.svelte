@@ -89,7 +89,7 @@
 </script>
 
 <svelte:head>
-	<title>Dynamik | {urlParts[urlParts.length - 1]}</title>
+	<title>Risorse | {urlParts[urlParts.length - 1]}</title>
 </svelte:head>
 
 <svelte:body on:keydown={keydown} />
