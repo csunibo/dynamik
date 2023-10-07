@@ -7,10 +7,10 @@ updates:
     groups:
       minor-patches:
         patterns:
-        - "*"
+          - '*'
         update-types:
-        - "minor"
-        - "patch"
+          - 'minor'
+          - 'patch'
 
   - package-ecosystem: 'github-actions'
     directory: '/'

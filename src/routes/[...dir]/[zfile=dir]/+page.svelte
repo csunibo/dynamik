@@ -11,8 +11,8 @@
 
 	import type { PageData } from './$types';
 	export let data: PageData;
-	
-	import githubIco from '$lib/assets/github-mark-white.svg';	
+
+	import githubIco from '$lib/assets/github-mark-white.svg';
 
 	let editUrls = EDIT_URLS($page.url.pathname);
 	let searchActive = false;
@@ -67,7 +67,6 @@
 			setTimeout(() => {
 				searchInput.focus();
 			}, 100);
-
 		} else if (e.key === 'ArrowDown' && resultList) {
 			e.preventDefault();
 			active = active < resultList.children.length - 1 ? active + 1 : active;
@@ -82,7 +81,7 @@
 			}
 		}
 	}
-	
+
 	function viewMobileFinder() {
 		searchActive = !searchActive;
 		setTimeout(() => {
@@ -109,15 +108,19 @@
 					{/each}
 				</ul>
 			</div>
-			<div class="flex flex-1  justify-content-start" > 
+			<div class="flex flex-1 justify-content-start">
 				<a class="sm:ml-2 p-1 rounded-lg btn-ghost flex-shrink-0 w-8" href={editUrls.github_repo}>
-					<img src={githubIco} alt="github logo"/>
+					<img src={githubIco} alt="github logo" />
 				</a>
 			</div>
 		</div>
-		<div class="flex flex-1  justify-end mr-2" > 
-			<button class="lg:ml-2 p-1 bg-base-300  rounded-lg btn-ghost" title="ctrl + k" on:click|preventDefault={() => viewMobileFinder()}>
-				🔍 <kbd class="kbd-sm   hidden lg:inline-block">ctrl + k </kbd>  
+		<div class="flex flex-1 justify-end mr-2">
+			<button
+				class="lg:ml-2 p-1 bg-base-300 rounded-lg btn-ghost"
+				title="ctrl + k"
+				on:click|preventDefault={() => viewMobileFinder()}
+			>
+				🔍 <kbd class="kbd-sm hidden lg:inline-block">ctrl + k </kbd>
 			</button>
 		</div>
 	</div>
@@ -166,4 +169,3 @@
 		{/if}
 	</label>
 </label>
-
