@@ -35,7 +35,7 @@
 		"eslint-plugin-svelte3": "^4.0.0",
 		"fuse.js": "^6.6.2",
 		"katex": "^0.16.9",
-		"marked": "^7.0.5",
+		"marked": "^9.1.0",
 		"postcss": "^8.4.31",
 		"prettier": "^3.0.3",
 		"prettier-plugin-svelte": "^3.0.3",
