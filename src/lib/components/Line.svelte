@@ -30,8 +30,14 @@
 			</a>
 		{/if}
 		<span class="whitespace-nowrap text-right text-xs self-center">
-			{isFile && data.size ? data.size : '-'} 
-			<!-- <a class="text-lg ml-3" href="{$page.url}/{data.name}" download>📥</a> -->
+			{#if isFile}
+				{isFile && data.size!='0 B' ? data.size : '-'} 
+				{#if data.size != '0 B'}
+					<a class="text-lg ml-3" href="{$page.url}/{data.name}" download>📥</a>
+				{:else}
+					<p class="text-lg ml-3" style="mix-blend-mode: luminosity">📥</p>
+				{/if}
+			{/if}
 		</span>
 		<span class="hidden md:block">
 			{data.time ? formatDate($settings, data.time) : '-'} 
