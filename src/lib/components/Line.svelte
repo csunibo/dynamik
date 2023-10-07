@@ -20,9 +20,15 @@
 			</a>
 		{:else if isFile}
 			<span><code>📄</code></span>
-			<a class="link link-hover text-primary" href="{$page.url}/{data.name}">
-				{data.name} 
-			</a>
+			{#if $settings.newTab}
+				<a class="link link-hover text-primary" href="{$page.url}/{data.name}" target="_blank" rel="noreferrer">
+					{data.name}
+				</a>
+			{:else}
+				<a class="link link-hover text-primary" href="{$page.url}/{data.name}">
+					{data.name}
+				</a>
+			{/if}
 		{:else}
 			<span><code>📁</code></span>
 			<a class="link link-hover text-primary" href={customUrl ?? $page.url + '/' + data.name}>

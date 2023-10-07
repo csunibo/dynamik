@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
+import { redirect } from '@sveltejs/kit';
 
 	export let data: PageData;
 
@@ -8,6 +9,13 @@
 	onMount(() => {
 		// Focus the iframe
 		iframe.contentWindow?.focus();
+
+	// check if the user agent is iOS
+	const isIOS = navigator.userAgent.match(/(iPad|iPhone|iPod)/g);
+	if (isIOS) {
+		// redirect to the original file
+		throw redirect(302, data.url);
+	}
 	});
 </script>
 
