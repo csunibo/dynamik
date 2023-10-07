@@ -1,7 +1,5 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { onMount } from 'svelte';
-	import type { Teaching } from '$lib/teachings';
 	import TEACHINGS from '$lib/teachings';
 
 	const WORKFLOW_NAMES = ['filenames', 'build-and-deploy'];
