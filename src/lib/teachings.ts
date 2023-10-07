@@ -24,26 +24,16 @@ export type Course = {
 export async function isTeachingActive(fetch: typeof window.fetch, teaching: Teaching) {
 	try {
 		await getManifest(fetch, teaching.url);
-		return true;
+		return teaching;
 	} catch {
-		return false;
+		return null;
 	}
 }
 
 export async function getActiveTeachings(fetch: typeof window.fetch, course: Course) {
 	const allTeachings = course.years.flatMap((year: TeachingYear) => year.teachings);
-	const activeTeachings: Teaching[] = [];
-
-	const promises = allTeachings.map(async (teaching: Teaching) => {
-		const isActive = await isTeachingActive(fetch, teaching);
-		if (isActive) {
-			activeTeachings.push(teaching);
-		}
-	});
-
-	await Promise.allSettled(promises);
-
-	return activeTeachings;
+	const promises = allTeachings.map(async (t) => await isTeachingActive(fetch, t));
+	return (await Promise.all(promises)).filter((t) => t != null);
 }
 
 import TEACHINGS from '../config/courses.json' assert { type: 'json' };
