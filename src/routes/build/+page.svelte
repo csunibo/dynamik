@@ -9,12 +9,6 @@
 		`https://github.com/csunibo/${project}/actions/workflows/${workflow}.yml`;
 
 	export let data: PageData;
-	let activeYears: Teaching[][] = [];
-
-	onMount(async () => {
-		activeYears = (await data.streaming?.activeCourses) ?? [];
-		console.log(data);
-	});
 </script>
 
 <main class="md:container md:m-auto p-4">
@@ -32,25 +26,23 @@
 				<hr class="my-8 border-primary" />
 			{/if}
 			<h2 class="text-center text-2xl">{course.name}</h2>
-			<!-- {@const activeTeachings = activeYears[i]} -->
 			{#each course.years as years}
 				<h3 class="text-center text-xl font-bold my-4">{years.year}</h3>
 				<div class="grid grid-cols-4 gap-4">
 					{#each years.teachings as teaching}
-						<!-- {@const enabled = activeTeachings.includes(teaching)} -->
 						<div>
 							<h4 class="font-bold">{teaching.name}</h4>
-							<!-- {#if enabled} -->
-							<div class="flex gap-2">
-								{#each WORKFLOW_NAMES as workflow}
-									{@const href = WORKFLOW_URL(teaching.url, workflow)}
-									{@const src = `${href}/badge.svg`}
-									<a {href}>
-										<img {src} alt="Not found" />
-									</a>
-								{/each}
-							</div>
-							<!-- {/if} -->
+							{#if data.activeTeachings[i].includes(teaching)}
+								<div class="flex gap-2">
+									{#each WORKFLOW_NAMES as workflow}
+										{@const href = WORKFLOW_URL(teaching.url, workflow)}
+										{@const src = `${href}/badge.svg`}
+										<a {href}>
+											<img {src} alt="Not found" />
+										</a>
+									{/each}
+								</div>
+							{/if}
 						</div>
 					{/each}
 				</div>
