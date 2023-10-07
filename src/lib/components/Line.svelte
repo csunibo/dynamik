@@ -20,7 +20,7 @@
 			</a>
 		{:else if isFile}
 			<span><code>📄</code></span>
-			<a class="link link-hover text-primary" href="{$page.url}/{data.name}">
+			<a class="link link-hover text-primary" href="{$page.url}/{data.name}" target={$settings.newTab ? '_blank' : '_self'}>
 				{data.name} 
 			</a>
 		{:else}

@@ -98,11 +98,11 @@
 <svelte:body on:keydown={keydown} />
 
 <main class="max-w-6xl p-4 mx-auto">
-	<div class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
+	<div class="navbar flex bg-base-200 rounded-box shadow-sm px-5 mb-5">
 		<div class="navbar-center">
-			<div class="lg:text-lg breadcrumbs text-sm">
+			<div class="lg:text-lg breadcrumbs text-sm font-semibold">
 				<ul>
-					<li>🏠<a class="ml-1" href="/">Risorse</a></li>
+					<li><a class="ml-1" href="/">🏠 Risorse</a></li>
 					{#each urlParts as part}
 						{@const href = getPartHref(part)}
 						<li><a {href}>{part}</a></li>
