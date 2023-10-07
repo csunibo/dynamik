@@ -11,6 +11,7 @@ export const EDIT_URLS = (path: string) => {
 	const filePath = rest.join('/');
 	return {
 		github: `${GH_BASE_URL}/${repo}/blob/main/${filePath}`,
+		github_repo: `${GH_BASE_URL}/${repo}`,
 		github_edit: `${GH_BASE_URL}/${repo}/edit/main/${filePath}`,
 		github_dev: `${GH_DEV_BASE_URL}/${repo}/blob/main/${filePath}`
 	};
