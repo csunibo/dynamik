@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import tocbot from 'tocbot';
+	// @ts-expect-error - katex auto-render is not typed
 	import autoRender from 'katex/dist/contrib/auto-render.mjs';
 	import { formatDate } from '$lib/date';
 	import settings from '$lib/settings';
