@@ -24,9 +24,11 @@
 	<div class="container max-w-5xl">
 		<div class="m-10">
 			<h1 class="text-4xl font-semibold text-center">Risorse</h1>
-			<h3 class="text-2 font-semibold text-center">Raccolte di materiali per lo
-      studio da <span class="underline"><a
-      href="https://csunibo.github.io">CSUnibo</a></span></h3>
+			<h3 class="text-2 font-semibold text-center">
+				Raccolte di materiali per lo studio da <span class="underline"
+					><a href="https://csunibo.github.io">CSUnibo</a></span
+				>
+			</h3>
 		</div>
 		<ul class="menu p-2 text-lg">
 			{#each data.courses as course}

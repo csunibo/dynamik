@@ -6,16 +6,14 @@
 </script>
 
 <main class="md:container md:m-auto p-4">
-  <nav class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
-    <div class="navbar-start">
-      <h1 class="text-xl font-semibold text-base-content">
-        Impostazioni
-      </h1>
-    </div>
-    <div class="navbar-end">
-      <a class="btn btn-square btn-ghost" title="Indietro" href="/"> ⬆️ </a>
-    </div>
-  </nav>
+	<nav class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
+		<div class="navbar-start">
+			<h1 class="text-xl font-semibold text-base-content">Impostazioni</h1>
+		</div>
+		<div class="navbar-end">
+			<a class="btn btn-square btn-ghost" title="Indietro" href="/"> ⬆️ </a>
+		</div>
+	</nav>
 
 	<div class="form-control my-4">
 		<label class="label">
