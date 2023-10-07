@@ -19,7 +19,6 @@
 	import unibo512png from '$lib/assets/unibo512.png';
 
 	import ogImage from '$lib/assets/risorse.students.cs.unibo.it.png';
-	import ogImagerec from '$lib/assets/risorse.students.cs.unibo.it-rec.png';
 </script>
 
 <svelte:head>

@@ -12,6 +12,7 @@
 	onMount(() => {
 		// we import asciidoctor in the head, so no types
 		// @ts-expect-error - asciidoctor is not typed
+		// eslint-disable-next-line no-undef
 		const asciidoctor = new Asciidoctor();
 		docContainer.innerHTML = asciidoctor.convert(data.body, {
 			attributes: { showtitle: true }
