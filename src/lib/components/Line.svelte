@@ -29,12 +29,16 @@
 		{#if external}
 			<span><code>🔗</code></span>
 			<a class="link link-hover text-primary" href={data.url} target="_blank" rel="noreferrer">
-					{data.name}
+				{data.name}
 			</a>
 		{:else if isFile}
 			<span><code>📄</code></span>
-			<a class="link link-hover text-primary" href="{$page.url}/{data.name}" target={$settings.newTab ? '_blank' : '_self'}>
-				{data.name} 
+			<a
+				class="link link-hover text-primary"
+				href="{$page.url}/{data.name}"
+				target={$settings.newTab ? '_blank' : '_self'}
+			>
+				{data.name}
 			</a>
 		{:else}
 			<span><code>📁</code></span>
@@ -44,7 +48,7 @@
 		{/if}
 		<span class="whitespace-nowrap text-right text-xs self-center">
 			{#if isFile}
-				{isFile && data.size!='0 B' ? data.size : '-'} 
+				{isFile && data.size != '0 B' ? data.size : '-'}
 				{#if data.size != '0 B'}
 					<button class="text-lg ml-3" on:click={downloadFile}>📥</button>
 				{:else}
@@ -53,7 +57,7 @@
 			{/if}
 		</span>
 		<span class="hidden md:block">
-			{data.time ? formatDate($settings, data.time) : '-'} 
+			{data.time ? formatDate($settings, data.time) : '-'}
 		</span>
 	</div>
 </div>
