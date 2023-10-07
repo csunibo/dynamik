@@ -9,6 +9,21 @@
 
 	$: isFile = 'mime' in data;
 	$: external = 'mime' in data ? data.mime === 'text/statik-link' : false;
+
+	function downloadFile() {
+		const url = customUrl ?? $page.url + '/' + data.name;
+		fetch(url)
+			.then(response => response.blob())
+			.then(blob => {
+				const url = window.URL.createObjectURL(new Blob([blob]));
+				const a = document.createElement('a');
+				a.href = url;
+				a.download = data.name;
+				document.body.appendChild(a);
+				a.click();
+				a.remove();
+			});
+	}
 </script>
 
 <div class="contents">
@@ -33,9 +48,9 @@
 			{#if isFile}
 				{isFile && data.size!='0 B' ? data.size : '-'} 
 				{#if data.size != '0 B'}
-					<a class="text-lg ml-3" href="{$page.url}/{data.name}" download>📥</a>
+					<button class="text-lg ml-3" on:click={downloadFile}>📥</button>
 				{:else}
-					<p class="text-lg ml-3" style="mix-blend-mode: luminosity">📥</p>
+					<a class="text-lg ml-3" href="{$page.url}/#" style="mix-blend-mode: luminosity">📥</a>
 				{/if}
 			{/if}
 		</span>
