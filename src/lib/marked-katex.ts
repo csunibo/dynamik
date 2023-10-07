@@ -1,9 +1,9 @@
 // taken from: https://github.com/UziTech/marked-katex-extension/issues/42#issuecomment-1445240740
 import katex, { type KatexOptions } from 'katex';
-import type { marked } from 'marked';
+import type { TokenizerAndRendererExtension, Tokens } from 'marked';
 
 export default function markedKatex(options = {}): {
-	extensions: marked.TokenizerAndRendererExtension[];
+	extensions: TokenizerAndRendererExtension[];
 } {
 	return {
 		extensions: [inlineKatex(options), blockKatex(options)]
@@ -17,7 +17,7 @@ function inlineKatex(options: KatexOptions | undefined) {
 		start(src: string) {
 			return src.indexOf('$');
 		},
-		tokenizer(src: string): marked.Tokens.Generic | void {
+		tokenizer(src: string): Tokens.Generic | void {
 			const match = src.match(/^\$+([^$\n]+?)\$+/);
 			if (match) {
 				return {
@@ -28,7 +28,7 @@ function inlineKatex(options: KatexOptions | undefined) {
 			}
 		},
 		// warning: generic loses typescript checking below
-		renderer(token: marked.Tokens.Generic) {
+		renderer(token: Tokens.Generic) {
 			return katex.renderToString(token.text, options);
 		}
 	};
@@ -41,7 +41,7 @@ function blockKatex(options: KatexOptions | undefined) {
 		start(src: string) {
 			return src.indexOf('\n$$');
 		},
-		tokenizer(src: string): marked.Tokens.Generic | void {
+		tokenizer(src: string): Tokens.Generic | void {
 			const match = src.match(/^\$\$+\n([^$]+?)\n\$\$+\n/);
 			if (match) {
 				return {
@@ -52,7 +52,7 @@ function blockKatex(options: KatexOptions | undefined) {
 			}
 		},
 		// warning: generic loses typescript checking below
-		renderer(token: marked.Tokens.Generic) {
+		renderer(token: Tokens.Generic) {
 			return `<p>${katex.renderToString(token.text, options)}</p>`;
 		}
 	};
