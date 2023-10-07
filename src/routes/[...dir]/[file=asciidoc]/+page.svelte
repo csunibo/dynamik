@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
+	// @ts-expect-error - katex auto-render is not typed
 	import autoRender from 'katex/dist/contrib/auto-render.mjs';
 	import tocbot from 'tocbot';
 
@@ -9,6 +10,8 @@
 	let docContainer: HTMLElement;
 
 	onMount(() => {
+		// we import asciidoctor in the head, so no types
+		// @ts-expect-error - asciidoctor is not typed
 		const asciidoctor = new Asciidoctor();
 		docContainer.innerHTML = asciidoctor.convert(data.body, {
 			attributes: { showtitle: true }
