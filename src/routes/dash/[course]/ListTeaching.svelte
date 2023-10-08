@@ -27,7 +27,7 @@
 								{teaching.name ? teaching.name : teaching.url}
 							</a>
 							{#if teaching.chat != null && teaching.chat !== ''}
-								<a href="https://{teaching.chat}" class="text-center text-lg join-item border-l-2"
+								<a href="https://{teaching.chat}" class="text-center text-lg join-item border-base-content border-l-2"
 									>👥</a
 								>
 							{/if}
