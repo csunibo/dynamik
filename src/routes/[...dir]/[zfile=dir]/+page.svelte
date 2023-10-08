@@ -5,7 +5,7 @@
 	import { base } from '$app/paths';
 
 	import Line from '$lib/components/Line.svelte';
-	import type { FuzzyFile } from '$lib/api';
+	import type { FuzzyFile, Directory } from '$lib/api';
 	import { EDIT_URLS, GH_PAGES_BASE_URL } from '$lib/const';
 
 	import type { PageData } from './$types';
