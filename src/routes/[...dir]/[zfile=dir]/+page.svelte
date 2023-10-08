@@ -5,7 +5,7 @@
 	import { base } from '$app/paths';
 
 	import Line from '$lib/components/Line.svelte';
-	import type { FuzzyFile } from '$lib/api';
+	import type { FuzzyFile, Directory } from '$lib/api';
 	import { EDIT_URLS, GH_PAGES_BASE_URL } from '$lib/const';
 
 	import type { PageData } from './$types';
@@ -102,6 +102,17 @@
 	}
 
 	$: title = genTitle(urlParts);
+
+	// --- Sorting ---
+	let reverseMode = true; 	// partiamo in ordine A-Z
+	import sortIco from '$lib/assets/sort.svg';
+
+	/**
+	 * Inverte l'ordine di visualizzazione delle risorse
+	 */
+	function toggleReverse() {
+		reverseMode = !reverseMode;
+	}
 </script>
 
 <svelte:head>
@@ -154,29 +165,31 @@
 			</button>
 		</div>
 	</div>
-	<!-- TODO uncomment when #111 is merged -->
-	<!-- <div class="flex flex-1 justify-end mr-4 mb-3">
-		<button
-			class="lg:ml-2 p-1 flex items-center rounded-xl bg-primary text-base"
-			on:click={toggleReverse}
-		>
-			<span class="text-xl icon-[solar--sort-vertical-bold-duotone]" class:flip={reverseMode}
-			></span>
-		</button>
-	</div> -->
 
 	<div class="grid gap-5 grid-cols-dir md:grid-cols-dir-full mx-4 text-lg">
 		{#if data.manifest.directories}
-			{@const directories = data.manifest.directories}
-			{#each directories as dir}
-				<Line data={dir} />
-			{/each}
+			{@const directories = data.manifest.directories.sort((a, b) => a.name.localeCompare(b.name))}
+			{#if !reverseMode}
+				{#each directories.reverse() as dir}
+					<Line data={dir} />
+				{/each}
+			{:else}
+				{#each directories as dir}
+					<Line data={dir} />
+				{/each}
+			{/if}
 		{/if}
 		{#if data.manifest.files}
-			{@const files = data.manifest.files}
-			{#each files as file}
-				<Line data={file} />
-			{/each}
+			{@const files = data.manifest.files.sort((a, b) => a.name.localeCompare(b.name))}
+			{#if !reverseMode}
+				{#each files.reverse() as file}
+					<Line data={file} />
+				{/each}
+			{:else}
+				{#each files as file}
+					<Line data={file} />
+				{/each}
+			{/if}
 		{/if}
 	</div>
 </main>
