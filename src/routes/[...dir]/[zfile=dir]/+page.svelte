@@ -120,26 +120,31 @@
 				</ul>
 			</div>
 			<div class="flex flex-1 justify-content-start">
-				<a class="sm:ml-2 p-1 flex items-center rounded-lg btn-ghost flex-shrink-0 w-8" href={editUrls.github_repo}>
+				<a
+					class="sm:ml-2 p-1 flex items-center rounded-lg btn-ghost flex-shrink-0 w-8"
+					href={editUrls.github_repo}
+				>
 					<span class="text-2xl icon-[akar-icons--github-fill]"></span>
 				</a>
 			</div>
 		</div>
 		<div class="flex flex-1 justify-end mr-2">
 			<button
-				class="lg:ml-2 p-1 bg-base-300 rounded-lg btn-ghost"
+				class="lg:ml-2 p-2 flex items-center bg-base-300 rounded-xl btn-ghost"
 				title="ctrl + k"
 				on:click|preventDefault={() => viewMobileFinder()}
 			>
-				🔍 <kbd class="kbd-sm hidden lg:inline-block">ctrl + k </kbd>
+				<span class="text-primary icon-[akar-icons--search]"></span>
+				<kbd class="kbd-sm hidden lg:inline-block">ctrl + k </kbd>
 			</button>
 		</div>
 	</div>
 	<div class="flex flex-1 justify-end mr-4 mb-3">
-		<button class="lg:ml-2 p-1 flex items-center rounded-xl bg-primary text-base" on:click={toggleReverse}>
-			<span
-				class="text-xl icon-[solar--sort-vertical-bold-duotone]"
-				class:flip={reverseMode}
+		<button
+			class="lg:ml-2 p-1 flex items-center rounded-xl bg-primary text-base"
+			on:click={toggleReverse}
+		>
+			<span class="text-xl icon-[solar--sort-vertical-bold-duotone]" class:flip={reverseMode}
 			></span>
 		</button>
 	</div>
