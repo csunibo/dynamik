@@ -238,3 +238,9 @@
 		{/if}
 	</label>
 </label>
+
+<style>
+	.flip {
+		transform: scaleX(-1) scaleY(-1);
+	}
+</style>
