@@ -120,8 +120,8 @@
 				</ul>
 			</div>
 			<div class="flex flex-1 justify-content-start">
-				<a class="sm:ml-2 p-1 rounded-lg btn-ghost flex-shrink-0 w-8" href={editUrls.github_repo}>
-					<img src={githubIco} alt="github logo" />
+				<a class="sm:ml-2 p-1 flex items-center rounded-lg btn-ghost flex-shrink-0 w-8" href={editUrls.github_repo}>
+					<span class="text-2xl icon-[akar-icons--github-fill]"></span>
 				</a>
 			</div>
 		</div>
@@ -136,13 +136,11 @@
 		</div>
 	</div>
 	<div class="flex flex-1 justify-end mr-4 mb-3">
-		<button class="lg:ml-2 p-1 rounded-xl bg-primary text" on:click={toggleReverse}>
-			<img
-				src={sortIco}
-				alt="sorting ascendant icon"
-				class="flex-shrink-0 w-6"
+		<button class="lg:ml-2 p-1 flex items-center rounded-xl bg-primary text-base" on:click={toggleReverse}>
+			<span
+				class="text-xl icon-[solar--sort-vertical-bold-duotone]"
 				class:flip={reverseMode}
-			/>
+			></span>
 		</button>
 	</div>
 	<div class="grid gap-5 grid-cols-dir md:grid-cols-dir-full mx-4 text-lg">
