@@ -165,7 +165,11 @@
 			</button>
 		</div>
 	</div>
-
+	<div class="flex flex-1 justify-end mr-4 mb-3">
+		<button class="lg:ml-2 p-1 rounded-xl bg-primary text" on:click={toggleReverse}>
+			<img src={sortIco} alt="sorting ascendant icon" class="flex-shrink-0 w-6"  class:flip={reverseMode}/>
+		</button>
+	</div>
 	<div class="grid gap-5 grid-cols-dir md:grid-cols-dir-full mx-4 text-lg">
 		{#if data.manifest.directories}
 			{@const directories = data.manifest.directories.sort((a, b) => a.name.localeCompare(b.name))}
@@ -222,3 +226,9 @@
 		{/if}
 	</label>
 </label>
+
+<style>
+	.flip {
+		transform: scaleX(-1) scaleY(-1);
+	}
+</style>
