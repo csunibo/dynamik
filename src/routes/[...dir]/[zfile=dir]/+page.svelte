@@ -136,17 +136,8 @@
 		</div>
 	</div>
 	<div class="flex flex-1 justify-end mr-4 mb-3">
-		<button class="lg:ml-2 p-1 rounded-lg bg-primary text btn-ghost" on:click={toggleReverse}>
-			{#if reverseMode}
-				<img src={sortIco} alt="sorting ascendant icon" class="flex-shrink-0 w-5" />
-			{:else}
-				<img
-					src={sortIco}
-					alt="sorting descendant icon"
-					class="flex-shrink-0 w-5"
-					style="transform: rotate(180deg);"
-				/>
-			{/if}
+		<button class="lg:ml-2 p-1 rounded-xl bg-primary text" on:click={toggleReverse}>
+			<img src={sortIco} alt="sorting ascendant icon" class="flex-shrink-0 w-6"  class:flip={reverseMode}/>
 		</button>
 	</div>
 	<div class="grid gap-5 grid-cols-dir md:grid-cols-dir-full mx-4 text-lg">
@@ -205,3 +196,9 @@
 		{/if}
 	</label>
 </label>
+
+<style>
+	.flip {
+		transform: scaleX(-1) scaleY(-1);
+	}
+</style>
