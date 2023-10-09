@@ -90,7 +90,7 @@
 	}
 
 	// --- Sorting ---
-	let reverseMode = true; 	// partiamo in ordine A-Z
+	let reverseMode = true; // partiamo in ordine A-Z
 	import sortIco from '$lib/assets/sort.svg';
 
 	/**
@@ -135,12 +135,17 @@
 			</button>
 		</div>
 	</div>
-	<div class="flex flex-1 justify-end mr-4 mb-3" > 
+	<div class="flex flex-1 justify-end mr-4 mb-3">
 		<button class="lg:ml-2 p-1 rounded-lg bg-primary text btn-ghost" on:click={toggleReverse}>
 			{#if reverseMode}
-				<img src={sortIco} alt="sorting ascendant icon" class="flex-shrink-0 w-5">
+				<img src={sortIco} alt="sorting ascendant icon" class="flex-shrink-0 w-5" />
 			{:else}
-				<img src={sortIco} alt="sorting descendant icon" class="flex-shrink-0 w-5" style="transform: rotate(180deg);" >
+				<img
+					src={sortIco}
+					alt="sorting descendant icon"
+					class="flex-shrink-0 w-5"
+					style="transform: rotate(180deg);"
+				/>
 			{/if}
 		</button>
 	</div>
