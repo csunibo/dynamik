@@ -104,7 +104,7 @@
 	$: title = genTitle(urlParts);
 
 	// --- Sorting ---
-	let reverseMode = true; 	// partiamo in ordine A-Z
+	let reverseMode = true; // partiamo in ordine A-Z
 	import sortIco from '$lib/assets/sort.svg';
 
 	/**
