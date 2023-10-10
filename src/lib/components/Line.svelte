@@ -50,9 +50,13 @@
 			{#if isFile}
 				{isFile && data.size != '0 B' ? data.size : '-'}
 				{#if data.size != '0 B'}
-					<button class="text-lg ml-3" on:click={downloadFile}>📥</button>
+					<button class="text-lg ml-3" on:click={downloadFile}>
+						<span class="text-accent text-3xl icon-[solar--download-square-bold]"></span>
+					</button>
 				{:else}
-					<button disabled class="text-lg ml-3" style="mix-blend-mode: luminosity">📥</button>
+					<button disabled class="text-lg ml-3" on:click={downloadFile}>
+						<span class="text-neutral text-3xl icon-[solar--download-square-bold]"></span>
+					</button>
 				{/if}
 			{/if}
 		</span>
