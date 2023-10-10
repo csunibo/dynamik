@@ -101,7 +101,11 @@
 		<div class="navbar-center">
 			<div class="lg:text-lg breadcrumbs text-sm font-semibold">
 				<ul>
-					<li><a class="ml-1" href="/">🏠 Risorse</a></li>
+					<li>
+						<a class="ml-1 flex items-center" href="/">
+							<span class="mr-2 text-xl icon-[akar-icons--home-alt1]"></span> Risorse
+						</a>
+					</li>
 					{#each urlParts as part}
 						{@const href = getPartHref(part)}
 						<li><a {href}>{part}</a></li>
