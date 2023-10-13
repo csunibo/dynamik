@@ -101,7 +101,7 @@
 				<ul>
 					<li>
 						<a class="ml-1 flex items-center" href="/">
-							<span class="mr-2 text-xl icon-[akar-icons--home-alt1]"></span> Risorse
+							<span class="text-xl icon-[akar-icons--home-alt1]"></span>
 						</a>
 					</li>
 					{#each urlParts as part}

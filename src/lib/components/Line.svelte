@@ -46,15 +46,15 @@
 				{data.name}
 			</a>
 		{/if}
-		<span class="whitespace-nowrap text-right text-xs self-center">
+		<span class="flex items-center justify-end whitespace-nowrap text-xs">
 			{#if isFile}
 				{isFile && data.size != '0 B' ? data.size : '-'}
 				{#if data.size != '0 B'}
-					<button class="text-lg ml-3" on:click={downloadFile}>
+					<button class="flex text-lg ml-3" on:click={downloadFile}>
 						<span class="text-accent text-3xl icon-[solar--download-square-bold]"></span>
 					</button>
 				{:else}
-					<button disabled class="text-lg ml-3" on:click={downloadFile}>
+					<button disabled class="flex text-lg ml-3" on:click={downloadFile}>
 						<span class="text-neutral text-3xl icon-[solar--download-square-bold]"></span>
 					</button>
 				{/if}
