@@ -34,6 +34,7 @@
 
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:image" property="og:image" content={ogImage} />
+	<meta property="og:image" content={ogImage}>
 </svelte:head>
 
 <slot />
