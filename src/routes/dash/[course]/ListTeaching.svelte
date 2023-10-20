@@ -27,8 +27,12 @@
 								{teaching.name ? teaching.name : teaching.url}
 							</a>
 							{#if teaching.chat != null && teaching.chat !== ''}
-								<a href="https://{teaching.chat}" class="text-center join-item border-l-2">
-									<span class="text-secondary text-2xl icon-[akar-icons--people-group]"></span>
+								<a
+									href={disabled ? null : 'https://' + teaching.chat}
+									class="text-center join-item border-l-2"
+									title="Link alla community"
+								>
+									<span class="text-2xl icon-[akar-icons--people-group]"></span>
 								</a>
 							{/if}
 						</li>
