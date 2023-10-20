@@ -11,11 +11,7 @@ module.exports = {
 			}
 		}
 	},
-	plugins: [
-		require('@tailwindcss/typography'),
-		require('daisyui'),
-		addDynamicIconSelectors()
-	],
+	plugins: [require('@tailwindcss/typography'), require('daisyui'), addDynamicIconSelectors()],
 	daisyui: {
 		themes: ['halloween', 'autumn', 'dracula']
 	}
