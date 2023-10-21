@@ -37,9 +37,9 @@
 </script>
 
 <svelte:head>
-	<title>Risorse CSUnibo | {data.course?.name}</title>
+	<title>{data.course?.name}</title>
 	<!-- OG meta graph -->
-	<meta name="title" property="og:title" content="Risorse CSUnibo | {data.course?.name}" />
+	<meta property="og:title" content={data.course?.name} />
 	<meta
 		name="url"
 		property="og:url"

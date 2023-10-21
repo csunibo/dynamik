@@ -86,10 +86,40 @@
 			searchInput.focus();
 		}, 100);
 	}
+
+	function kebabToTitle(str: string) {
+		return str
+			.split('-')
+			.map((s) => s[0].toUpperCase() + s.slice(1))
+			.join(' ');
+	}
+
+	function titleToAcronym(str: string) {
+		return str
+			.split(' ')
+			.map((s) => s[0].toUpperCase())
+			.join('');
+	}
+
+	function genTitle(parts: string[]) {
+		if (parts.length === 0) return 'Risorse';
+		const title = kebabToTitle(parts[0]);
+
+		if (parts.length === 1) {
+			return title;
+		} else if (parts.length === 2) {
+			return titleToAcronym(title) + ' > ' + kebabToTitle(parts[1]);
+		} else {
+			return titleToAcronym(title) + ' >...> ' + kebabToTitle(parts[parts.length - 1]);
+		}
+	}
+
+	$: title = genTitle(urlParts);
 </script>
 
 <svelte:head>
-	<title>Risorse | {urlParts[urlParts.length - 1]}</title>
+	<title>{title}</title>
+	<meta property="og:title" content={title} />
 </svelte:head>
 
 <svelte:body on:keydown={keydown} />

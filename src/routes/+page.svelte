@@ -9,10 +9,9 @@
 </script>
 
 <svelte:head>
-	<title>CSUnibo | Homepage</title>
+	<title>Risorse CSUnibo</title>
 	<!-- OG meta graph -->
-	<meta name="title" property="og:title" content="Risorse CSUnibo" />
-	<meta name="type" property="og:type" content="website" />
+	<meta name="title" property="og:title" content="Dashboard" />
 	<meta
 		name="description"
 		property="og:description"
