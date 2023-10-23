@@ -105,7 +105,6 @@
 
 	// --- Sorting ---
 	let reverseMode = true; // partiamo in ordine A-Z
-	import sortIco from '$lib/assets/sort.svg';
 
 	/**
 	 * Inverte l'ordine di visualizzazione delle risorse
