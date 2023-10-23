@@ -171,16 +171,6 @@
 			</button>
 		</div>
 	</div>
-	
-	<div class="flex flex-1 justify-end mr-4 mb-3">
-		<button
-			class="lg:ml-2 p-1 flex items-center rounded-xl bg-primary text-base"
-			on:click={toggleReverse}
-		>
-			<span class="text-xl icon-[solar--sort-vertical-bold-duotone]" class:flip={reverseMode}
-			></span>
-		</button>
-	</div>
 
 	<div class="grid gap-5 grid-cols-dir md:grid-cols-dir-full mx-4 text-lg">
 		{#if data.manifest.directories}
