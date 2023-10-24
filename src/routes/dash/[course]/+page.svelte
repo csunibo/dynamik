@@ -37,9 +37,9 @@
 </script>
 
 <svelte:head>
-	<title>Risorse CSUnibo | {data.course?.name}</title>
+	<title>{data.course?.name}</title>
 	<!-- OG meta graph -->
-	<meta name="title" property="og:title" content="Risorse CSUnibo | {data.course?.name}" />
+	<meta property="og:title" content={data.course?.name} />
 	<meta
 		name="url"
 		property="og:url"
@@ -69,8 +69,10 @@
 					{data.course.name}
 				</h1>
 			</div>
-			<div class="navbar-end">
-				<a class="btn btn-square btn-ghost" title="Indietro" href="/"> ⬆️ </a>
+			<div class="navbar-end flex items-center">
+				<a class="btn btn-square btn-ghost" title="Indietro" href="/">
+					<span class="text-primary icon-[akar-icons--arrow-back-thick-fill]"></span>
+				</a>
 			</div>
 		</nav>
 		<ListTeaching years={filteredCourses.mandatory} {activeYears} title={''} />

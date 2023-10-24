@@ -14,8 +14,10 @@
 		<div class="navbar-start">
 			<h1 class="text-xl font-semibold text-base-content">Stato delle raccolte</h1>
 		</div>
-		<div class="navbar-end">
-			<a class="btn btn-square btn-ghost" title="Indietro" href="/"> ⬆️ </a>
+		<div class="navbar-end flex items-center">
+			<a class="btn btn-square btn-ghost" title="Indietro" href="/">
+				<span class="text-primary icon-[akar-icons--arrow-back-thick-fill]"></span>
+			</a>
 		</div>
 	</nav>
 	<div class="m-8">
