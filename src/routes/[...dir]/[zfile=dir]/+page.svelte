@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
 	import Fuse from 'fuse.js';
 
 	import { page } from '$app/stores';
@@ -16,14 +15,6 @@
 	let searchActive = false;
 	let searchInput: HTMLInputElement;
 	let resultList: HTMLUListElement;
-
-	let parentPath = '/';
-	const pageUnsubscribe = page.subscribe((page) => {
-		const path = page.params.dir.split('/');
-		path.push(page.params.file);
-		path.pop();
-		parentPath = base + '/' + path.join('/');
-	});
 
 	let searchQuery = '';
 	let fuse: Fuse<FuzzyFile> = new Fuse(data.fuzzy, {
@@ -51,10 +42,6 @@
 			.split('/')
 			.slice(0, $page.url.pathname.split('/').indexOf(part) + 1)
 			.join('/');
-
-	onDestroy(() => {
-		pageUnsubscribe();
-	});
 
 	function keydown(e: KeyboardEvent) {
 		if (e.key === 'Escape') {
