@@ -32,7 +32,7 @@
 	<link rel="icon" href={unibo192png} sizes="192x192" />
 	<link rel="icon" href={unibo512png} sizes="512x512" />
 
-  <!-- OG preview settings -->
+	<!-- OG preview settings -->
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:image" property="og:image" content={ogImage} />
 	<meta property="og:image" content={ogImage} />
