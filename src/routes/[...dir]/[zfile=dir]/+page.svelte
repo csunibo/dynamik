@@ -13,7 +13,6 @@
 
 	// dynamic degrees breadcrumbs
 	import { degrees } from '$lib/const';
-	$: breadcrumbs = $page.url.pathname.split('/') + '/dash/' + degrees;
 
 	let editUrls = EDIT_URLS($page.url.pathname);
 	let searchActive = false;
