@@ -9,6 +9,10 @@
 	export let data: PageData;
 	let activeYears: Teaching[] = [];
 
+	// dynamic degrees breadcrumbs
+	import { degrees } from '$lib/const';
+	degrees.set($page.url.pathname);
+
 	let login:
 		| Promise<{ error: string } | { username: string; name: string; avatarUrl: string }>
 		| undefined;

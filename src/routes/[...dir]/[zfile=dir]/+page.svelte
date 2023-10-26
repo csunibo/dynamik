@@ -11,6 +11,10 @@
 	import type { PageData } from './$types';
 	export let data: PageData;
 
+	// dynamic degrees breadcrumbs
+	import { degrees } from '$lib/const';
+	$: breadcrumbs = $page.url.pathname.split('/') + '/dash/' + degrees;
+
 	let editUrls = EDIT_URLS($page.url.pathname);
 	let searchActive = false;
 	let searchInput: HTMLInputElement;
@@ -119,6 +123,11 @@
 					<li>
 						<a class="ml-1 flex items-center" href="/">
 							<span class="text-xl icon-[akar-icons--home-alt1]"></span>
+						</a>
+					</li>
+					<li>
+						<a class="flex items-center" href={$degrees}>
+							<span class="text-xl icon-[ic--round-school]"></span>
 						</a>
 					</li>
 					{#each urlParts as part}
