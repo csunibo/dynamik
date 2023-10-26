@@ -11,7 +11,7 @@
 	$: external = 'mime' in data ? data.mime === 'text/statik-link' : false;
 
 	async function downloadFile() {
-		const url = customUrl ?? $page.url + '/' + data.name;
+		const url = data.url;
 		const response = await fetch(url);
 		const blob = await response.blob();
 		const urlObject = window.URL.createObjectURL(new Blob([blob]));
