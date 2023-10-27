@@ -8,6 +8,9 @@ devDependencies:
   '@iconify-json/akar-icons':
     specifier: ^1.1.19
     version: 1.1.19
+  '@iconify-json/ic':
+    specifier: ^1.1.14
+    version: 1.1.14
   '@iconify-json/material-symbols':
     specifier: ^1.1.60
     version: 1.1.60
@@ -416,6 +419,12 @@ packages:
 
   /@iconify-json/akar-icons@1.1.19:
     resolution: {integrity: sha512-fKbrfL8k7fTC6D2+SN9ve28saTCjJWSBx1DCyuHz8lCwZIrmojHDmQFGI5eFpSjQ18JrhI9Hp9j6l25xC3Oqvw==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: true
+
+  /@iconify-json/ic@1.1.14:
+    resolution: {integrity: sha512-vbATa9uwb9pIsRWQ+iXObQCgLTePk/0vo4shBr3Td0GnTjsAU/7VUGTkrZFVf5vpgiG6OsXkcKMPzBPvt966sg==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: true
