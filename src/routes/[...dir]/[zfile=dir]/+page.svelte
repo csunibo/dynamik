@@ -11,12 +11,6 @@
 	import type { PageData } from './$types';
 	export let data: PageData;
 
-	// dynamic degrees breadcrumbs
-	import { getDegree } from '$lib/context';
-	const degree = getDegree();
-	console.log('🔸' + $degree);
-	const breadcrumbs = `/dash/` + $degree;
-
 	let editUrls = EDIT_URLS($page.url.pathname);
 	let searchActive = false;
 	let searchInput: HTMLInputElement;
@@ -127,11 +121,13 @@
 							<span class="text-xl icon-[akar-icons--home-alt1]"></span>
 						</a>
 					</li>
-					<li>
-						<a class="flex items-center" href={breadcrumbs}>
-							<span class="text-xl icon-[ic--round-school]"></span>
-						</a>
-					</li>
+					{#if data.from != null}
+						<li>
+							<a class="flex items-center" href={'/dash/' + data.from}>
+								<span class="text-xl icon-[ic--round-school]"></span>
+							</a>
+						</li>
+					{/if}
 					{#each urlParts as part}
 						{@const href = getPartHref(part)}
 						<li><a {href}>{part}</a></li>

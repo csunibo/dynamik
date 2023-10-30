@@ -2,9 +2,6 @@
 	import { base } from '$app/paths';
 	import type { Course } from '$lib/teachings';
 	import Line from './Line.svelte';
-	import { initDegree } from '../lib/context';
-
-	initDegree();
 
 	export let data: {
 		courses: Course[];
