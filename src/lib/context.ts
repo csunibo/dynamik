@@ -16,6 +16,8 @@ export function setDegree(CdL: string) {
 }
 
 export function getDegree() {
-	if (global_deg == writable('')) global_deg = getContext<Context>('degree');
+	if (global_deg == writable('')) global_deg = getContext<Context>('degree');		
+	//! così funziona anche se in realtà il modo corretto di farlo sarebbe senza l'if: 
+	// il problema è che se non c'è nessun context con chiave 'degree' getContext restituisce undefined e quindi non abbiamo alcun corso, anche se in realtà era stato settato
 	return global_deg;
 }
