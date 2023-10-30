@@ -64,8 +64,8 @@
 					{/await}
 				{/if}
 			</div>
-			<div class="navbar-center">
-				<h1 class="text-xl font-semibold text-base-content">
+			<div class="navbar min-h-0 p-0 justify-center items-center">
+				<h1 class="flex flex-wrap text-xl text-center font-semibold text-base-content">
 					{data.course.name}
 				</h1>
 			</div>
