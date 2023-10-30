@@ -10,8 +10,10 @@
 	let activeYears: Teaching[] = [];
 
 	// dynamic degrees breadcrumbs
-	import { degrees } from '$lib/const';
-	degrees.set($page.url.pathname);
+	import { setDegree } from '$lib/context';
+	const degree: string = $page.url.pathname.split('/')[2];
+	console.log('✨' + degree);
+	setDegree(degree);
 
 	let login:
 		| Promise<{ error: string } | { username: string; name: string; avatarUrl: string }>

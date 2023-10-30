@@ -12,7 +12,10 @@
 	export let data: PageData;
 
 	// dynamic degrees breadcrumbs
-	import { degrees } from '$lib/const';
+	import { getDegree } from '$lib/context';
+	const degree = getDegree();
+	console.log('🔸' + $degree);
+	const breadcrumbs = `/dash/` + $degree;
 
 	let editUrls = EDIT_URLS($page.url.pathname);
 	let searchActive = false;
@@ -125,7 +128,7 @@
 						</a>
 					</li>
 					<li>
-						<a class="flex items-center" href={$degrees}>
+						<a class="flex items-center" href={breadcrumbs}>
 							<span class="text-xl icon-[ic--round-school]"></span>
 						</a>
 					</li>

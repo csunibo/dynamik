@@ -16,6 +16,3 @@ export const EDIT_URLS = (path: string) => {
 		github_dev: `${GH_DEV_BASE_URL}/${repo}/blob/main/${filePath}`
 	};
 };
-
-import { writable } from 'svelte/store';
-export const degrees = writable('');
