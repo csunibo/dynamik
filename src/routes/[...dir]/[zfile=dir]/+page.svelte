@@ -152,29 +152,29 @@
 					{/each}
 				</ul>
 			</div>
-			<div class="flex flex-1 justify-content-start">
-				<a
-					class="sm:ml-2 p-1 flex items-center rounded-lg btn-ghost flex-shrink-0 w-8"
-					href={editUrls.github_repo}
-				>
-					<span class="text-2xl icon-[akar-icons--github-fill]"></span>
-				</a>
+			<div class="navbar-end">
+				<div class="flex flex-1 justify-end">
+					<a
+						class="sm:ml-2 p-1 flex items-center rounded-lg btn-ghost flex-shrink-0 w-8"
+						href={editUrls.github_repo}
+					>
+						<span class="text-2xl icon-[akar-icons--github-fill]"></span>
+					</a>
+				</div>
+				<div class="flex flex-1 justify-end mr-2">
+					<button
+						class="lg:ml-2 p-2 flex items-center bg-base-300 rounded-xl btn-ghost"
+						title="ctrl + k"
+						on:click|preventDefault={() => viewMobileFinder()}
+					>
+						<span class="text-primary icon-[akar-icons--search]"></span>
+						<kbd class="kbd-sm hidden lg:inline-block">ctrl + k </kbd>
+					</button>
+				</div>
 			</div>
 		</div>
-		<div class="flex flex-1 justify-end mr-2">
-			<button
-				class="lg:ml-2 p-2 flex items-center bg-base-300 rounded-xl btn-ghost"
-				title="ctrl + k"
-				on:click|preventDefault={() => viewMobileFinder()}
-			>
-				<span class="text-primary icon-[akar-icons--search]"></span>
-				<kbd class="kbd-sm hidden lg:inline-block">ctrl + k </kbd>
-			</button>
-			</div>
-		</div>
-	</div>
-	<!-- TODO uncomment when #111 is merged -->
-	<!-- <div class="flex flex-1 justify-end mr-4 mb-3">
+		<!-- TODO uncomment when #111 is merged -->
+		<!-- <div class="flex flex-1 justify-end mr-4 mb-3">
 		<button
 			class="lg:ml-2 p-1 flex items-center rounded-xl bg-primary text-base"
 			on:click={toggleReverse}
@@ -184,19 +184,20 @@
 		</button>
 	</div> -->
 
-	<div class="grid gap-5 grid-cols-dir md:grid-cols-dir-full mx-4 text-lg">
-		{#if data.manifest.directories}
-			{@const directories = data.manifest.directories}
-			{#each directories as dir}
-				<Line data={dir} />
-			{/each}
-		{/if}
-		{#if data.manifest.files}
-			{@const files = data.manifest.files}
-			{#each files as file}
-				<Line data={file} />
-			{/each}
-		{/if}
+		<div class="grid gap-5 grid-cols-dir md:grid-cols-dir-full mx-4 text-lg">
+			{#if data.manifest.directories}
+				{@const directories = data.manifest.directories}
+				{#each directories as dir}
+					<Line data={dir} />
+				{/each}
+			{/if}
+			{#if data.manifest.files}
+				{@const files = data.manifest.files}
+				{#each files as file}
+					<Line data={file} />
+				{/each}
+			{/if}
+		</div>
 	</div>
 </main>
 
