@@ -48,34 +48,35 @@
 	<meta name="description" property="og:description" content="Risorse di {data.course?.name}" />
 </svelte:head>
 
-{#if !data.course}
-	<h1>Corso non trovato</h1>
-{:else}
-	<div class="max-w-5xl p-4 mx-auto">
-		<nav class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
-			<div class="navbar-start">
-				{#if login}
-					{#await login then login}
-						{#if 'error' in login}
-							<a class="btn btn-square btn-ghost" href={getLoginUrl($page.url)}> Login </a>
-						{:else}
-							<img src={login.avatarUrl} alt="User avatar" class="w-10 rounded-xl" />
-						{/if}
-					{/await}
-				{/if}
-			</div>
-			<div class="navbar min-h-0 p-0 justify-center items-center">
-				<h1 class="flex flex-wrap text-xl text-center font-semibold text-base-content">
-					{data.course.name}
-				</h1>
-			</div>
-			<div class="navbar-end flex items-center">
-				<a class="btn btn-square btn-ghost" title="Indietro" href="/">
-					<span class="text-primary icon-[akar-icons--arrow-back-thick-fill]"></span>
-				</a>
-			</div>
-		</nav>
-		<ListTeaching years={filteredCourses.mandatory} {activeYears} title={''} />
-		<ListTeaching years={filteredCourses.optional} {activeYears} title={'facoltativi'} />
-	</div>
-{/if}
+<div class="max-w-5xl p-4 mx-auto">
+	<nav class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
+		<div class="navbar-start">
+			{#if login}
+				{#await login then login}
+					{#if 'error' in login}
+						<a class="btn btn-square btn-ghost" href={getLoginUrl($page.url)}> Login </a>
+					{:else}
+						<img src={login.avatarUrl} alt="User avatar" class="w-10 rounded-xl" />
+					{/if}
+				{/await}
+			{/if}
+		</div>
+    <div class="navbar min-h-0 p-0 justify-center items-center">
+      <h1 class="flex flex-wrap text-xl text-center font-semibold text-base-content">
+        {data.course.name}
+      </h1>
+    </div>
+    <div class="navbar-end flex items-center">
+      <a class="btn btn-square btn-ghost" title="Indietro" href="/">
+        <span class="text-primary icon-[akar-icons--arrow-back-thick-fill]"></span>
+      </a>
+    </div>
+	</nav>
+	<ListTeaching years={filteredCourses.mandatory} {activeYears} title={''} from={data.course.id} />
+	<ListTeaching
+		title="facoltativi"
+		years={filteredCourses.optional}
+		{activeYears}
+		from={data.course.id}
+	/>
+</div>

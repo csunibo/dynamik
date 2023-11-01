@@ -13,6 +13,7 @@
 	},
 	"devDependencies": {
 		"@iconify-json/akar-icons": "^1.1.19",
+		"@iconify-json/ic": "^1.1.14",
 		"@iconify-json/material-symbols": "^1.1.60",
 		"@iconify-json/solar": "^1.1.5",
 		"@iconify/iconify": "^3.1.1",
@@ -36,7 +37,7 @@
 		"eslint": "^8.52.0",
 		"eslint-config-prettier": "^9.0.0",
 		"eslint-plugin-svelte": "^2.34.0",
-		"fuse.js": "^6.6.2",
+		"fuse.js": "^7.0.0",
 		"katex": "^0.16.9",
 		"marked": "^9.1.2",
 		"postcss": "^8.4.31",

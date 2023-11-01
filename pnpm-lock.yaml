@@ -8,6 +8,9 @@ devDependencies:
   '@iconify-json/akar-icons':
     specifier: ^1.1.19
     version: 1.1.19
+  '@iconify-json/ic':
+    specifier: ^1.1.14
+    version: 1.1.14
   '@iconify-json/material-symbols':
     specifier: ^1.1.60
     version: 1.1.60
@@ -78,8 +81,8 @@ devDependencies:
     specifier: ^2.34.0
     version: 2.34.0(eslint@8.52.0)(svelte@4.2.2)
   fuse.js:
-    specifier: ^6.6.2
-    version: 6.6.2
+    specifier: ^7.0.0
+    version: 7.0.0
   katex:
     specifier: ^0.16.9
     version: 0.16.9
@@ -416,6 +419,12 @@ packages:
 
   /@iconify-json/akar-icons@1.1.19:
     resolution: {integrity: sha512-fKbrfL8k7fTC6D2+SN9ve28saTCjJWSBx1DCyuHz8lCwZIrmojHDmQFGI5eFpSjQ18JrhI9Hp9j6l25xC3Oqvw==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: true
+
+  /@iconify-json/ic@1.1.14:
+    resolution: {integrity: sha512-vbATa9uwb9pIsRWQ+iXObQCgLTePk/0vo4shBr3Td0GnTjsAU/7VUGTkrZFVf5vpgiG6OsXkcKMPzBPvt966sg==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: true
@@ -1654,8 +1663,8 @@ packages:
     resolution: {integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==}
     dev: true
 
-  /fuse.js@6.6.2:
-    resolution: {integrity: sha512-cJaJkxCCxC8qIIcPBF9yGxY0W/tVZS3uEISDxhYIdtk8OL93pe+6Zj7LjCqVV4dzbqcriOZ+kQ/NE4RXZHsIGA==}
+  /fuse.js@7.0.0:
+    resolution: {integrity: sha512-14F4hBIxqKvD4Zz/XjDc3y94mNZN6pRv3U13Udo0lNLCWRBUsrMv2xwcF/y/Z5sV6+FQW+/ow68cHpm4sunt8Q==}
     engines: {node: '>=10'}
     dev: true
 
