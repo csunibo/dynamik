@@ -61,16 +61,16 @@
 				{/await}
 			{/if}
 		</div>
-    <div class="navbar min-h-0 p-0 justify-center items-center">
-      <h1 class="flex flex-wrap text-xl text-center font-semibold text-base-content">
-        {data.course.name}
-      </h1>
-    </div>
-    <div class="navbar-end flex items-center">
-      <a class="btn btn-square btn-ghost" title="Indietro" href="/">
-        <span class="text-primary icon-[akar-icons--arrow-back-thick-fill]"></span>
-      </a>
-    </div>
+		<div class="navbar min-h-0 p-0 justify-center items-center">
+			<h1 class="flex flex-wrap text-xl text-center font-semibold text-base-content">
+				{data.course.name}
+			</h1>
+		</div>
+		<div class="navbar-end flex items-center">
+			<a class="btn btn-square btn-ghost" title="Indietro" href="/">
+				<span class="text-primary icon-[akar-icons--arrow-back-thick-fill]"></span>
+			</a>
+		</div>
 	</nav>
 	<ListTeaching years={filteredCourses.mandatory} {activeYears} title={''} from={data.course.id} />
 	<ListTeaching
