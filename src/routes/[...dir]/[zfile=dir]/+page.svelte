@@ -17,17 +17,15 @@
 	let resultList: HTMLUListElement;
 
 	// -- breadcrumbs --
+	let breadcrumb: HTMLElement;
+	let bc_title: HTMLElement;
 	function mobileBreadcrumb() {
-		return () => {
-			const breadcrumb = document.querySelector('.breadcrumbs');
-			if (breadcrumb) {
-				breadcrumb.classList.toggle('hidden');
-			}
-			const title = document.querySelector('.mobile-breadcrumb-title');
-			if (title) {
-				title.classList.toggle('hidden');
-			}
-		};
+		if (breadcrumb != null) {
+			breadcrumb.classList.toggle('hidden');
+		}
+		if (bc_title != null) {
+			bc_title.classList.toggle('hidden');
+		}
 	}
 
 	let searchQuery = '';
@@ -128,17 +126,18 @@
 <main class="max-w-6xl p-4 mx-auto">
 	<div class="navbar flex bg-base-200 rounded-box shadow-sm px-5 mb-5">
 		<div class="sm:hidden flex justify-start items-center">
-			<button class="sm:hidden flex btn btn-ghost btn-sm" on:click={mobileBreadcrumb()}>
+			<button class="sm:hidden flex btn btn-ghost btn-sm" on:click={mobileBreadcrumb}>
 				<span
 					class="sm:hidden flex text-2xl items-center text-accent icon-[solar--folder-path-connect-bold-duotone]"
 				>
 				</span>
-				<p class="text-accent mobile-breadcrumb-title">{title}</p>
+				<p class="text-accent" bind:this={bc_title}>{title}</p>
 			</button>
 		</div>
 		<div class="navbar min-h-0 p-0 justify-start items-center">
 			<div
 				class="breadcrumbs hidden sm:flex lg:text-lg sm:items-start text-sm sm:flex-wrap font-semibold"
+				bind:this={breadcrumb}
 			>
 				<ul>
 					<li>
@@ -152,25 +151,25 @@
 					{/each}
 				</ul>
 			</div>
-			<div class="navbar-end">
-				<div class="flex flex-1 justify-end">
-					<a
-						class="sm:ml-2 p-1 flex items-center rounded-lg btn-ghost flex-shrink-0 w-8"
-						href={editUrls.github_repo}
-					>
-						<span class="text-2xl icon-[akar-icons--github-fill]"></span>
-					</a>
-				</div>
-				<div class="flex flex-1 justify-end mr-2">
-					<button
-						class="lg:ml-2 p-2 flex items-center bg-base-300 rounded-xl btn-ghost"
-						title="ctrl + k"
-						on:click|preventDefault={() => viewMobileFinder()}
-					>
-						<span class="text-primary icon-[akar-icons--search]"></span>
-						<kbd class="kbd-sm hidden lg:inline-block">ctrl + k </kbd>
-					</button>
-				</div>
+		</div>
+		<div class="navbar-end">
+			<div class="flex flex-1 justify-end">
+				<a
+					class="sm:ml-2 p-1 flex items-center rounded-lg btn-ghost flex-shrink-0 w-8"
+					href={editUrls.github_repo}
+				>
+					<span class="text-2xl icon-[akar-icons--github-fill]"></span>
+				</a>
+			</div>
+			<div class="flex flex-1 justify-end mr-2">
+				<button
+					class="lg:ml-2 p-2 flex items-center bg-base-300 rounded-xl btn-ghost"
+					title="ctrl + k"
+					on:click|preventDefault={() => viewMobileFinder()}
+				>
+					<span class="text-primary icon-[akar-icons--search]"></span>
+					<kbd class="kbd-sm hidden lg:inline-block">ctrl + k </kbd>
+				</button>
 			</div>
 		</div>
 		<!-- TODO uncomment when #111 is merged -->
@@ -182,22 +181,21 @@
 			<span class="text-xl icon-[solar--sort-vertical-bold-duotone]" class:flip={reverseMode}
 			></span>
 		</button>
-	</div> -->
-
-		<div class="grid gap-5 grid-cols-dir md:grid-cols-dir-full mx-4 text-lg">
-			{#if data.manifest.directories}
-				{@const directories = data.manifest.directories}
-				{#each directories as dir}
-					<Line data={dir} />
-				{/each}
-			{/if}
-			{#if data.manifest.files}
-				{@const files = data.manifest.files}
-				{#each files as file}
-					<Line data={file} />
-				{/each}
-			{/if}
-		</div>
+		</div> -->
+	</div>
+	<div class="grid gap-5 grid-cols-dir md:grid-cols-dir-full mx-4 text-lg">
+		{#if data.manifest.directories}
+			{@const directories = data.manifest.directories}
+			{#each directories as dir}
+				<Line data={dir} />
+			{/each}
+		{/if}
+		{#if data.manifest.files}
+			{@const files = data.manifest.files}
+			{#each files as file}
+				<Line data={file} />
+			{/each}
+		{/if}
 	</div>
 </main>
 
