@@ -121,6 +121,13 @@
 							<span class="text-xl icon-[akar-icons--home-alt1]"></span>
 						</a>
 					</li>
+					{#if data.from != null}
+						<li>
+							<a class="flex items-center" href={'/dash/' + data.from}>
+								<span class="text-xl icon-[ic--round-school]"></span>
+							</a>
+						</li>
+					{/if}
 					{#each urlParts as part}
 						{@const href = getPartHref(part)}
 						<li><a {href}>{part}</a></li>

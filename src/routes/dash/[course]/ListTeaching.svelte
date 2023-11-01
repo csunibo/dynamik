@@ -5,6 +5,13 @@
 	export let years: TeachingYear[];
 	export let activeYears: Teaching[];
 	export let title: string;
+	export let from: string | undefined = undefined;
+
+	function getUrl(teaching: Teaching) {
+		let url = base + '/' + teaching.url;
+		if (from != null) url += '?from=' + from;
+		return url;
+	}
 </script>
 
 <ul class="menu p-2">
@@ -17,26 +24,23 @@
 			<div class="flex flex-row flex-wrap">
 				{#each year.teachings as teaching}
 					{@const disabled = !activeYears.includes(teaching)}
-					{@const href = base + '/' + teaching.url}
-					<a href={disabled ? null : href} class="text-center text-lg">
-						<li
-							class:disabled
-							class="flex flex-row xs:flex-1 justify-center border-base-content items-center m-2 border-2 rounded-md join"
-						>
-							<a href={disabled ? null : href} class="text-center text-lg join-item">
-								{teaching.name ? teaching.name : teaching.url}
+					<li
+						class:disabled
+						class="flex flex-row xs:flex-1 justify-center border-base-content items-center m-2 border-2 rounded-md join"
+					>
+						<a href={disabled ? null : getUrl(teaching)} class="text-center text-lg join-item">
+							{teaching.name ? teaching.name : teaching.url}
+						</a>
+						{#if teaching.chat != null && teaching.chat !== ''}
+							<a
+								href={disabled ? null : 'https://' + teaching.chat}
+								class="text-center join-item border-l-2"
+								title="Link alla community"
+							>
+								<span class="text-2xl icon-[akar-icons--people-group]"></span>
 							</a>
-							{#if teaching.chat != null && teaching.chat !== ''}
-								<a
-									href={disabled ? null : 'https://' + teaching.chat}
-									class="text-center join-item border-l-2"
-									title="Link alla community"
-								>
-									<span class="text-2xl icon-[akar-icons--people-group]"></span>
-								</a>
-							{/if}
-						</li>
-					</a>
+						{/if}
+					</li>
 				{/each}
 			</div>
 		{/if}
