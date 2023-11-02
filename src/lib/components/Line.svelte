@@ -6,10 +6,12 @@
 
 	export let data: File | Directory;
 	export let customUrl: string | undefined = undefined;
+	let base = $page.url.pathname.split('?')[0];
 
 	$: isFile = 'mime' in data;
 	$: external = 'mime' in data ? data.mime === 'text/statik-link' : false;
 
+	let base_url = $page.url.pathname.split('?')[0];
 	async function downloadFile() {
 		const url = data.url;
 		const response = await fetch(url);
@@ -35,14 +37,17 @@
 			<span><code>📄</code></span>
 			<a
 				class="link link-hover text-primary"
-				href="{$page.url}/{data.name}"
+				href="{base}/{data.name}?{$page.url.searchParams}"
 				target={$settings.newTab ? '_blank' : '_self'}
 			>
 				{data.name}
 			</a>
 		{:else}
 			<span><code>📁</code></span>
-			<a class="link link-hover text-primary" href={customUrl ?? $page.url + '/' + data.name}>
+			<a
+				class="link link-hover text-primary"
+				href={customUrl ?? base + '/' + data.name + '?' + $page.url.searchParams}
+			>
 				{data.name}
 			</a>
 		{/if}
