@@ -11,7 +11,6 @@
 	$: isFile = 'mime' in data;
 	$: external = 'mime' in data ? data.mime === 'text/statik-link' : false;
 
-	let base_url = $page.url.pathname.split('?')[0];
 	async function downloadFile() {
 		const url = data.url;
 		const response = await fetch(url);
