@@ -17,15 +17,9 @@
 	let resultList: HTMLUListElement;
 
 	// -- breadcrumbs --
-	let breadcrumb: HTMLElement;
-	let bc_title: HTMLElement;
+	let breadcrumbMobile = false;
 	function mobileBreadcrumb() {
-		if (breadcrumb != null) {
-			breadcrumb.classList.toggle('hidden');
-		}
-		if (bc_title != null) {
-			bc_title.classList.toggle('hidden');
-		}
+		breadcrumbMobile = !breadcrumbMobile;
 	}
 
 	let searchQuery = '';
@@ -131,13 +125,13 @@
 					class="sm:hidden flex text-2xl items-center text-accent icon-[solar--folder-path-connect-bold-duotone]"
 				>
 				</span>
-				<p class="text-accent" bind:this={bc_title}>{title}</p>
+				<p class="text-accent" class:hidden={breadcrumbMobile}>{title}</p>
 			</button>
 		</div>
 		<div class="navbar min-h-0 p-0 justify-start items-center">
 			<div
-				class="breadcrumbs hidden sm:flex lg:text-lg sm:items-start text-sm sm:flex-wrap font-semibold"
-				bind:this={breadcrumb}
+				class="breadcrumbs sm:flex lg:text-lg sm:items-start text-sm sm:flex-wrap font-semibold"
+				class:hidden={breadcrumbMobile}
 			>
 				<ul>
 					<li>
