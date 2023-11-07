@@ -17,7 +17,7 @@
 	let resultList: HTMLUListElement;
 
 	// -- breadcrumbs --
-	let breadcrumbMobile = false;
+	let breadcrumbMobile = true;
 	function mobileBreadcrumb() {
 		breadcrumbMobile = !breadcrumbMobile;
 	}
@@ -125,7 +125,7 @@
 					class="sm:hidden flex text-2xl items-center text-accent icon-[solar--folder-path-connect-bold-duotone]"
 				>
 				</span>
-				<p class="text-accent" class:hidden={breadcrumbMobile}>{title}</p>
+				<p class="text-accent" class:hidden={!breadcrumbMobile}>{title}</p>
 			</button>
 		</div>
 		<div class="navbar min-h-0 p-0 justify-start items-center">
