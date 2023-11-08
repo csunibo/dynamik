@@ -9,7 +9,7 @@
   "theme_color": "#282828",
   "icons": [
     {
-      "src": "./assets/media/icon.png",
+      "src": "./src/lib/assets/unibo512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
