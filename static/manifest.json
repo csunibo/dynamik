@@ -1,11 +1,12 @@
 {
 	"name": "Raccolta risorse di CSunibo",
 	"short_name": "Risorse",
-	"start_url": ".",
+	"start_url": "/",
 	"id": "/dynamik/",
 	"display": "standalone",
 	"background_color": "#282828",
 	"description": "Raccolta risorse per il DISI di UniBo gestito da CSUnibo",
+	"lang": "it-it",
 	"theme_color": "#282828",
 	"icons": [
 		{

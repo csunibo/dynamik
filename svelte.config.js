@@ -35,9 +35,6 @@ const config = {
 		adapter: chooseAdapter(),
 		paths: {
 			base: BASE_PATH
-		},
-		serviceWorker: {
-			register: false
 		}
 	}
 };
