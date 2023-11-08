@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import settings from '$lib/settings';
-	import { pwaInfo } from 'virtual:pwa-info';
 
-	$: webManifestLink = pwaInfo ? pwaInfo.webManifest.linkTag : '';
 	onMount(() => {
 		settings.subscribe(() => {
 			document.firstElementChild!.setAttribute('data-theme', $settings.theme);
@@ -24,7 +22,6 @@
 </script>
 
 <svelte:head>
-	{@html webManifestLink}
 	<link rel="icon" href={unibo32ico} sizes="32x32" />
 	<link rel="icon" href={unibo128ico} sizes="128x128" />
 	<link rel="icon" href={unibo180ico} sizes="180x180" />
