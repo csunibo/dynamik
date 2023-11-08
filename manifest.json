@@ -1,17 +1,17 @@
 {
-  "name": "Raccolta risorse di CSunibo",
-  "short_name": "Risorse",
-  "start_url": ".",
-  "id": "/dynamik.vercel.app/",
-  "display": "standalone",
-  "background_color": "#282828",
-  "description": "Raccolta risorse per il DISI di UniBo gestito da CSUnibo",
-  "theme_color": "#282828",
-  "icons": [
-    {
-      "src": "./src/lib/assets/unibo512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+	"name": "Raccolta risorse di CSunibo",
+	"short_name": "Risorse",
+	"start_url": ".",
+	"id": "/dynamik.vercel.app/",
+	"display": "standalone",
+	"background_color": "#282828",
+	"description": "Raccolta risorse per il DISI di UniBo gestito da CSUnibo",
+	"theme_color": "#282828",
+	"icons": [
+		{
+			"src": "./src/lib/assets/unibo512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	]
 }
