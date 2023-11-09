@@ -105,7 +105,7 @@
 
 	// --- Sorting ---
 	let reverseMode = true; // partiamo in ordine A-Z
-	
+
 	/**
 	 * Inverte l'ordine di visualizzazione delle risorse
 	 */
@@ -165,11 +165,10 @@
 		</div>
 	</div>
 	<div class="flex flex-1 justify-end mr-4 mb-3">
-		<button
-			class="lg:ml-2 p-1 flex items-center rounded-xl bg-primary"
-			on:click={toggleReverse}
-		>
-			<span class="text-base-100 text-xl icon-[solar--sort-vertical-bold-duotone]" class:flip={reverseMode}
+		<button class="lg:ml-2 p-1 flex items-center rounded-xl bg-primary" on:click={toggleReverse}>
+			<span
+				class="text-base-100 text-xl icon-[solar--sort-vertical-bold-duotone]"
+				class:flip={reverseMode}
 			></span>
 		</button>
 	</div>
