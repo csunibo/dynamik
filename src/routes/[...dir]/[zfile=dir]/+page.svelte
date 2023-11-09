@@ -175,12 +175,12 @@
 		</div>
 		<div class="flex flex-1 justify-end mr-2">
 			<button
-				class="lg:ml-2 p-2 flex items-center bg-base-300 rounded-xl btn-ghost"
+				class="lg:ml-2 md:min-w-max p-2 flex items-center bg-base-300 rounded-xl btn-ghost"
 				title="ctrl + k"
 				on:click|preventDefault={() => viewMobileFinder()}
 			>
 				<span class="text-primary icon-[akar-icons--search]"></span>
-				<kbd class="kbd-sm hidden lg:inline-block">ctrl + k </kbd>
+				<kbd class="kbd-sm hidden md:inline-block">ctrl + k </kbd>
 			</button>
 		</div>
 	</div>
