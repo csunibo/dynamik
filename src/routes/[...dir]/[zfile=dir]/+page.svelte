@@ -139,7 +139,7 @@
 						</li>
 					{/if}
 					{#each urlParts as part}
-						{@const href = getPartHref(part) + '?from=' + data.from}
+						{@const href = getPartHref(part) + '?' + $page.url.searchParams}
 						<li><a {href}>{part}</a></li>
 					{/each}
 				</ul>
