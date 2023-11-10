@@ -157,7 +157,7 @@
 						</li>
 					{/if}
 					{#each urlParts as part}
-						{@const href = getPartHref(part)}
+						{@const href = getPartHref(part) + '?' + $page.url.searchParams}
 						<li><a {href} class="flex flex-wrap whitespace-normal">{part}</a></li>
 					{/each}
 				</ul>
