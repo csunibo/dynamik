@@ -2,18 +2,52 @@
 	"name": "Raccolta risorse di CSunibo",
 	"short_name": "Risorse",
 	"start_url": "/",
-	"id": "/dynamik/",
 	"display": "standalone",
+	"theme_color": "#971327",
 	"background_color": "#282828",
 	"description": "Raccolta risorse per il DISI di UniBo gestito da CSUnibo",
-	"lang": "it-it",
-	"theme_color": "#282828",
 	"icons": [
 		{
-			"src": "unibo512.png",
+			"src": "../src/lib/assets/unibo192.png",
+			"sizes": "192x192",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "../src/lib/assets/unibo512.png",
 			"sizes": "512x512",
 			"type": "image/png",
 			"purpose": "maskable"
+		}
+	],
+	"screenshots": [
+		{
+			"src": "screenshot-degree.png",
+			"sizes": "450x920",
+			"type": "image/png"
+		},
+		{
+			"src": "screenshot-dir.png",
+			"sizes": "450x920",
+			"type": "image/png"
+		},
+		{
+			"src": "screenshot-desk-home.png",
+			"sizes": "1280x720",
+			"type": "image/png",
+			"form_factor": "wide"
+		},
+		{
+			"src": "screenshot-desk-degree.png",
+			"sizes": "1280x720",
+			"type": "image/png",
+			"form_factor": "wide"
+		},
+		{
+			"src": "screenshot-desk-dir.png",
+			"sizes": "1280x720",
+			"type": "image/png",
+			"form_factor": "wide"
 		}
 	]
 }
