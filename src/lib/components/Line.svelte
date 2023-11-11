@@ -6,7 +6,7 @@
 
 	export let data: File | Directory;
 	export let customUrl: string | undefined = undefined;
-	// let base = $page.url.pathname.split('?')[0];
+	$: base = $page.url.pathname;
 
 	$: isFile = 'mime' in data;
 	$: external = 'mime' in data ? data.mime === 'text/statik-link' : false;
@@ -36,7 +36,7 @@
 			<span><code>📄</code></span>
 			<a
 				class="link link-hover text-primary"
-				href="{$page.url.pathname}/{data.name}?{$page.url.searchParams}"
+				href="{base}/{data.name}?{$page.url.searchParams}"
 				target={$settings.newTab ? '_blank' : '_self'}
 			>
 				{data.name}
@@ -45,7 +45,7 @@
 			<span><code>📁</code></span>
 			<a
 				class="link link-hover text-primary"
-				href={customUrl ?? $page.url.pathname + '/' + data.name + '?' + $page.url.searchParams}
+				href={customUrl ?? base + '/' + data.name + '?' + $page.url.searchParams}
 			>
 				{data.name}
 			</a>
