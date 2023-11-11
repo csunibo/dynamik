@@ -8,13 +8,13 @@
 	"description": "Raccolta risorse per il DISI di UniBo gestito da CSUnibo",
 	"icons": [
 		{
-			"src": "../src/lib/assets/unibo192.png",
+			"src": "unibo192.png",
 			"sizes": "192x192",
 			"type": "image/png",
 			"purpose": "any"
 		},
 		{
-			"src": "../src/lib/assets/unibo512.png",
+			"src": "unibo512.png",
 			"sizes": "512x512",
 			"type": "image/png",
 			"purpose": "maskable"
