@@ -11,7 +11,9 @@
 	$: isFile = 'mime' in data;
 	$: external = 'mime' in data ? data.mime === 'text/statik-link' : false;
 
+	let isSpinning = false;
 	async function downloadFile() {
+		isSpinning = true;
 		const url = data.url;
 		const response = await fetch(url);
 		const blob = await response.blob();
@@ -22,6 +24,7 @@
 		document.body.appendChild(a);
 		a.click();
 		a.remove();
+		isSpinning = false;
 	}
 </script>
 
@@ -55,7 +58,11 @@
 				{isFile && data.size != '0 B' ? data.size : '-'}
 				{#if data.size != '0 B'}
 					<button class="flex text-lg ml-3" on:click={downloadFile}>
-						<span class="text-accent text-3xl icon-[solar--download-square-bold]"></span>
+						<span
+							class="text-accent text-3xl {isSpinning
+								? 'icon-[eos-icons--loading]'
+								: 'icon-[solar--download-square-bold]'}"
+						></span>
 					</button>
 				{:else}
 					<button disabled class="flex text-lg ml-3" on:click={downloadFile}>

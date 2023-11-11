@@ -8,6 +8,9 @@ devDependencies:
   '@iconify-json/akar-icons':
     specifier: ^1.1.20
     version: 1.1.20
+  '@iconify-json/eos-icons':
+    specifier: ^1.1.7
+    version: 1.1.7
   '@iconify-json/ic':
     specifier: ^1.1.14
     version: 1.1.14
@@ -428,6 +431,12 @@ packages:
       '@iconify/types': 2.0.0
     dev: true
 
+  /@iconify-json/eos-icons@1.1.7:
+    resolution: {integrity: sha512-lAv0YFZlXrY5CaveJHvH9vOX2h+nprvvXayZijxR7lQprLmM9Pu2US9IQkEoI4iO8siLCUpM4KhjuxCg3WfI3A==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: true
+
   /@iconify-json/ic@1.1.14:
     resolution: {integrity: sha512-vbATa9uwb9pIsRWQ+iXObQCgLTePk/0vo4shBr3Td0GnTjsAU/7VUGTkrZFVf5vpgiG6OsXkcKMPzBPvt966sg==}
     dependencies:
@@ -450,6 +459,15 @@ packages:
     resolution: {integrity: sha512-1nemfyD/OJzh9ALepH7YfuuP8BdEB24Skhd8DXWh0hzcOxImbb1ZizSZkpCzAwSZSGcJFmscIBaBQu+yLyWaxQ==}
     dependencies:
       '@iconify/types': 2.0.0
+    dev: true
+
+  /@iconify/svelte@3.1.4(svelte@4.2.2):
+    resolution: {integrity: sha512-YDwQlN46ka8KPRayDb7TivmkAPizfTXi6BSRNqa1IV0+byA907n8JcgQafA7FD//pW5XCuuAhVx6uRbKTo+CfA==}
+    peerDependencies:
+      svelte: '*'
+    dependencies:
+      '@iconify/types': 2.0.0
+      svelte: 4.2.2
     dev: true
 
   /@iconify/tailwind@0.1.3:
