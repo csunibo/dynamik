@@ -6,7 +6,7 @@
 
 	export let data: File | Directory;
 	export let customUrl: string | undefined = undefined;
-	let base = $page.url.pathname.split('?')[0];
+	$: base = $page.url.pathname.split('?')[0];
 
 	$: isFile = 'mime' in data;
 	$: external = 'mime' in data ? data.mime === 'text/statik-link' : false;
