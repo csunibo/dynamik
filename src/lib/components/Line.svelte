@@ -25,6 +25,7 @@
 		a.click();
 		a.remove();
 		isSpinning = false;
+		URL.revokeObjectURL(urlObject);
 	}
 </script>
 
