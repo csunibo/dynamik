@@ -48,8 +48,8 @@ devDependencies:
     specifier: ^3.0.4
     version: 3.0.4
   '@types/jsdom':
-    specifier: ^21.1.4
-    version: 21.1.4
+    specifier: ^21.1.5
+    version: 21.1.5
   '@types/katex':
     specifier: ^0.16.5
     version: 0.16.5
@@ -763,8 +763,8 @@ packages:
     resolution: {integrity: sha512-CS2rOaoQ/eAgAfcTfq6amKG7bsN+EMcgGY4FAFQdvSj2y1ixvOZTUA9mOtCai7E1SYu283XNw7urKK30nP3wkQ==}
     dev: true
 
-  /@types/jsdom@21.1.4:
-    resolution: {integrity: sha512-NzAMLEV0KQ4cBaDx3Ls8VfJUElyDUm1xrtYRmcMK0gF8L5xYbujFVaQlJ50yinQ/d47j2rEP1XUzkiYrw4YRFA==}
+  /@types/jsdom@21.1.5:
+    resolution: {integrity: sha512-sBK/3YjS3uuPj+HzZyhB4GGTnFmk0mdyQfhzZ/sqs9ciyG41QJdZZdwcPa6OfW97OTNTwl5tBAsfEOm/dui9pQ==}
     dependencies:
       '@types/node': 20.8.7
       '@types/tough-cookie': 4.0.4
