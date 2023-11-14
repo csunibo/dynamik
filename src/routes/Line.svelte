@@ -5,5 +5,9 @@
 </script>
 
 <li>
-	<a class="py-8 justify-center border-base-content border-2 mb-4" {href}> {icon} {name} {icon} </a>
+	<a class="py-8 justify-center text-center border-base-content border-2 mb-4" {href}>
+		{icon}
+		{name}
+		{icon}
+	</a>
 </li>

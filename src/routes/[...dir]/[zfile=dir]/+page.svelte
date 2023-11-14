@@ -16,6 +16,12 @@
 	let searchInput: HTMLInputElement;
 	let resultList: HTMLUListElement;
 
+	// -- breadcrumbs --
+	let breadcrumbMobile = true;
+	function mobileBreadcrumb() {
+		breadcrumbMobile = !breadcrumbMobile;
+	}
+
 	let searchQuery = '';
 	let fuse: Fuse<FuzzyFile> = new Fuse(data.fuzzy, {
 		keys: ['name']
@@ -123,8 +129,20 @@
 
 <main class="max-w-6xl p-4 mx-auto">
 	<div class="navbar flex bg-base-200 rounded-box shadow-sm px-5 mb-5">
-		<div class="navbar-center">
-			<div class="lg:text-lg breadcrumbs text-sm font-semibold">
+		<div class="sm:hidden flex justify-start items-center">
+			<button class="sm:hidden flex btn btn-ghost btn-sm" on:click={mobileBreadcrumb}>
+				<span
+					class="sm:hidden flex text-2xl items-center text-accent icon-[solar--folder-path-connect-bold-duotone]"
+				>
+				</span>
+				<p class="text-accent" class:hidden={!breadcrumbMobile}>{title}</p>
+			</button>
+		</div>
+		<div class="navbar min-h-0 p-0 justify-start items-center">
+			<div
+				class="breadcrumbs sm:flex lg:text-lg sm:items-start text-sm sm:flex-wrap font-semibold"
+				class:hidden={breadcrumbMobile}
+			>
 				<ul>
 					<li>
 						<a class="ml-1 flex items-center" href="/">
@@ -140,11 +158,13 @@
 					{/if}
 					{#each urlParts as part}
 						{@const href = getPartHref(part) + '?' + $page.url.searchParams}
-						<li><a {href}>{part}</a></li>
+						<li><a {href} class="flex flex-wrap whitespace-normal">{part}</a></li>
 					{/each}
 				</ul>
 			</div>
-			<div class="flex flex-1 justify-content-start">
+		</div>
+		<div class="navbar-end">
+			<div class="flex flex-1 justify-end">
 				<a
 					class="sm:ml-2 p-1 flex items-center rounded-lg btn-ghost flex-shrink-0 w-8"
 					href={editUrls.github_repo}
@@ -155,12 +175,12 @@
 		</div>
 		<div class="flex flex-1 justify-end mr-2">
 			<button
-				class="lg:ml-2 p-2 flex items-center bg-base-300 rounded-xl btn-ghost"
+				class="lg:ml-2 md:min-w-max p-2 flex items-center bg-base-300 rounded-xl btn-ghost"
 				title="ctrl + k"
 				on:click|preventDefault={() => viewMobileFinder()}
 			>
 				<span class="text-primary icon-[akar-icons--search]"></span>
-				<kbd class="kbd-sm hidden lg:inline-block">ctrl + k </kbd>
+				<kbd class="kbd-sm hidden md:inline-block">ctrl + k </kbd>
 			</button>
 		</div>
 	</div>
