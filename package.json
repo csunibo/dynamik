@@ -13,6 +13,7 @@
 	},
 	"devDependencies": {
 		"@iconify-json/akar-icons": "^1.1.20",
+		"@iconify-json/eos-icons": "^1.1.7",
 		"@iconify-json/ic": "^1.1.14",
 		"@iconify-json/material-symbols": "^1.1.61",
 		"@iconify-json/solar": "^1.1.5",
