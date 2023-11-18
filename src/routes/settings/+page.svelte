@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { derived } from 'svelte/store';
 	import settings, { themes as allThemes, DEFAULT_COURSE_KEY } from '$lib/settings';
-    import TEACHINGS from '$lib/teachings';
+	import TEACHINGS from '$lib/teachings';
 
 	let themes = derived(settings, ({ theme }) => allThemes.filter((t) => t != theme));
 </script>
@@ -47,15 +47,15 @@
 		</label>
 	</div>
 
-    <div class="form-control my-4">
-        <label class="label">
-          <span class="label-text">Select a default Course</span>
-          <select class="select select-bordered" bind:value={$settings.defaultCourse}>
-              <option value={DEFAULT_COURSE_KEY}>Not set</option>
-            {#each TEACHINGS as course}
-              <option value={course.id}>{course.name}</option>
-            {/each}
-          </select>
-        </label>
-      </div>
+	<div class="form-control my-4">
+		<label class="label">
+			<span class="label-text">Select a default Course</span>
+			<select class="select select-bordered" bind:value={$settings.defaultCourse}>
+				<option value={DEFAULT_COURSE_KEY}>Not set</option>
+				{#each TEACHINGS as course}
+					<option value={course.id}>{course.name}</option>
+				{/each}
+			</select>
+		</label>
+	</div>
 </main>

@@ -7,7 +7,7 @@
 		courses: Course[];
 	};
 
-    let showFeature = true;
+	let showFeature = true;
 </script>
 
 <svelte:head>
@@ -22,21 +22,24 @@
 </svelte:head>
 
 {#if showFeature}
-<div class="bg-blue-500 text-white p-4">
-    <div class="flex items-center justify-between">
-      <div><!-- justifier --></div>
-      <p class="font-semibold">
-        Dai un occhiata <a class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="{base}/settings">qui</a> 🔥
-        Ora puoi selezionare il tuo corso preferito! Ogni volta che accedi verrai subito portato al tuo corso 🔥 
-      </p>
-      <button
-        class="text-white hover:text-gray-300 focus:outline-none"
-        on:click={() => showFeature = false}
-        >
-        &#10005; <!-- Close icon (X) -->
-      </button>
-    </div>
-  </div>
+	<div class="bg-blue-500 text-white p-4">
+		<div class="flex items-center justify-between">
+			<div><!-- justifier --></div>
+			<p class="font-semibold">
+				Dai un occhiata <a
+					class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+					href="{base}/settings">qui</a
+				> 🔥 Ora puoi selezionare il tuo corso preferito! Ogni volta che accedi verrai subito portato
+				al tuo corso 🔥
+			</p>
+			<button
+				class="text-white hover:text-gray-300 focus:outline-none"
+				on:click={() => (showFeature = false)}
+			>
+				&#10005; <!-- Close icon (X) -->
+			</button>
+		</div>
+	</div>
 {/if}
 
 <div class="flex justify-center">

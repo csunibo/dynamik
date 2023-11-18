@@ -6,9 +6,9 @@
 		settings.subscribe(() => {
 			document.firstElementChild!.setAttribute('data-theme', $settings.theme);
 		});
-        if (window.location.pathname === '/' && $settings.defaultCourse !== DEFAULT_COURSE_KEY) {
-            window.location.href = `/dash/${$settings.defaultCourse}`
-        }
+		if (window.location.pathname === '/' && $settings.defaultCourse !== DEFAULT_COURSE_KEY) {
+			window.location.href = `/dash/${$settings.defaultCourse}`;
+		}
 	});
 
 	import unibo32ico from '$lib/assets/unibo32.ico';
