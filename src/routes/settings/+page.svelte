@@ -50,7 +50,7 @@
 	<div class="form-control my-4">
 		<label class="label">
 			<span class="label-text">Select a default Course</span>
-			<select class="select select-bordered" bind:value={$settings.defaultCourse}>
+			<select class="select select-primary" bind:value={$settings.defaultCourse}>
 				<option value={DEFAULT_COURSE_KEY}>Not set</option>
 				{#each TEACHINGS as course}
 					<option value={course.id}>{course.name}</option>
