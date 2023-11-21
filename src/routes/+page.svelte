@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import type { Course } from '$lib/teachings';
 	import Line from './Line.svelte';
@@ -9,19 +9,19 @@
 	};
 
 	let showFeature = false;
-    const showFeatureKey = 'index_showFeature';
-    onMount(() => {
-        showFeature = true;
-        const storedValue = localStorage.getItem(showFeatureKey);
-        if (storedValue !== null) {
-            showFeature = JSON.parse(storedValue);
-        }
-    });
+	const showFeatureKey = 'index_showFeature';
+	onMount(() => {
+		showFeature = true;
+		const storedValue = localStorage.getItem(showFeatureKey);
+		if (storedValue !== null) {
+			showFeature = JSON.parse(storedValue);
+		}
+	});
 
-    const setShowFeature = (value: boolean) => {
-        showFeature = value;
-        localStorage.setItem(showFeatureKey, JSON.stringify(showFeature));
-    };
+	const setShowFeature = (value: boolean) => {
+		showFeature = value;
+		localStorage.setItem(showFeatureKey, JSON.stringify(showFeature));
+	};
 </script>
 
 <svelte:head>
