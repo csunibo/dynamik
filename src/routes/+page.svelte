@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { persisted } from 'svelte-local-storage-store';
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import type { Course } from '$lib/teachings';
@@ -9,18 +10,14 @@
 	};
 
 	let showFeature = false;
-	const showFeatureKey = 'index_showFeature';
+	const bannerStore = persisted<{ show: boolean }>('banner', { show: true });
 	onMount(() => {
-		showFeature = true;
-		const storedValue = localStorage.getItem(showFeatureKey);
-		if (storedValue !== null) {
-			showFeature = JSON.parse(storedValue);
-		}
+		showFeature = $bannerStore.show;
 	});
 
 	const setShowFeature = (value: boolean) => {
+		$bannerStore.show = value;
 		showFeature = value;
-		localStorage.setItem(showFeatureKey, JSON.stringify(showFeature));
 	};
 </script>
 
