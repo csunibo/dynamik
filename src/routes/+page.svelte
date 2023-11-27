@@ -31,7 +31,11 @@
 		</div>
 		<ul class="menu p-2 text-lg">
 			{#each data.degrees as degree}
-				<Line name={degree.name} icon={degree.icon} href="{base}/dash/{degree.id}" />
+				{#if degree.years}
+					<Line name={degree.name} icon={degree.icon} href="{base}/dash/{degree.id}" />
+				{:else}
+					<Line name={degree.name} icon={degree.icon} href="{base}/{degree.id}" />
+				{/if}
 			{/each}
 
 			<Line name="Impostazioni" icon="🔧" href="{base}/settings" />
