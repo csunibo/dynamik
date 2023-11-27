@@ -2,35 +2,43 @@
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import type { Course, Teaching } from '$lib/teachings';
+	import type { Degree, Teaching } from '$lib/teachings';
 	import { getLoginUrl, getWhoAmI } from '$lib/upld';
 	import ListTeaching from './ListTeaching.svelte';
+	import type { TeachingsBatch } from './ListTeaching.svelte';
 
 	export let data: PageData;
-	let activeYears: Teaching[] = [];
+	let activeYears: string[] = [];
+	let teachings = new Map<string, Teaching>();
 
 	let login:
 		| Promise<{ error: string } | { username: string; name: string; avatarUrl: string }>
 		| undefined;
 
 	onMount(async () => {
-		activeYears = (await data.streaming?.activeCourses) ?? [];
+		activeYears = (await data.streaming?.activeTeachings) ?? [];
+		teachings = data.streaming?.teachings ?? new Map<string, Teaching>();
 		login = getWhoAmI(fetch);
 	});
 
-	function filterCoursesOptional(course: Course) {
-		const mandatory = [];
-		const optional = [];
+	function namesToTeachings(names: string[]): Teaching[] {
+		return names.map(teachings.get).filter((x): x is Teaching => !!x);
+	}
 
-		for (const year of course.years) {
-			const optionalTeachings = year.teachings.filter((teaching: Teaching) => teaching.optional);
-			const mandatoryTeachings = year.teachings.filter((teaching: Teaching) => !teaching.optional);
+	function filterCoursesOptional(degree: Degree) {
+		if (!degree.years) return { mandatory: [], electives: [] };
+		const mandatory: TeachingsBatch[] = [];
+		const electives: TeachingsBatch[] = [];
 
-			mandatory.push({ year: year.year, teachings: mandatoryTeachings });
-			optional.push({ year: year.year, teachings: optionalTeachings });
+		for (const year of degree.years) {
+			const m = year.teachings.mandatory;
+			const e = year.teachings.electives;
+
+			if (m) mandatory.push({ year: year.year, teachings: namesToTeachings(m) });
+			if (e) electives.push({ year: year.year, teachings: namesToTeachings(e) });
 		}
 
-		return { mandatory, optional };
+		return { mandatory, electives };
 	}
 
 	$: filteredCourses = filterCoursesOptional(data.course);
@@ -72,11 +80,16 @@
 			</a>
 		</div>
 	</nav>
-	<ListTeaching years={filteredCourses.mandatory} {activeYears} title={''} from={data.course.id} />
+	<ListTeaching
+		years={filteredCourses.mandatory}
+		activeYears={namesToTeachings(activeYears)}
+		title={''}
+		from={data.course.id}
+	/>
 	<ListTeaching
 		title="facoltativi"
-		years={filteredCourses.optional}
-		{activeYears}
+		years={filteredCourses.electives}
+		activeYears={namesToTeachings(activeYears)}
 		from={data.course.id}
 	/>
 </div>

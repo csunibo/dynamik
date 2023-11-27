@@ -6,8 +6,9 @@ export type Teaching = {
 	url: string;
 	chat?: string;
 	optional?: boolean;
-	website: string;
-	professors: string[];
+	website?: string;
+	professors?: string[];
+	degree?: string;
 };
 
 export type YearStudyDiagram = {
@@ -29,29 +30,37 @@ export type Degree = {
 	chat?: string;
 };
 
-export async function isTeachingActive(fetch: typeof window.fetch, teaching: Teaching) {
+async function isTeachingActiveFromName(fetch: typeof window.fetch, teaching: string) {
 	try {
-		await getManifest(fetch, teaching.url);
+		await getManifest(fetch, teaching);
 		return true;
 	} catch {
 		return false;
 	}
 }
 
-export function yearToFlatTeachings(y: Year): Teaching[] {
-	let res: Teaching[] = [];
-	if (y.mandatory) {
-		res += y.mandatory;
-	}
-	if (y.electives) {
-		res += y.electives;
-	}
+export async function isTeachingActive(fetch: typeof window.fetch, teaching: Teaching) {
+	return isTeachingActiveFromName(fetch, teaching.url);
+}
+
+export function yearToFlatTeachings(y: Year): string[] {
+	let res: string[] = [];
+	const studyDiagram = y.teachings;
+	if (studyDiagram.mandatory) res = res.concat(studyDiagram.mandatory);
+	if (studyDiagram.electives) res = res.concat(studyDiagram.electives);
 	return res;
 }
 
-export async function getActiveTeachings(fetch: typeof window.fetch, course: Degree) {
-	const allTeachings = course.years.flatMap(yearToFlatTeachings);
-	const activeTeachings = await filterAsync(allTeachings, (t) => isTeachingActive(fetch, t));
+export async function getActiveTeachings(
+	fetch: typeof window.fetch,
+	course: Degree
+): Promise<string[]> {
+	const years = course.years;
+	if (!years) return [];
+	const allTeachings = years.flatMap(yearToFlatTeachings);
+	const activeTeachings = await filterAsync(allTeachings, (t) =>
+		isTeachingActiveFromName(fetch, t)
+	);
 
 	return activeTeachings;
 }
@@ -60,7 +69,7 @@ export async function getActiveTeachings(fetch: typeof window.fetch, course: Deg
 import teachingsArray from '../config/teachings.json' assert { type: 'json' };
 
 function teachingToIndexedTeaching(t: Teaching): [string, Teaching] {
-	return [t.Url, t];
+	return [t.url, t];
 }
 
 const TEACHINGS = new Map<string, Teaching>(teachingsArray.map(teachingToIndexedTeaching));

@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import type { Course } from '$lib/teachings';
+	import type { Degree } from '$lib/teachings';
 	import Line from './Line.svelte';
 
 	export let data: {
-		courses: Course[];
+		degrees: Degree[];
 	};
 </script>
 
@@ -30,7 +30,7 @@
 			</h3>
 		</div>
 		<ul class="menu p-2 text-lg">
-			{#each data.courses as course}
+			{#each data.degrees as course}
 				<Line name={course.name} icon={course.icon} href="{base}/dash/{course.id}" />
 			{/each}
 
