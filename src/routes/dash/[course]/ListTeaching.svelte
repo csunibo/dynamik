@@ -50,15 +50,6 @@
 								>
 									<span class="text-2xl icon-[akar-icons--people-group]"></span>
 								</a>
-								{#if teaching.chat != null && teaching.chat !== ''}
-									<a
-										href={disabled ? null : 'https://' + teaching.chat}
-										class="text-center join-item border-l-2"
-										title="Link alla community"
-									>
-										<span class="text-2xl icon-[akar-icons--people-group]"></span>
-									</a>
-								{/if}
 							{/if}
 						</li>
 					{/if}

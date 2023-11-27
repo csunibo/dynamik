@@ -20,7 +20,7 @@
 	});
 
 	function namesToTeachings(names: string[]): Teaching[] {
-		return names.map(data.teachings.get).filter((x): x is Teaching => !!x);
+		return names.map(data.teachings.get, data.teachings).filter((x): x is Teaching => !!x);
 	}
 
 	function reorganizeTeachings(degree: Degree) {
