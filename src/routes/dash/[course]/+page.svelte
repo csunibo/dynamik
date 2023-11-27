@@ -2,50 +2,56 @@
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import type { Course, Teaching } from '$lib/teachings';
+	import type { Degree, Teaching } from '$lib/teachings';
 	import { getLoginUrl, getWhoAmI } from '$lib/upld';
 	import ListTeaching from './ListTeaching.svelte';
+	import type { TeachingsBatch } from './ListTeaching.svelte';
 
 	export let data: PageData;
-	let activeYears: Teaching[] = [];
+	let activeYears: string[] = [];
 
 	let login:
 		| Promise<{ error: string } | { username: string; name: string; avatarUrl: string }>
 		| undefined;
 
 	onMount(async () => {
-		activeYears = (await data.streaming?.activeCourses) ?? [];
+		activeYears = (await data.streaming?.activeTeachings) ?? [];
 		login = getWhoAmI(fetch);
 	});
 
-	function filterCoursesOptional(course: Course) {
-		const mandatory = [];
-		const optional = [];
-
-		for (const year of course.years) {
-			const optionalTeachings = year.teachings.filter((teaching: Teaching) => teaching.optional);
-			const mandatoryTeachings = year.teachings.filter((teaching: Teaching) => !teaching.optional);
-
-			mandatory.push({ year: year.year, teachings: mandatoryTeachings });
-			optional.push({ year: year.year, teachings: optionalTeachings });
-		}
-
-		return { mandatory, optional };
+	function namesToTeachings(names: string[]): Teaching[] {
+		return names.map(data.teachings.get, data.teachings).filter((x): x is Teaching => !!x);
 	}
 
-	$: filteredCourses = filterCoursesOptional(data.course);
+	function reorganizeTeachings(degree: Degree) {
+		if (!degree.years) return { mandatory: [], electives: [] };
+		const mandatory: TeachingsBatch[] = [];
+		const electives: TeachingsBatch[] = [];
+
+		for (const year of degree.years) {
+			const m = year.teachings.mandatory;
+			const e = year.teachings.electives;
+
+			if (m) mandatory.push({ year: year.year, teachings: namesToTeachings(m) });
+			if (e) electives.push({ year: year.year, teachings: namesToTeachings(e) });
+		}
+
+		return { mandatory, electives };
+	}
+
+	$: reorganizedTeachings = reorganizeTeachings(data.degree);
 </script>
 
 <svelte:head>
-	<title>{data.course?.name}</title>
+	<title>{data.degree?.name}</title>
 	<!-- OG meta graph -->
-	<meta property="og:title" content={data.course?.name} />
+	<meta property="og:title" content={data.degree?.name} />
 	<meta
 		name="url"
 		property="og:url"
-		content="https://risorse.students.cs.unibo.it/{data.course?.name}"
+		content="https://risorse.students.cs.unibo.it/{data.degree?.name}"
 	/>
-	<meta name="description" property="og:description" content="Risorse di {data.course?.name}" />
+	<meta name="description" property="og:description" content="Risorse di {data.degree?.name}" />
 </svelte:head>
 
 <div class="max-w-5xl p-4 mx-auto">
@@ -63,7 +69,7 @@
 		</div>
 		<div class="navbar min-h-0 p-0 justify-center items-center">
 			<h1 class="flex flex-wrap text-xl text-center font-semibold text-base-content">
-				{data.course.name}
+				{data.degree.name}
 			</h1>
 		</div>
 		<div class="navbar-end flex items-center">
@@ -72,11 +78,16 @@
 			</a>
 		</div>
 	</nav>
-	<ListTeaching years={filteredCourses.mandatory} {activeYears} title={''} from={data.course.id} />
+	<ListTeaching
+		years={reorganizedTeachings.mandatory}
+		activeYears={namesToTeachings(activeYears)}
+		title={''}
+		from={data.degree.id}
+	/>
 	<ListTeaching
 		title="facoltativi"
-		years={filteredCourses.optional}
-		{activeYears}
-		from={data.course.id}
+		years={reorganizedTeachings.electives}
+		activeYears={namesToTeachings(activeYears)}
+		from={data.degree.id}
 	/>
 </div>

@@ -1,22 +1,21 @@
-import type { PageLoad } from './$types';
 import { getActiveTeachings } from '$lib/teachings';
-import TEACHINGS from '$lib/teachings';
+import { DEGREES, TEACHINGS } from '$lib/teachings';
 import { error } from '@sveltejs/kit';
+import type { PageLoad } from './$types';
 
 export const load = (async ({ fetch, params }) => {
-	const course = TEACHINGS.find((c) => c.id === params.course);
+	const degreeParam = params.course,
+		degree = DEGREES.find((c) => c.id === degreeParam);
 
-	if (course == null) {
-		throw error(404, `Course '${params.course}' not found`);
+	if (degree == null) {
+		throw error(404, `Degree '${degreeParam}' not found`);
 	}
 
-	// Filter out inactive teachings
-	const activeCourses = getActiveTeachings(fetch, course);
-
 	return {
-		course,
+		degree,
+		teachings: TEACHINGS,
 		streaming: {
-			activeCourses
+			activeTeachings: getActiveTeachings(fetch, degree)
 		}
 	};
 }) satisfies PageLoad;
