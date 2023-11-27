@@ -9,8 +9,8 @@ devDependencies:
     specifier: ^1.1.20
     version: 1.1.20
   '@iconify-json/eos-icons':
-    specifier: ^1.1.7
-    version: 1.1.7
+    specifier: ^1.1.8
+    version: 1.1.8
   '@iconify-json/ic':
     specifier: ^1.1.14
     version: 1.1.14
@@ -1606,8 +1606,8 @@ packages:
       '@iconify/types': 2.0.0
     dev: true
 
-  /@iconify-json/eos-icons@1.1.7:
-    resolution: {integrity: sha512-lAv0YFZlXrY5CaveJHvH9vOX2h+nprvvXayZijxR7lQprLmM9Pu2US9IQkEoI4iO8siLCUpM4KhjuxCg3WfI3A==}
+  /@iconify-json/eos-icons@1.1.8:
+    resolution: {integrity: sha512-XWffCdq3SMoDEcywJ2QhsgXwMAGQrSSFHYIUFeUSdKekuqvDndmSXw11xHitdcK2+LDXzzeiCtZiV5K082fg1g==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: true
