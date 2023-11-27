@@ -36,7 +36,10 @@
 							class:disabled
 							class="flex flex-row xs:flex-1 justify-center border-base-content items-center m-2 border-2 rounded-md join"
 						>
-							<a href={disabled ? null : getUrl(teaching)} class="text-center text-lg join-item">
+							<a
+								href={disabled ? null : getUrl(teaching)}
+								class="flex-wrap max-w-xs text-center text-lg join-item"
+							>
 								{teaching.name ? teaching.name : teaching.url}
 							</a>
 							{#if teaching.chat != null && teaching.chat !== ''}
@@ -47,6 +50,15 @@
 								>
 									<span class="text-2xl icon-[akar-icons--people-group]"></span>
 								</a>
+								{#if teaching.chat != null && teaching.chat !== ''}
+									<a
+										href={disabled ? null : 'https://' + teaching.chat}
+										class="text-center join-item border-l-2"
+										title="Link alla community"
+									>
+										<span class="text-2xl icon-[akar-icons--people-group]"></span>
+									</a>
+								{/if}
 							{/if}
 						</li>
 					{/if}
