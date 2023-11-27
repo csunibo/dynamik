@@ -6,6 +6,7 @@
 
 	import Line from '$lib/components/Line.svelte';
 	import type { FuzzyFile } from '$lib/api';
+	import type { Degree, Year, Teaching } from '$lib/teachings';
 	import { EDIT_URLS, GH_PAGES_BASE_URL } from '$lib/const';
 
 	import type { PageData } from './$types';
@@ -119,17 +120,40 @@
 		reverseMode = !reverseMode;
 	}
 
-	// Pick a containing degree for this teaching
+	// Computes either all mandatory teachings or elective teachings for a year
+	function getTeachings(y: Year, electives: boolean): Teaching[] | null {
+		if (!y) return null;
+		const studyDiagram = y.teachings;
+		if (!studyDiagram) return null;
+		return electives ? studyDiagram.electives : studyDiagram.mandatory;
+	}
+
+	// Checks if a teaching is part of a certain degree
+	function isInDegree(teachingName: string, degree: Degree, elective: boolean): boolean {
+		const years = degree.years;
+		if (!years) return false;
+		return years.find((y) => getTeachings(y, elective)?.includes(teachingName));
+	}
+
+	// Skims through degrees looking for a given teaching
+	function skimDegrees(teachingName: string, electives: boolean): string {
+		const degree = data.degrees.find((d) => isInDegree(teachingName, d, electives));
+		return degree ? degree.id : null;
+	}
+
+	// Picks a containing degree for this teaching
 	function guessDegree(teachingName: string): string {
 		// Plan A: "from" url parameter
 		if (data.from) return data.from;
 		// Plan B: "degree" field in Teachings
 		const teaching = data.teachings.get(teachingName);
-		if (teaching) return teaching.degree;
+		if (teaching.degree) return teaching.degree;
 		// Plan C: any degree featuring this teaching as mandatory
-
-		// Plan D: any degree featuring this teaching as optional
-
+		const mandatoryDegree = skimDegrees(teachingName, false);
+		if (mandatoryDegree) return mandatoryDegree;
+		// Plan D: any degree featuring this teaching as an elective
+		const electiveDegree = skimDegrees(teachingName, true);
+		if (electiveDegree) return electiveDegree;
 		// Plan E: give up
 		return null;
 	}

@@ -5,7 +5,6 @@ export type Teaching = {
 	name: string;
 	url: string;
 	chat?: string;
-	optional?: boolean;
 	website?: string;
 	professors?: string[];
 	degree?: string;

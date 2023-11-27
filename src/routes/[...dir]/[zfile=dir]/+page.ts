@@ -1,5 +1,5 @@
 import { getFuzzy, getManifest } from '$lib/api';
-import { TEACHINGS } from '$lib/teachings';
+import { DEGREES, TEACHINGS } from '$lib/teachings';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ fetch, params, url }) => {
@@ -16,6 +16,7 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 	const from = url.searchParams.get('from');
 
 	return {
+		degrees: DEGREES,
 		manifest,
 		fuzzy,
 		from,
