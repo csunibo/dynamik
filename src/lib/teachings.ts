@@ -53,9 +53,9 @@ export function yearToFlatTeachings(y: Year): string[] {
 
 export async function getActiveTeachings(
 	fetch: typeof window.fetch,
-	course: Degree
+	degree: Degree
 ): Promise<string[]> {
-	const years = course.years;
+	const years = degree.years;
 	if (!years) return [];
 	const allTeachings = years.flatMap(yearToFlatTeachings);
 	const activeTeachings = await filterAsync(allTeachings, (t) =>

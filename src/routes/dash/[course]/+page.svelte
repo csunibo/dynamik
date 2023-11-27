@@ -25,7 +25,7 @@
 		return names.map(teachings.get).filter((x): x is Teaching => !!x);
 	}
 
-	function filterCoursesOptional(degree: Degree) {
+	function reorganizeTeachings(degree: Degree) {
 		if (!degree.years) return { mandatory: [], electives: [] };
 		const mandatory: TeachingsBatch[] = [];
 		const electives: TeachingsBatch[] = [];
@@ -41,19 +41,19 @@
 		return { mandatory, electives };
 	}
 
-	$: filteredCourses = filterCoursesOptional(data.course);
+	$: reorganizedTeachings = reorganizeTeachings(data.degree);
 </script>
 
 <svelte:head>
-	<title>{data.course?.name}</title>
+	<title>{data.degree?.name}</title>
 	<!-- OG meta graph -->
-	<meta property="og:title" content={data.course?.name} />
+	<meta property="og:title" content={data.degree?.name} />
 	<meta
 		name="url"
 		property="og:url"
-		content="https://risorse.students.cs.unibo.it/{data.course?.name}"
+		content="https://risorse.students.cs.unibo.it/{data.degree?.name}"
 	/>
-	<meta name="description" property="og:description" content="Risorse di {data.course?.name}" />
+	<meta name="description" property="og:description" content="Risorse di {data.degree?.name}" />
 </svelte:head>
 
 <div class="max-w-5xl p-4 mx-auto">
@@ -71,7 +71,7 @@
 		</div>
 		<div class="navbar min-h-0 p-0 justify-center items-center">
 			<h1 class="flex flex-wrap text-xl text-center font-semibold text-base-content">
-				{data.course.name}
+				{data.degree.name}
 			</h1>
 		</div>
 		<div class="navbar-end flex items-center">
@@ -81,15 +81,15 @@
 		</div>
 	</nav>
 	<ListTeaching
-		years={filteredCourses.mandatory}
+		years={reorganizedTeachings.mandatory}
 		activeYears={namesToTeachings(activeYears)}
 		title={''}
-		from={data.course.id}
+		from={data.degree.id}
 	/>
 	<ListTeaching
 		title="facoltativi"
-		years={filteredCourses.electives}
+		years={reorganizedTeachings.electives}
 		activeYears={namesToTeachings(activeYears)}
-		from={data.course.id}
+		from={data.degree.id}
 	/>
 </div>

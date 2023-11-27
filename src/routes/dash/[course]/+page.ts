@@ -4,19 +4,17 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 export const load = (async ({ fetch, params }) => {
-	const course = DEGREES.find((c) => c.id === params.course);
+	const degreeParam = params.course,
+		degree = DEGREES.find((c) => c.id === degreeParam);
 
-	if (course == null) {
-		throw error(404, `Course '${params.course}' not found`);
+	if (degree == null) {
+		throw error(404, `Degree '${degreeParam}' not found`);
 	}
 
-	// Filter out inactive teachings
-	const activeCourses = getActiveTeachings(fetch, course);
-
 	return {
-		course,
+		degree,
 		streaming: {
-			activeTeachings: activeCourses,
+			activeTeachings: getActiveTeachings(fetch, degree),
 			teachings: TEACHINGS
 		}
 	};

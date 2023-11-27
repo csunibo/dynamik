@@ -30,8 +30,8 @@
 			</h3>
 		</div>
 		<ul class="menu p-2 text-lg">
-			{#each data.degrees as course}
-				<Line name={course.name} icon={course.icon} href="{base}/dash/{course.id}" />
+			{#each data.degrees as degree}
+				<Line name={degree.name} icon={degree.icon} href="{base}/dash/{degree.id}" />
 			{/each}
 
 			<Line name="Impostazioni" icon="🔧" href="{base}/settings" />
