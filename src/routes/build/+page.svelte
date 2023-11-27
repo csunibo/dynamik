@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { DEGREES, TEACHINGS, yearToFlatTeachings } from '$lib/teachings';
+	import { TEACHINGS, yearToFlatTeachings } from '$lib/teachings';
 
 	const WORKFLOW_NAMES = ['filenames', 'build-and-deploy'];
 	const WORKFLOW_URL = (project: string, workflow: string) =>
