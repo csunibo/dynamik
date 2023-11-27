@@ -13,9 +13,9 @@ export const load = (async ({ fetch, params }) => {
 
 	return {
 		degree,
+		teachings: TEACHINGS,
 		streaming: {
-			activeTeachings: getActiveTeachings(fetch, degree),
-			teachings: TEACHINGS
+			activeTeachings: getActiveTeachings(fetch, degree)
 		}
 	};
 }) satisfies PageLoad;

@@ -9,7 +9,6 @@
 
 	export let data: PageData;
 	let activeYears: string[] = [];
-	let teachings = new Map<string, Teaching>();
 
 	let login:
 		| Promise<{ error: string } | { username: string; name: string; avatarUrl: string }>
@@ -17,12 +16,11 @@
 
 	onMount(async () => {
 		activeYears = (await data.streaming?.activeTeachings) ?? [];
-		teachings = data.streaming?.teachings ?? new Map<string, Teaching>();
 		login = getWhoAmI(fetch);
 	});
 
 	function namesToTeachings(names: string[]): Teaching[] {
-		return names.map(teachings.get).filter((x): x is Teaching => !!x);
+		return names.map(data.teachings.get).filter((x): x is Teaching => !!x);
 	}
 
 	function reorganizeTeachings(degree: Degree) {
