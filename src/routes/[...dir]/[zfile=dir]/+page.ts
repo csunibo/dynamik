@@ -1,5 +1,6 @@
+import { getFuzzy, getManifest } from '$lib/api';
+import { TEACHINGS } from '$lib/teachings';
 import type { PageLoad } from './$types';
-import { getManifest, getFuzzy } from '$lib/api';
 
 export const load: PageLoad = async ({ fetch, params, url }) => {
 	// Get the relative path using params
@@ -17,6 +18,7 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 	return {
 		manifest,
 		fuzzy,
-		from
+		from,
+		teachings: TEACHINGS
 	};
 };

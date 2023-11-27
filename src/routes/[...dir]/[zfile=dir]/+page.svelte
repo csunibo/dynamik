@@ -118,6 +118,23 @@
 	function toggleReverse() {
 		reverseMode = !reverseMode;
 	}
+
+	// Pick a containing degree for this teaching
+	function guessDegree(teachingName: string): string {
+		// Plan A: "from" url parameter
+		if (data.from) return data.from;
+		// Plan B: "degree" field in Teachings
+		const teaching = data.teachings.get(teachingName);
+		if (teaching) return teaching.degree;
+		// Plan C: any degree featuring this teaching as mandatory
+
+		// Plan D: any degree featuring this teaching as optional
+
+		// Plan E: give up
+		return null;
+	}
+
+	$: degree = guessDegree(urlParts[0]);
 </script>
 
 <svelte:head>
@@ -149,9 +166,9 @@
 							<span class="text-xl icon-[akar-icons--home-alt1]"></span>
 						</a>
 					</li>
-					{#if data.from != null}
+					{#if degree}
 						<li>
-							<a class="flex items-center" href={'/dash/' + data.from}>
+							<a class="flex items-center" href={'/dash/' + degree}>
 								<span class="text-xl icon-[ic--round-school]"></span>
 							</a>
 						</li>
