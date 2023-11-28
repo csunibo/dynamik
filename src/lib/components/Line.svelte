@@ -31,29 +31,40 @@
 
 <div class="contents">
 	<div class="contents">
-		{#if external}
-			<span><code>🔗</code></span>
-			<a class="link link-hover text-primary" href={data.url} target="_blank" rel="noreferrer">
-				{data.name}
-			</a>
-		{:else if isFile}
-			<span><code>📄</code></span>
-			<a
-				class="link link-hover text-primary"
-				href="{base}/{data.name}?{$page.url.searchParams}"
-				target={$settings.newTab ? '_blank' : '_self'}
-			>
-				{data.name}
-			</a>
-		{:else}
-			<span><code>📁</code></span>
-			<a
-				class="link link-hover text-primary"
-				href={customUrl ?? base + '/' + data.name + '?' + $page.url.searchParams}
-			>
-				{data.name}
-			</a>
-		{/if}
+		<span class="flex items-center flex-[1_0_auto] w-max">
+			{#if external}
+				<span class="flex text-xl icon-[akar-icons--link-chain] mr-2" style="color: #AFD2E9"></span>
+				<a
+					class="flex link link-hover text-primary sm:flex-wrap"
+					href={data.url}
+					target="_blank"
+					rel="noreferrer"
+				>
+					{data.name}
+				</a>
+			{:else if isFile}
+				<span
+					class="icon-[solar--file-bold-duotone] text-xl align-center mr-2"
+					style="color: #AFD2E9"
+				></span>
+				<a
+					class="flex link link-hover sm:flex-wrap text-primary"
+					href="{base}/{data.name}?{$page.url.searchParams}"
+					target={$settings.newTab ? '_blank' : '_self'}
+				>
+					{data.name}
+				</a>
+			{:else}
+				<span class="flex icon-[solar--folder-bold] text-xl mr-2" style="color: #FDE74C"></span>
+				<a
+					class="flex link link-hover sm:flex-wrap text-primary"
+					href={customUrl ?? base + '/' + data.name + '?' + $page.url.searchParams}
+				>
+					{data.name}
+				</a>
+			{/if}
+		</span>
+		<div class="flex flex-0"></div>
 		<span class="flex items-center justify-end whitespace-nowrap text-xs">
 			{#if isFile}
 				{isFile && data.size != '0 B' ? data.size : '-'}

@@ -168,7 +168,7 @@
 
 <svelte:body on:keydown={keydown} />
 
-<main class="max-w-6xl p-4 mx-auto">
+<main class="max-w-6xl min-w-fit p-4 mx-auto">
 	<div class="navbar flex bg-base-200 rounded-box shadow-sm px-5 mb-5">
 		<div class="sm:hidden flex justify-start items-center">
 			<button class="sm:hidden flex btn btn-ghost btn-sm" on:click={mobileBreadcrumb}>
