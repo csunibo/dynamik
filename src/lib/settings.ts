@@ -10,9 +10,9 @@ export interface Settings {
 }
 
 const settings = persisted<Settings>('settings', {
-	theme: 'halloween',
+	theme: 'csunibo_dark',
 	newTab: false,
-	isoDates: true
+	isoDates: false
 });
 
 export default settings;
