@@ -1,8 +1,8 @@
-import TEACHINGS from '$lib/teachings';
+import { DEGREES } from '$lib/teachings';
 import type { PageLoad } from './$types';
 
 export const load = (async () => {
 	return {
-		courses: TEACHINGS
+		degrees: DEGREES
 	};
 }) satisfies PageLoad;

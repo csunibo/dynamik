@@ -1,7 +1,7 @@
 import { persisted } from 'svelte-local-storage-store';
 import type TEACHINGS from '$lib/teachings';
 
-export const themes = ['halloween', 'autumn', 'dracula'] as const;
+export const themes = ['halloween', 'autumn', 'dracula', 'csunibo_light', 'csunibo_dark'] as const;
 type Theme = (typeof themes)[number];
 
 export const DEFAULT_COURSE_KEY = 'default';
@@ -14,10 +14,10 @@ export interface Settings {
 }
 
 const settings = persisted<Settings>('settings', {
-	theme: 'halloween',
+	theme: 'csunibo_dark',
 	newTab: false,
-	isoDates: true,
 	defaultCourse: DEFAULT_COURSE_KEY
+	isoDates: false
 });
 
 export default settings;

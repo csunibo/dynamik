@@ -6,6 +6,7 @@
 
 	import Line from '$lib/components/Line.svelte';
 	import type { FuzzyFile } from '$lib/api';
+	import type { Degree, Year } from '$lib/teachings';
 	import { EDIT_URLS, GH_PAGES_BASE_URL } from '$lib/const';
 
 	import type { PageData } from './$types';
@@ -118,6 +119,46 @@
 	function toggleReverse() {
 		reverseMode = !reverseMode;
 	}
+
+	// Computes either all mandatory teachings or elective teachings for a year
+	function getTeachings(y: Year, electives: boolean): string[] | undefined {
+		if (!y) return undefined;
+		const studyDiagram = y.teachings;
+		if (!studyDiagram) return undefined;
+		return electives ? studyDiagram.electives : studyDiagram.mandatory;
+	}
+
+	// Checks if a teaching is part of a certain degree
+	function isInDegree(teachingName: string, degree: Degree, elective: boolean): boolean {
+		const years = degree.years;
+		if (!years) return false;
+		return !!years.find((y) => getTeachings(y, elective)?.includes(teachingName));
+	}
+
+	// Skims through degrees looking for a given teaching
+	function skimDegrees(teachingName: string, electives: boolean): string | undefined {
+		const degree = data.degrees.find((d) => isInDegree(teachingName, d, electives));
+		return degree ? degree.id : undefined;
+	}
+
+	// Picks a containing degree for this teaching
+	function guessDegree(teachingName: string): string | null {
+		// Plan A: "from" url parameter
+		if (data.from) return data.from;
+		// Plan B: "degree" field in Teachings
+		const teaching = data.teachings.get(teachingName);
+		if (teaching?.degree) return teaching.degree;
+		// Plan C: any degree featuring this teaching as mandatory
+		const mandatoryDegree = skimDegrees(teachingName, false);
+		if (mandatoryDegree) return mandatoryDegree;
+		// Plan D: any degree featuring this teaching as an elective
+		const electiveDegree = skimDegrees(teachingName, true);
+		if (electiveDegree) return electiveDegree;
+		// Plan E: give up
+		return null;
+	}
+
+	$: degree = guessDegree(urlParts[0]);
 </script>
 
 <svelte:head>
@@ -127,7 +168,7 @@
 
 <svelte:body on:keydown={keydown} />
 
-<main class="max-w-6xl p-4 mx-auto">
+<main class="max-w-6xl min-w-fit p-4 mx-auto">
 	<div class="navbar flex bg-base-200 rounded-box shadow-sm px-5 mb-5">
 		<div class="sm:hidden flex justify-start items-center">
 			<button class="sm:hidden flex btn btn-ghost btn-sm" on:click={mobileBreadcrumb}>
@@ -149,9 +190,9 @@
 							<span class="text-xl icon-[akar-icons--home-alt1]"></span>
 						</a>
 					</li>
-					{#if data.from != null}
+					{#if degree}
 						<li>
-							<a class="flex items-center" href={'/dash/' + data.from}>
+							<a class="flex items-center" href={'/dash/' + degree}>
 								<span class="text-xl icon-[ic--round-school]"></span>
 							</a>
 						</li>
