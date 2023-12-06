@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { derived } from 'svelte/store';
 	import settings, { themes as allThemes, DEFAULT_COURSE_KEY } from '$lib/settings';
-	import TEACHINGS from '$lib/teachings';
+	import { TEACHINGS } from '$lib/teachings';
 
 	let themes = derived(settings, ({ theme }) => allThemes.filter((t) => t != theme));
 </script>
