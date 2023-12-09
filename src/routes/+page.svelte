@@ -33,21 +33,19 @@
 </svelte:head>
 
 {#if showFeature}
-	<div class="bg-blue-500 text-white p-4">
+	<div class="bg-accent text-content p-4">
 		<div class="flex items-center justify-between">
 			<div><!-- justifier --></div>
 			<p class="font-semibold">
-				Dai un occhiata <a
-					class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
-					href="{base}/settings">qui</a
-				> 🔥 Ora puoi selezionare il tuo corso preferito! Ogni volta che accedi verrai subito portato
-				al tuo corso 🔥
+				Dai un occhiata <a class="underline text-primary" href="{base}/settings">qui</a> 🔥 Ora puoi
+				selezionare il tuo corso preferito! Ogni volta che accedi verrai subito portato al tuo corso
+				🔥
 			</p>
 			<button
-				class="text-white hover:text-gray-300 focus:outline-none"
+				class="text-content hover:text-error focus:outline-none"
 				on:click={() => setShowFeature(false)}
 			>
-				&#10005; <!-- Close icon (X) -->
+				<span class="text-xl icon-[akar-icons--x-small]"></span>
 			</button>
 		</div>
 	</div>
