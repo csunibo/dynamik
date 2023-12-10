@@ -1,11 +1,8 @@
 <script lang="ts">
-	import { persisted } from 'svelte-local-storage-store';
-	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import type { Degree } from '$lib/teachings';
 	import Line from './Line.svelte';
 	import { setBannerClosed, shouldShowBanner } from '$lib/newsBanners';
-	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 
 	export let data: {
