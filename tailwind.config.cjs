@@ -15,14 +15,6 @@ module.exports = {
 	daisyui: {
 		themes: [
 			{
-				csunibo_light: {
-					secondary: '#971327',
-					primary: '#EA8C55',
-					accent: '#4281A4',
-					content: '#02111B',
-					'base-100': '#F1FAEE',
-					neutral: '#DBE3D8'
-				},
 				csunibo_dark: {
 					primary: '#EA8C55',
 					secondary: '#971327',
@@ -31,6 +23,14 @@ module.exports = {
 					content: '#F1FAEE',
 					neutral: '#06253A',
 					'base-200': '#0f1f2a' // versione chiara *commentabile*
+				},
+				csunibo_light: {
+					secondary: '#971327',
+					primary: '#EA8C55',
+					accent: '#4281A4',
+					content: '#02111B',
+					'base-100': '#F1FAEE',
+					neutral: '#DBE3D8'
 				}
 			},
 			'halloween',
