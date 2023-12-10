@@ -4,20 +4,12 @@
 	import { base } from '$app/paths';
 	import type { Degree } from '$lib/teachings';
 	import Line from './Line.svelte';
+	import { setBannerClosed, shouldShowBanner } from '$lib/newsBanners';
+	import { page } from '$app/stores';
+	import { browser } from '$app/environment';
 
 	export let data: {
 		degrees: Degree[];
-	};
-
-	let showFeature = false;
-	const bannerStore = persisted<{ show: boolean }>('banner', { show: true });
-	onMount(() => {
-		showFeature = $bannerStore.show;
-	});
-
-	const setShowFeature = (value: boolean) => {
-		$bannerStore.show = value;
-		showFeature = value;
 	};
 </script>
 
@@ -32,7 +24,7 @@
 	/>
 </svelte:head>
 
-{#if showFeature}
+{#if $shouldShowBanner && browser}
 	<div class="bg-accent text-content p-4">
 		<div class="flex items-center justify-between">
 			<div><!-- justifier --></div>
@@ -43,7 +35,7 @@
 			</p>
 			<button
 				class="text-content hover:text-error focus:outline-none"
-				on:click={() => setShowFeature(false)}
+				on:click={() => setBannerClosed()}
 			>
 				<span class="text-xl icon-[akar-icons--x-small]"></span>
 			</button>
