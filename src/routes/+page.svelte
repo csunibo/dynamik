@@ -2,6 +2,8 @@
 	import { base } from '$app/paths';
 	import type { Degree } from '$lib/teachings';
 	import Line from './Line.svelte';
+	import { setBannerClosed, shouldShowBanner } from '$lib/newsBanners';
+	import { browser } from '$app/environment';
 
 	export let data: {
 		degrees: Degree[];
@@ -18,6 +20,25 @@
 		content="Risorse per gli studenti dei corsi di laurea del dipartimento di informatica (DISI) dell'Università di Bologna"
 	/>
 </svelte:head>
+
+{#if $shouldShowBanner && browser}
+	<div class="bg-accent text-content p-4">
+		<div class="flex items-center justify-between">
+			<div><!-- justifier --></div>
+			<p class="font-semibold">
+				Dai un occhiata <a class="underline text-primary" href="{base}/settings">qui</a> 🔥 Ora puoi
+				selezionare il tuo corso preferito! Ogni volta che accedi verrai subito portato al tuo corso
+				🔥
+			</p>
+			<button
+				class="text-content hover:text-error focus:outline-none"
+				on:click={() => setBannerClosed()}
+			>
+				<span class="text-xl icon-[akar-icons--x-small]"></span>
+			</button>
+		</div>
+	</div>
+{/if}
 
 <div class="flex justify-center">
 	<div class="container max-w-5xl">
