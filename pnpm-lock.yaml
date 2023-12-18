@@ -93,8 +93,8 @@ devDependencies:
     specifier: ^0.16.9
     version: 0.16.9
   marked:
-    specifier: ^10.0.0
-    version: 10.0.0
+    specifier: ^11.1.0
+    version: 11.1.0
   postcss:
     specifier: ^8.4.32
     version: 8.4.32
@@ -3904,8 +3904,8 @@ packages:
       semver: 6.3.1
     dev: true
 
-  /marked@10.0.0:
-    resolution: {integrity: sha512-YiGcYcWj50YrwBgNzFoYhQ1hT6GmQbFG8SksnYJX1z4BXTHSOrz1GB5/Jm2yQvMg4nN1FHP4M6r03R10KrVUiA==}
+  /marked@11.1.0:
+    resolution: {integrity: sha512-fvKJWAPEafVj1dwGwcPI5mBB/0pvViL6NlCbNDG1HOIRwwAU/jeMoFxfbRLuirO1wRH7m4yPvBqD/O1wyWvayw==}
     engines: {node: '>= 18'}
     hasBin: true
     dev: true
