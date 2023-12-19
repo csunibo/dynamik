@@ -27,6 +27,18 @@
 		isSpinning = false;
 		URL.revokeObjectURL(urlObject);
 	}
+	let isDone = false;
+
+	$: isDone = getDoneStatus(data.url);
+
+	function getDoneStatus(fileName: string) {
+		return localStorage.getItem(fileName) === 'done';
+	}
+
+	function toggleDone() {
+		isDone = !isDone;
+		localStorage.setItem(data.url, isDone ? 'done' : 'not done');
+	}
 </script>
 
 <div class="contents">
@@ -43,12 +55,17 @@
 					{data.name}
 				</a>
 			{:else if isFile}
-				<span
-					class="icon-[solar--file-bold-duotone] text-xl align-center mr-2"
-					style="color: #AFD2E9"
-				></span>
+				<button class="flex text-xl mr-2 align-center" on:click={toggleDone} type="button">
+					<span
+						class="text-bold icon-[solar--file-bold-duotone]"
+						style={isDone ? '' : 'color: #AFD2E9'}
+						class:icon-[solar--file-check-bold-duotone]={isDone}
+						class:text-success={isDone}
+					></span>
+				</button>
 				<a
 					class="flex link link-hover sm:flex-wrap text-primary"
+					class:line-through={isDone}
 					href="{base}/{data.name}?{$page.url.searchParams}"
 					target={$settings.newTab ? '_blank' : '_self'}
 				>
