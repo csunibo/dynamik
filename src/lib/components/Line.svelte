@@ -27,17 +27,22 @@
 		isSpinning = false;
 		URL.revokeObjectURL(urlObject);
 	}
+
+	import {
+		getDoneStatus,
+		doneStatusPage,
+		getDoneStatusPage,
+		toggleDone as toggleDoneFile
+	} from '$lib/todo-file';
 	let isDone = false;
-
-	$: isDone = getDoneStatus(data.url);
-
-	function getDoneStatus(fileName: string) {
-		return localStorage.getItem(fileName) === 'done';
+	$: {
+		isDone = $doneStatusPage ? getDoneStatus($page.url + '/' + data.name) : false;
 	}
-
 	function toggleDone() {
-		isDone = !isDone;
-		localStorage.setItem(data.url, isDone ? 'done' : 'not done');
+		const file = $page.url + '/' + data.name;
+		toggleDoneFile(file, isDone);
+		isDone = getDoneStatus(file);
+		if (isDone) var done_page = getDoneStatusPage(file);
 	}
 </script>
 
@@ -55,7 +60,12 @@
 					{data.name}
 				</a>
 			{:else if isFile}
-				<button class="flex text-xl mr-2 align-center" on:click={toggleDone} type="button">
+				<button
+					class="flex text-xl mr-2 align-center"
+					on:click={toggleDone}
+					type="button"
+					title="Click to mark as done"
+				>
 					<span
 						class="text-bold icon-[solar--file-bold-duotone]"
 						style={isDone ? '' : 'color: #AFD2E9'}

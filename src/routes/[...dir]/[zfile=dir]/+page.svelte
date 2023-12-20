@@ -8,8 +8,10 @@
 	import type { FuzzyFile } from '$lib/api';
 	import type { Degree, Year } from '$lib/teachings';
 	import { EDIT_URLS, GH_PAGES_BASE_URL } from '$lib/const';
+	import { cleanDonePage, getDoneStatusPage, doneStatusPage } from '$lib/todo-file'; //Todo file
 
 	import type { PageData } from './$types';
+	import { onMount } from 'svelte';
 	export let data: PageData;
 
 	let editUrls = EDIT_URLS($page.url.pathname);
@@ -159,6 +161,19 @@
 	}
 
 	$: degree = guessDegree(urlParts[0]);
+
+	// Done file status
+	let isDone = getDoneStatusPage($page.url.toString());
+	doneStatusPage.subscribe((v) => {
+		isDone = v;
+	});
+	$: isDone = getDoneStatusPage($page.url.toString());
+	function cleanDone() {
+		cleanDonePage($page.url.toString());
+		setTimeout(() => {
+			isDone = getDoneStatusPage($page.url.toString());
+		}, 0);
+	}
 </script>
 
 <svelte:head>
@@ -226,6 +241,16 @@
 		</div>
 	</div>
 	<div class="flex flex-1 justify-end mr-4 mb-3">
+		{#if isDone}
+			<button
+				class="lg:ml-2 p-1 flex mr-2 items-center"
+				on:click={cleanDone}
+				title="Clean all done files in this page"
+			>
+				<span class="text-warning text-xl icon-[solar--broom-bold-duotone]"></span>
+			</button>
+		{/if}
+		<!-- Reverse Mode -->
 		<button class="lg:ml-2 p-1 flex items-center rounded-xl bg-primary" on:click={toggleReverse}>
 			<span
 				class="text-base-100 text-xl icon-[solar--sort-vertical-bold-duotone]"
