@@ -33,7 +33,7 @@
 	$: fuseResult = fuse
 		? fuse.search(searchQuery, {
 				limit: 7
-		  })
+			})
 		: [];
 
 	// Set first result as "active"
