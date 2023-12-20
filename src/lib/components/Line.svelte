@@ -42,7 +42,10 @@
 		const file = $page.url + '/' + data.name;
 		toggleDoneFile(file, isDone);
 		isDone = getDoneStatus(file);
-		if (isDone) var done_page = getDoneStatusPage(file);
+		if (isDone) {
+			var done_page = getDoneStatusPage(file);
+			$doneStatusPage = done_page;
+		}
 	}
 </script>
 
