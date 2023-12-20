@@ -8,7 +8,7 @@
 	import type { FuzzyFile } from '$lib/api';
 	import type { Degree, Year } from '$lib/teachings';
 	import { EDIT_URLS, GH_PAGES_BASE_URL } from '$lib/const';
-	import { cleanDonePage, getDoneStatusPage, doneStatusPage } from '$lib/todo-file'; //Todo file
+	import { cleanDonePage, getDoneStatusPage, doneStatusPage } from '$lib/todo-file';
 
 	import type { PageData } from './$types';
 	export let data: PageData;
@@ -162,11 +162,10 @@
 	$: degree = guessDegree(urlParts[0]);
 
 	// Done file status
-	let isDone = getDoneStatusPage($page.url.toString());
+	$: isDone = getDoneStatusPage($page.url.toString());
 	doneStatusPage.subscribe((v) => {
 		isDone = v;
 	});
-	$: isDone = getDoneStatusPage($page.url.toString());
 	function cleanDone() {
 		cleanDonePage($page.url.toString());
 		setTimeout(() => {

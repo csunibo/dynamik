@@ -1,24 +1,6 @@
-import { writable } from 'svelte/store';
+import { persisted } from 'svelte-local-storage-store';
 
-function createLocalStorageStore(key: string, startValue: boolean) {
-	const { subscribe, set, update } = writable(startValue);
-
-	return {
-		subscribe,
-		set: (value: boolean) => {
-			// Fix: Change the parameter type to boolean
-			localStorage.setItem(key, value.toString()); // Convert boolean value to string before storing in localStorage
-			set(value);
-		},
-		update,
-		remove: () => {
-			localStorage.removeItem(key);
-			set(startValue);
-		}
-	};
-}
-
-export const doneStatusPage = createLocalStorageStore('doneStatusPage', false);
+export const doneStatusPage = persisted<boolean>('doneStatusPage', false);
 
 // done file status
 export function getDoneStatus(fileName: string) {

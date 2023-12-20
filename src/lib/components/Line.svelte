@@ -3,6 +3,12 @@
 	import settings from '$lib/settings';
 	import type { File, Directory } from '$lib/api';
 	import { formatDate } from '$lib/date';
+	import {
+		getDoneStatus,
+		doneStatusPage,
+		getDoneStatusPage,
+		toggleDone as toggleDoneFile
+	} from '$lib/todo-file';
 
 	export let data: File | Directory;
 	export let customUrl: string | undefined = undefined;
@@ -28,24 +34,14 @@
 		URL.revokeObjectURL(urlObject);
 	}
 
-	import {
-		getDoneStatus,
-		doneStatusPage,
-		getDoneStatusPage,
-		toggleDone as toggleDoneFile
-	} from '$lib/todo-file';
 	let isDone = false;
-	$: {
-		isDone = $doneStatusPage ? getDoneStatus($page.url + '/' + data.name) : false;
-	}
+	$: isDone = $doneStatusPage ? getDoneStatus($page.url + '/' + data.name) : false;
+
 	function toggleDone() {
 		const file = $page.url + '/' + data.name;
 		toggleDoneFile(file, isDone);
 		isDone = getDoneStatus(file);
-		if (isDone) {
-			var done_page = getDoneStatusPage(file);
-			$doneStatusPage = done_page;
-		}
+		if (isDone) $doneStatusPage = getDoneStatusPage(file);
 	}
 </script>
 
