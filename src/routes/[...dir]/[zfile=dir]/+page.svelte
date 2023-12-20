@@ -11,7 +11,6 @@
 	import { cleanDonePage, getDoneStatusPage, doneStatusPage } from '$lib/todo-file'; //Todo file
 
 	import type { PageData } from './$types';
-	import { onMount } from 'svelte';
 	export let data: PageData;
 
 	let editUrls = EDIT_URLS($page.url.pathname);
