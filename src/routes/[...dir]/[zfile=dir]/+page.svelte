@@ -163,13 +163,11 @@
 
 	// Done file status
 	$: isDone = getDoneStatusPage($page.url.toString());
-	doneStatusPage.subscribe((v) => {
-		isDone = v;
-	});
+
 	function cleanDone() {
 		cleanDonePage($page.url.toString());
 		setTimeout(() => {
-			isDone = getDoneStatusPage($page.url.toString());
+			isDone = getDoneStatusPage($page.url?.toString());
 		}, 0);
 	}
 </script>
