@@ -8,7 +8,7 @@
 	import type { FuzzyFile } from '$lib/api';
 	import type { Degree, Year } from '$lib/teachings';
 	import { EDIT_URLS, GH_PAGES_BASE_URL } from '$lib/const';
-	import { cleanDonePage, getDoneStatusPage, doneStatusPage } from '$lib/todo-file';
+	import { cleanDonePage, getDoneStatusPage } from '$lib/todo-file';
 
 	import type { PageData } from './$types';
 	export let data: PageData;
