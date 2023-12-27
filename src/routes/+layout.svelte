@@ -1,15 +1,20 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import settings, { DEFAULT_COURSE_KEY } from '$lib/settings';
+	import settings from '$lib/settings';
+    import { DEGREES } from '$lib/teachings';
 
 	onMount(() => {
 		settings.subscribe(() => {
 			document.firstElementChild!.setAttribute('data-theme', $settings.theme);
 		});
-		if (window.location.pathname === '/' && $settings.defaultCourse !== DEFAULT_COURSE_KEY) {
+		if (window.location.pathname === '/' && isKnownCourse($settings.defaultCourse)) {
 			window.location.href = `/dash/${$settings.defaultCourse}`;
 		}
 	});
+
+    const isKnownCourse = (course: string) => {
+        return DEGREES.some((c) => c.id === course);
+    };
 
 	import unibo32ico from '$lib/assets/unibo32.ico';
 	import unibo128ico from '$lib/assets/unibo128.ico';
