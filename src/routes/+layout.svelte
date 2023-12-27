@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import settings from '$lib/settings';
-    import { DEGREES } from '$lib/teachings';
+	import { DEGREES } from '$lib/teachings';
 
 	onMount(() => {
 		settings.subscribe(() => {
@@ -12,9 +12,9 @@
 		}
 	});
 
-    const isKnownCourse = (course: string) => {
-        return DEGREES.some((c) => c.id === course);
-    };
+	const isKnownCourse = (course: string) => {
+		return DEGREES.some((c) => c.id === course);
+	};
 
 	import unibo32ico from '$lib/assets/unibo32.ico';
 	import unibo128ico from '$lib/assets/unibo128.ico';
