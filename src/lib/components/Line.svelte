@@ -33,7 +33,7 @@
 	$: file = $page.url + '/' + data.name;
 	$: isDone = getDoneStatus(file);
 	// Subscribe to doneFiles store
-	let unsubscribe = doneFiles.subscribe((value) => {
+	let unsubscribe = doneFiles.subscribe(() => {
 		isDone = getDoneStatus(file);
 	});
 
@@ -83,7 +83,6 @@
 				>
 					{data.name}
 				</a>
-				<p>{isDone}</p>
 			{:else}
 				<span class="flex icon-[solar--folder-bold] text-xl mr-2" style="color: #FDE74C"></span>
 				<a

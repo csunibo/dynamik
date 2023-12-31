@@ -165,7 +165,7 @@
 	// Done file status
 	$: isDone = getDoneStatusPage($page.url?.toString());
 	// Subscribe to doneFiles store
-	let unsubscribe = doneFiles.subscribe((value) => {
+	let unsubscribe = doneFiles.subscribe(() => {
 		isDone = getDoneStatusPage($page.url?.toString());
 	});
 
@@ -246,7 +246,6 @@
 		</div>
 	</div>
 	<div class="flex flex-1 justify-end mr-4 mb-3">
-		<p>{isDone}</p>
 		{#if isDone}
 			<button
 				class="lg:ml-2 p-1 flex mr-2 items-center"
