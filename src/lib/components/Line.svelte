@@ -3,12 +3,8 @@
 	import settings from '$lib/settings';
 	import type { File, Directory } from '$lib/api';
 	import { formatDate } from '$lib/date';
-	import {
-		getDoneStatus,
-		doneStatusPage,
-		getDoneStatusPage,
-		toggleDone as toggleDoneFile
-	} from '$lib/todo-file';
+	import { doneFiles, getDoneStatus, toggleDone } from '$lib/todo-file';
+	import { onMount } from 'svelte';
 
 	export let data: File | Directory;
 	export let customUrl: string | undefined = undefined;
@@ -34,14 +30,21 @@
 		URL.revokeObjectURL(urlObject);
 	}
 
-	let isDone = false;
-	$: isDone = $doneStatusPage ? getDoneStatus($page.url + '/' + data.name) : false;
-
-	function toggleDone() {
-		const file = $page.url + '/' + data.name;
-		toggleDoneFile(file, isDone);
+	$: file = $page.url + '/' + data.name;
+	$: isDone = getDoneStatus(file);
+	// Subscribe to doneFiles store
+	let unsubscribe = doneFiles.subscribe((value) => {
 		isDone = getDoneStatus(file);
-		if (isDone) $doneStatusPage = getDoneStatusPage(file);
+	});
+
+	onMount(() => {
+		return () => {
+			// Unsubscribe when the component is unmounted
+			unsubscribe();
+		};
+	});
+	function handleDone() {
+		isDone = toggleDone(file, isDone, $page.url.toString());
 	}
 </script>
 
@@ -61,7 +64,7 @@
 			{:else if isFile}
 				<button
 					class="flex text-xl mr-2 align-center"
-					on:click={toggleDone}
+					on:click={handleDone}
 					type="button"
 					title="Click to mark as done"
 				>
@@ -80,6 +83,7 @@
 				>
 					{data.name}
 				</a>
+				<p>{isDone}</p>
 			{:else}
 				<span class="flex icon-[solar--folder-bold] text-xl mr-2" style="color: #FDE74C"></span>
 				<a
