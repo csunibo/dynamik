@@ -7,7 +7,7 @@
 	import Line from '$lib/components/Line.svelte';
 	import type { FuzzyFile } from '$lib/api';
 	import type { Degree, Year } from '$lib/teachings';
-	import { EDIT_URLS, GH_PAGES_BASE_URL } from '$lib/const';
+	import { EDIT_URLS } from '$lib/const';
 
 	import type { PageData } from './$types';
 	export let data: PageData;
