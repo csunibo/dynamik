@@ -279,7 +279,7 @@
 					{@const href =
 						result.item.mime === 'text/statik-link'
 							? result.item.url
-							: base + result.item.url.split(GH_PAGES_BASE_URL)[1]}
+							: base + result.item.url.split('https://risorse.students.cs.unibo.it')[1]}
 					<li>
 						<a {href} class:active={i === active}>
 							{result.item.name}
