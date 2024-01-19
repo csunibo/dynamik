@@ -9,7 +9,15 @@
 		// Focus the iframe
 		iframe.contentWindow?.focus();
 	});
+
+	let url = data.url.split('/');
+	$: title = url[url.length - 1].split('?')[0];
 </script>
+
+<svelte:head>
+	<title>{title}</title>
+	<meta property="og:title" content={title} />
+</svelte:head>
 
 <iframe bind:this={iframe} title="Embedded resource" src={data.url} />
 
