@@ -3,8 +3,7 @@
 	import settings from '$lib/settings';
 	import type { File, Directory } from '$lib/api';
 	import { formatDate } from '$lib/date';
-	import { doneFiles, getDoneStatus, toggleDone } from '$lib/todo-file';
-	import { onMount } from 'svelte';
+	import { getDoneStatus } from '$lib/todo-file';
 
 	export let data: File | Directory;
 	export let customUrl: string | undefined = undefined;
@@ -30,22 +29,7 @@
 		URL.revokeObjectURL(urlObject);
 	}
 
-	$: file = $page.url + '/' + data.name;
-	$: isDone = getDoneStatus(file);
-	// Subscribe to doneFiles store
-	let unsubscribe = doneFiles.subscribe(() => {
-		isDone = getDoneStatus(file);
-	});
-
-	onMount(() => {
-		return () => {
-			// Unsubscribe when the component is unmounted
-			unsubscribe();
-		};
-	});
-	function handleDone() {
-		isDone = toggleDone(file, isDone, $page.url.toString());
-	}
+	let isDone = getDoneStatus(data.url);
 </script>
 
 <div class="contents">
@@ -64,20 +48,20 @@
 			{:else if isFile}
 				<button
 					class="flex text-xl mr-2 align-center"
-					on:click={handleDone}
+					on:click={() => isDone.toggle()}
 					type="button"
 					title="Click to mark as done"
 				>
 					<span
 						class="text-bold icon-[solar--file-bold-duotone]"
-						style={isDone ? '' : 'color: #AFD2E9'}
-						class:icon-[solar--file-check-bold-duotone]={isDone}
-						class:text-success={isDone}
+						style={$isDone ? '' : 'color: #AFD2E9'}
+						class:icon-[solar--file-check-bold-duotone]={$isDone}
+						class:text-success={$isDone}
 					></span>
 				</button>
 				<a
 					class="flex link link-hover sm:flex-wrap text-primary"
-					class:line-through={isDone}
+					class:line-through={$isDone}
 					href="{base}/{data.name}?{$page.url.searchParams}"
 					target={$settings.newTab ? '_blank' : '_self'}
 				>

@@ -8,10 +8,9 @@
 	import type { FuzzyFile } from '$lib/api';
 	import type { Degree, Year } from '$lib/teachings';
 	import { EDIT_URLS, GH_PAGES_BASE_URL } from '$lib/const';
-	import { cleanDonePage, doneFiles, getDoneStatusPage } from '$lib/todo-file';
+	import { doneFiles, anyFileDone } from '$lib/todo-file';
 
 	import type { PageData } from './$types';
-	import { onMount } from 'svelte';
 	export let data: PageData;
 
 	let editUrls = EDIT_URLS($page.url.pathname);
@@ -163,21 +162,15 @@
 	$: degree = guessDegree(urlParts[0]);
 
 	// Done file status
-	$: isDone = getDoneStatusPage($page.url?.toString());
-	// Subscribe to doneFiles store
-	let unsubscribe = doneFiles.subscribe(() => {
-		isDone = getDoneStatusPage($page.url?.toString());
-	});
+	let isDone = anyFileDone(data.manifest.files?.map((f) => f.url) ?? []);
 
-	onMount(() => {
-		return () => {
-			// Unsubscribe when the component is unmounted
-			unsubscribe();
-		};
-	});
 	function cleanDone() {
-		cleanDonePage($page.url.toString());
-		isDone = false;
+		doneFiles.update((old) => {
+			data.manifest.files?.forEach((f) => {
+				old[f.url] = false;
+			});
+			return old;
+		});
 	}
 </script>
 
@@ -246,7 +239,7 @@
 		</div>
 	</div>
 	<div class="flex flex-1 justify-end mr-4 mb-3">
-		{#if isDone}
+		{#if $isDone}
 			<button
 				class="lg:ml-2 p-1 flex mr-2 items-center"
 				on:click={cleanDone}
