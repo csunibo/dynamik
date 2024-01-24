@@ -42,7 +42,10 @@
 		}
 	}
 
-	$: urlParts = $page.url.pathname.split('/').slice(1);
+	$: urlParts = $page.url.pathname
+		.split('/')
+		.slice(1)
+		.filter((p) => p !== ''); // otherwise we get an empty string at the end
 
 	const getPartHref = (part: string) =>
 		$page.url.pathname
