@@ -29,7 +29,7 @@
 		URL.revokeObjectURL(urlObject);
 	}
 
-	let isDone = getDoneStatus(data.url);
+	$: isDone = getDoneStatus(data.url);
 </script>
 
 <div class="contents">
