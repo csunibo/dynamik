@@ -16,3 +16,11 @@ updates:
     directory: '/'
     schedule:
       interval: 'weekly'
+  
+  - package-ecosystem: "gitsubmodule"
+    directory: "/"
+    allow:
+      - dependency-name: "src/config"
+    schedule:
+      interval: "daily"
+
