@@ -7,7 +7,7 @@
 	import Line from '$lib/components/Line.svelte';
 	import type { FuzzyFile } from '$lib/api';
 	import type { Degree, Year } from '$lib/teachings';
-	import { EDIT_URLS } from '$lib/const';
+	import { EDIT_URLS, RISORSE_BASE_URL } from '$lib/const';
 
 	import type { PageData } from './$types';
 	export let data: PageData;
@@ -279,7 +279,7 @@
 					{@const href =
 						result.item.mime === 'text/statik-link'
 							? result.item.url
-							: base + result.item.url.split('https://risorse.students.cs.unibo.it')[1]}
+							: base + result.item.url.split(RISORSE_BASE_URL)[1]}
 					<li>
 						<a {href} class:active={i === active}>
 							{result.item.name}

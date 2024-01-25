@@ -6,6 +6,7 @@
 	import { getLoginUrl, getWhoAmI } from '$lib/upld';
 	import ListTeaching from './ListTeaching.svelte';
 	import type { TeachingsBatch } from './ListTeaching.svelte';
+	import { RISORSE_BASE_URL } from '$lib/const';
 
 	export let data: PageData;
 	let activeYears: string[] = [];
@@ -49,7 +50,7 @@
 	<meta
 		name="url"
 		property="og:url"
-		content="https://risorse.students.cs.unibo.it/{data.degree?.name}"
+		content="{RISORSE_BASE_URL}/{data.degree?.name}"
 	/>
 	<meta name="description" property="og:description" content="Risorse di {data.degree?.name}" />
 </svelte:head>
