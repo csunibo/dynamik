@@ -18,8 +18,8 @@ export const getDoneStatus = (fileUrl: string) => {
 	};
 };
 
-export const anyFileDone = (fileUrls: string[]) => {
-	return derived(doneFiles, ($doneFiles) =>
-		fileUrls.some((fileUrl) => $doneFiles[fileUrl] ?? false)
-	);
-};
+export const anyFileDone = (fileUrls: string[]) =>
+	derived(doneFiles, ($doneFiles) => {
+		if (fileUrls.length === 0) return false;
+		return fileUrls.some((fileUrl) => $doneFiles[fileUrl] ?? false);
+	});

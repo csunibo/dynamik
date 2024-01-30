@@ -162,7 +162,7 @@
 	$: degree = guessDegree(urlParts[0]);
 
 	// Done file status
-	let isDone = anyFileDone(data.manifest.files?.map((f) => f.url) ?? []);
+	$: isDone = anyFileDone(data.manifest.files?.map((f) => f.url) ?? []);
 
 	function cleanDone() {
 		doneFiles.update((old) => {
