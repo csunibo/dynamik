@@ -10,8 +10,12 @@
 		iframe.contentWindow?.focus();
 	});
 
-	let url = data.url.split('/');
-	$: title = url[url.length - 1].split('?')[0];
+	$: url = data.url.split('/');
+	$: title = getTitle();
+
+	function getTitle() {
+		return url[url.length - 1].split('?')[0];
+	}
 </script>
 
 <svelte:head>
