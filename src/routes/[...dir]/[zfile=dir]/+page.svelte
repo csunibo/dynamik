@@ -8,6 +8,7 @@
 	import type { FuzzyFile } from '$lib/api';
 	import type { Degree, Year } from '$lib/teachings';
 	import { EDIT_URLS, GH_PAGES_BASE_URL } from '$lib/const';
+	import { doneFiles, anyFileDone } from '$lib/todo-file';
 
 	import type { PageData } from './$types';
 	export let data: PageData;
@@ -162,6 +163,18 @@
 	}
 
 	$: degree = guessDegree(urlParts[0]);
+
+	// Done file status
+	$: isDone = anyFileDone(data.manifest.files?.map((f) => f.url) ?? []);
+
+	function cleanDone() {
+		doneFiles.update((old) => {
+			data.manifest.files?.forEach((f) => {
+				old[f.url] = false;
+			});
+			return old;
+		});
+	}
 </script>
 
 <svelte:head>
@@ -229,6 +242,16 @@
 		</div>
 	</div>
 	<div class="flex flex-1 justify-end mr-4 mb-3">
+		{#if $isDone}
+			<button
+				class="lg:ml-2 p-1 flex mr-2 items-center"
+				on:click={cleanDone}
+				title="Clean all done files in this page"
+			>
+				<span class="text-warning text-xl icon-[solar--broom-bold-duotone]"></span>
+			</button>
+		{/if}
+		<!-- Reverse Mode -->
 		<button class="lg:ml-2 p-1 flex items-center rounded-xl bg-primary" on:click={toggleReverse}>
 			<span
 				class="text-base-100 text-xl icon-[solar--sort-vertical-bold-duotone]"

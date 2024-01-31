@@ -3,6 +3,7 @@
 	import settings from '$lib/settings';
 	import type { File, Directory } from '$lib/api';
 	import { formatDate } from '$lib/date';
+	import { getDoneStatus } from '$lib/todo-file';
 
 	export let data: File | Directory;
 	export let customUrl: string | undefined = undefined;
@@ -27,6 +28,8 @@
 		isSpinning = false;
 		URL.revokeObjectURL(urlObject);
 	}
+
+	$: isDone = getDoneStatus(data.url);
 </script>
 
 <div class="contents">
@@ -43,12 +46,22 @@
 					{data.name}
 				</a>
 			{:else if isFile}
-				<span
-					class="icon-[solar--file-bold-duotone] text-xl align-center mr-2"
-					style="color: #AFD2E9"
-				></span>
+				<button
+					class="flex text-xl mr-2 align-center"
+					on:click={() => isDone.toggle()}
+					type="button"
+					title="Click to mark as done"
+				>
+					<span
+						class="text-bold icon-[solar--file-bold-duotone]"
+						style={$isDone ? '' : 'color: #AFD2E9'}
+						class:icon-[solar--file-check-bold-duotone]={$isDone}
+						class:text-success={$isDone}
+					></span>
+				</button>
 				<a
 					class="flex link link-hover sm:flex-wrap text-primary"
+					class:line-through={$isDone}
 					href="{base}/{data.name}?{$page.url.searchParams}"
 					target={$settings.newTab ? '_blank' : '_self'}
 				>
