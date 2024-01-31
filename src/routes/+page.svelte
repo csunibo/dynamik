@@ -26,13 +26,14 @@
 		<div class="flex items-center justify-between">
 			<div><!-- justifier --></div>
 			<p class="font-semibold">
-			<i><b>🔥Nuova feature: ToDo List🔥</b></i> 
-			 All'interno di tutte le pagine con file cliccando sopra l'icona
-			 	<span class="inline-flex items-baseline icon-[solar--file-bold-duotone]"></span> 
-			potrai segnarlo e salvarlo come "fatto"
-			 	<span class="inline-flex items-baseline text-success icon-[solar--file-check-bold-duotone]"></span>,
-			   cancella i tuoi "ToDo" nella pagina corrente con 
-			 <span class="inline-flex items-baseline text-warning icon-[solar--broom-bold-duotone]"></span>
+				<i><b>🔥Nuova feature: ToDo List🔥</b></i>
+				All'interno di tutte le pagine con file cliccando sopra l'icona
+				<span class="inline-flex items-baseline icon-[solar--file-bold-duotone]"></span>
+				potrai segnarlo e salvarlo come "fatto"
+				<span class="inline-flex items-baseline text-success icon-[solar--file-check-bold-duotone]"
+				></span>, cancella i tuoi "ToDo" nella pagina corrente con
+				<span class="inline-flex items-baseline text-warning icon-[solar--broom-bold-duotone]"
+				></span>
 			</p>
 			<button
 				class="text-content hover:text-error focus:outline-none"
