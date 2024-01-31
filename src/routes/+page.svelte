@@ -22,13 +22,18 @@
 </svelte:head>
 
 {#if $shouldShowBanner && browser}
-	<div class="bg-accent text-content p-4">
+	<div class="bg-info bg-opacity-50 text-content p-4">
 		<div class="flex items-center justify-between">
 			<div><!-- justifier --></div>
 			<p class="font-semibold">
-				Dai un occhiata <a class="underline text-primary" href="{base}/settings">qui</a> 🔥 Ora puoi
-				selezionare il tuo corso preferito! Ogni volta che accedi verrai subito portato al tuo corso
-				🔥
+				<i><b>🔥Nuova feature: ToDo List🔥</b></i>
+				All'interno di tutte le pagine con file cliccando sopra l'icona
+				<span class="inline-flex items-baseline icon-[solar--file-bold-duotone]"></span>
+				potrai segnarlo e salvarlo come "fatto"
+				<span class="inline-flex items-baseline text-success icon-[solar--file-check-bold-duotone]"
+				></span>, cancella i tuoi "ToDo" nella pagina corrente con
+				<span class="inline-flex items-baseline text-warning icon-[solar--broom-bold-duotone]"
+				></span>
 			</p>
 			<button
 				class="text-content hover:text-error focus:outline-none"
