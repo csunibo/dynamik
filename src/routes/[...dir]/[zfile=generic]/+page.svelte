@@ -10,11 +10,11 @@
 		iframe.contentWindow?.focus();
 	});
 
-	$: url = data.url.split('/');
-	$: title = getTitle();
+	$: title = getTitle(data.url);
 
-	function getTitle() {
-		return url[url.length - 1].split('?')[0];
+	function getTitle(url: string) {
+		const part = url.split('/');
+		return part[part.length - 1].split('?')[0];
 	}
 </script>
 
