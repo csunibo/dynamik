@@ -2,7 +2,7 @@ import { persisted } from 'svelte-local-storage-store';
 import { derived } from 'svelte/store';
 
 const BANNER_KEY = 'newSettingsBannerVersion';
-const ACTUAL_BANNER_VERSION = 1;
+const ACTUAL_BANNER_VERSION = 2;
 
 const dismissedLastVersion = persisted<number>(BANNER_KEY, 0);
 
