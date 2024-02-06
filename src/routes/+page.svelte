@@ -66,6 +66,7 @@
 
 			<Line name="Impostazioni" icon="🔧" href="{base}/settings" />
 			<Line name="Stato" icon="📊" href="{base}/build" />
+			<Line name="Upload" icon="📤" href="{base}/upld" />
 		</ul>
 	</div>
 </div>

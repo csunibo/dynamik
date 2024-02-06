@@ -1,3 +1,6 @@
+import { persisted } from 'svelte-local-storage-store';
+import type { Degree } from './teachings';
+
 const UPDL_URL = import.meta.env.VITE_UPLD_URL;
 
 if (UPDL_URL == null) {
@@ -13,3 +16,18 @@ export async function getWhoAmI(fetch: typeof window.fetch) {
 
 	return res.json();
 }
+
+export interface Upload {
+	repo: string;
+	dir: string;
+	file_name: string;
+	file: File[];
+}
+const upload = persisted<Upload>('upload', {
+	repo: '',
+	dir: '',
+	file_name: '',
+	file: []
+});
+
+export default upload;
