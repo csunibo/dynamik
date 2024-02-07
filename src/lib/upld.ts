@@ -20,14 +20,14 @@ export async function getWhoAmI(fetch: typeof window.fetch) {
 export interface Upload {
 	repo: string;
 	dir: string;
-	file_name: string;
+	file_name: string[];
 	file: File[];
 }
-const upload = persisted<Upload>('upload', {
+const UPLD = persisted<Upload>('upload', {
 	repo: '',
 	dir: '',
-	file_name: '',
+	file_name: [],
 	file: []
 });
 
-export default upload;
+export default UPLD;

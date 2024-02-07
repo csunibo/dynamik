@@ -1,7 +1,15 @@
 <script lang="ts">
 	import { writable } from 'svelte/store';
-	import upload from '$lib/upld';
+	import Login from './Login.svelte';
+	import UPLD from '$lib/upld';
 	import teachings from '../../config/teachings.json';
+
+	interface FileUpload {
+		file: File;
+		file_name: string;
+		id: number; // unique id for each upload
+		isNameValid: boolean;
+	}
 
 	const repo = ['appunti', 'dispense', 'esercizi', 'lavagne', 'libri', 'lucidi', 'prove', 'varie'];
 
@@ -17,34 +25,35 @@
 		? allTeachingNames.filter((teaching) => teaching.toLowerCase().includes($search.toLowerCase()))
 		: allTeachingNames;
 
-	const selectTeaching = (teaching: string) => {
+	const selectTeaching = (teaching: string): void => {
 		selectedTeaching = teaching;
 		search.set(teaching);
 		isOpen = false;
 	};
 
-	const handleKeyDown = (event: KeyboardEvent) => {
+	enum Key {
+		ArrowDown = 'ArrowDown',
+		ArrowUp = 'ArrowUp',
+		Enter = 'Enter'
+	}
+
+	const handleKeyDown = (event: KeyboardEvent): void => {
 		switch (event.key) {
-			case 'ArrowDown':
+			case Key.ArrowDown:
 				if (selectedIndex < filteredTeachings.length - 1) selectedIndex++;
 				break;
-			case 'ArrowUp':
+			case Key.ArrowUp:
 				if (selectedIndex > 0) selectedIndex--;
 				break;
-			case 'Enter':
+			case Key.Enter:
 				selectTeaching(filteredTeachings[selectedIndex]);
 				break;
 		}
 	};
 
-	let file_uploads: {
-		file: File;
-		file_name: string;
-		id: number; // unique id for each upload
-		isNameValid: boolean;
-	}[] = [];
+	let file_uploads: FileUpload[] = [];
 
-	const handleFileChange = (event: Event) => {
+	const handleFileChange = (event: Event): void => {
 		const fileInput = event.target as HTMLInputElement;
 		if (fileInput.files) {
 			for (let i = 0; i < fileInput.files.length; i++) {
@@ -62,7 +71,7 @@
 		}
 	};
 
-	const renameFile = (id: number, newName: string) => {
+	const renameFile = (id: number, newName: string): void => {
 		const upload = file_uploads.find((upload) => upload.id === id);
 		if (upload) {
 			upload.file_name = newName;
@@ -70,37 +79,66 @@
 		file_uploads = [...file_uploads]; // force reactivity
 	};
 
-	const checkFileName = (fileName: string) => {
-		fileName = fileName.split('.')[0];
+	const checkFileName = (fileName: string): boolean => {
+		fileName = fileName.split('.').slice(0, -1).join('.'); // get the name without extension
 		return /^[a-z0-9]+(-[a-z0-9]+)*$/.test(fileName);
 	};
 
-	const removeFile = (id: number) => {
+	const handleInputChange = (
+		event: Event & { currentTarget: EventTarget & HTMLInputElement },
+		fileId: number
+	): void => {
+		const newFileName = (event.target as HTMLInputElement).value;
+		const fileIndex = file_uploads.findIndex((file) => file.id === fileId);
+		if (fileIndex !== -1) {
+			file_uploads[fileIndex].file_name = newFileName;
+			file_uploads[fileIndex].isNameValid = checkFileName(newFileName);
+			file_uploads = [...file_uploads]; // force reactivity
+		}
+	};
+
+	const removeFile = (id: number): void => {
 		file_uploads = file_uploads.filter((upload) => upload.id !== id);
 	};
 
-	function submit() {
+	// ------ LOGIN ------
+	$: logged = true; // true se è già loggato, false mostra popup login github
+
+	function submit(): void {
+		let fileNames: string[] = [];
+		let files: File[] = [];
+
 		file_uploads.forEach((upload) => {
-			upload.push({
-				repo: selectedTeaching,
-				dir: selectedDir,
-				file_name: file_name
-			});
+			fileNames.push(upload.file_name);
+			files.push(upload.file);
 		});
+
+		UPLD.set({
+			repo: selectedTeaching,
+			dir: selectedDir,
+			file_name: fileNames,
+			file: files
+		});
+
+		logged = checkLogin();
+	}
+
+	function checkLogin(): boolean {
+		return false;
 	}
 
 	// ------ DRAG & DROP -------
 	let isDraggingOver = false;
-	function dragOverHandler(event) {
+	function dragOverHandler(event): void {
 		event.preventDefault();
 		isDraggingOver = true;
 	}
 
-	function dragLeaveHandler(event) {
+	function dragLeaveHandler(event): void {
 		isDraggingOver = false;
 	}
 
-	function dropHandler(event) {
+	function dropHandler(event): void {
 		event.preventDefault();
 		isDraggingOver = false;
 		const files = event.dataTransfer.files;
@@ -121,18 +159,25 @@
 	}
 </script>
 
-<main class="max-w-6xl min-w-fit p-4 mx-auto">
+<main class="max-w-5xl p-4 mx-auto">
 	<!-- Navbar -->
-	<div class="navbar flex bg-base-200 rounded-box shadow-sm px-5 mb-5">
+	<nav class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
+		<div class="navbar-start"></div>
 		<div class="navbar min-h-0 p-0 justify-center items-center">
-			<h1 class="font-bold text-xl">Carica i tuoi file</h1>
+			<h1 class="text-xl font-semibold text-base-content">Carica i tuoi file</h1>
 		</div>
-	</div>
+		<div class="navbar-end flex items-center">
+			<a class="btn btn-square btn-ghost" title="Indietro" href="/">
+				<span class="text-primary icon-[akar-icons--arrow-back-thick-fill]"></span>
+			</a>
+		</div>
+	</nav>
 	<form class="form-control font-semibold m-3">
 		<!-- Choose teaching -->
-		<label>Scegli la repository</label>
+		<label for="repository">Scegli la repository</label>
 		<input
 			required
+			id="repository"
 			class="input select-primary"
 			type="text"
 			bind:value={$search}
@@ -145,12 +190,14 @@
 		/>
 
 		{#if isOpen}
-			<ul class="mt-20 absolute rounded shadow-lg bg-base-100 text-base-content w-full">
+			<ul
+				class="mt-20 absolute rounded-lg shadow-lg bg-base-100 text-base-content bg-opacity-60 backdrop-blur backdrop-filter w-full max-w-md z-50 max-h-96 overflow-auto"
+			>
 				{#each filteredTeachings as teaching, index (teaching)}
 					<li
-						class="cursor-pointer hover:bg-primary hover:text-base-content px-4 py-2 {selectedIndex ===
+						class="cursor-pointer hover:bg-primary hover:text-base-100 px-4 py-2 {selectedIndex ===
 						index
-							? 'bg-primary text-base-content'
+							? 'bg-primary text-base-100'
 							: ''}"
 					>
 						<button on:click={() => selectTeaching(teaching)}>
@@ -162,8 +209,13 @@
 		{/if}
 		<br />
 		<!-- Choose dir -->
-		<label>Scegli la cartella</label>
-		<select required class="select select-primary text-base" bind:value={selectedDir}>
+		<label for="select-dir">Scegli la cartella</label>
+		<select
+			required
+			class="select select-primary text-base"
+			bind:value={selectedDir}
+			id="select-dir"
+		>
 			{#each repo as dir}
 				<option>{dir}</option>
 			{/each}
@@ -171,6 +223,8 @@
 		<br />
 		<!-- Drag & drop files -->
 		<div
+			role="button"
+			tabindex="0"
 			class="flex items-center justify-center w-full {isDraggingOver ? 'bg-primary/20' : ''}"
 			on:dragover={dragOverHandler}
 			on:dragleave={dragLeaveHandler}
@@ -220,7 +274,7 @@
 									: 'border-b-error border-b-4'}"
 								type="text"
 								bind:value={upload.file_name}
-								on:blur={() => renameFile(upload.id, upload.file_name)}
+								on:input={(event) => handleInputChange(event, upload.id)}
 							/>
 							<span class="text-lg icon-[akar-icons--pencil]"></span>
 						</div>
@@ -229,7 +283,7 @@
 			</div>
 			<h1 class="flex">
 				* Rinomina eventuali file sottolineati in <p class="text-error ml-1 mr-1">rosso</p>
-				in kebabe-case per velocizzare l'approvazione.
+				in kebab-case per velocizzare l'approvazione.
 			</h1>
 		{/if}
 		<button
@@ -239,19 +293,9 @@
 			><span class="m-1 text-lg icon-[akar-icons--send]"></span>Crea una Pull Request su GitHub</button
 		>
 	</form>
-</main>
 
-<style>
-	:global(Select) {
-		@apply bg-base-100 text-base-content rounded shadow;
-	}
-	:global(.svelte-select .listContainer) {
-		@apply mt-1 rounded shadow-lg;
-	}
-	:global(.svelte-select .selectedValue) {
-		@apply cursor-pointer;
-	}
-	:global(.svelte-select .listItem) {
-		@apply cursor-pointer;
-	}
-</style>
+	<!-- Modal login -->
+	{#if !logged}
+		<Login />
+	{/if}
+</main>
