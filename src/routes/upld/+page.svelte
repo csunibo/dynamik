@@ -3,9 +3,10 @@
 	import Login from './Login.svelte';
 	import UPLD from '$lib/upld';
 	import teachings from '../../config/teachings.json';
+	import { page } from '$app/stores';
 
 	interface FileUpload {
-		file: File;
+		file: string;
 		file_name: string;
 		id: number; // unique id for each upload
 		isNameValid: boolean;
@@ -16,10 +17,15 @@
 	const search = writable('');
 	let selectedTeaching = '';
 	let allTeachingNames: string[] = teachings.map((teaching) => teaching.name);
+	let teachingNameUrlPairs: { [key: string]: string } = {};
+
+	teachings.forEach((teaching) => {
+		teachingNameUrlPairs[teaching.name] = teaching.url;
+	});
+
 	let isOpen = false;
 	let selectedIndex = 0;
 	let selectedDir = '';
-	let file_name = '';
 
 	$: filteredTeachings = $search
 		? allTeachingNames.filter((teaching) => teaching.toLowerCase().includes($search.toLowerCase()))
@@ -53,15 +59,19 @@
 
 	let file_uploads: FileUpload[] = [];
 
-	const handleFileChange = (event: Event): void => {
+	/**
+	 * Handle the file input
+	 */
+	const handleFileChange = async (event: Event): Promise<void> => {
 		const fileInput = event.target as HTMLInputElement;
 		if (fileInput.files) {
 			for (let i = 0; i < fileInput.files.length; i++) {
 				const file = fileInput.files[i];
+				convertFileToBase64(file);
 				file_uploads = [
 					...file_uploads,
 					{
-						file: file,
+						file: await toBase64(file),
 						file_name: file.name,
 						id: Date.now() + i, // unique id for each upload
 						isNameValid: checkFileName(file.name)
@@ -69,14 +79,6 @@
 				];
 			}
 		}
-	};
-
-	const renameFile = (id: number, newName: string): void => {
-		const upload = file_uploads.find((upload) => upload.id === id);
-		if (upload) {
-			upload.file_name = newName;
-		}
-		file_uploads = [...file_uploads]; // force reactivity
 	};
 
 	const checkFileName = (fileName: string): boolean => {
@@ -107,15 +109,17 @@
 	function submit(): void {
 		logged = checkLogin();
 		let fileNames: string[] = [];
-		let files: File[] = [];
+		let files: string[] = [];
 
 		file_uploads.forEach((upload) => {
 			fileNames.push(upload.file_name);
 			files.push(upload.file);
 		});
 
+		let urlselectedTeaching = teachingNameUrlPairs[selectedTeaching];
+
 		UPLD.set({
-			repo: selectedTeaching,
+			repo: urlselectedTeaching,
 			dir: selectedDir,
 			file_name: fileNames,
 			file: files
@@ -138,7 +142,7 @@
 		isDraggingOver = false;
 	}
 
-	function dropHandler(event): void {
+	async function dropHandler(event): Promise<void> {
 		event.preventDefault();
 		isDraggingOver = false;
 		const files = event.dataTransfer.files;
@@ -148,7 +152,7 @@
 				file_uploads = [
 					...file_uploads,
 					{
-						file: file,
+						file: await toBase64(file),
 						file_name: file.name,
 						id: Date.now() + i, // unique id for each upload
 						isNameValid: checkFileName(file.name)
@@ -157,6 +161,35 @@
 			}
 		}
 	}
+
+	function convertFileToBase64(file: File): string {
+		const reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = function () {
+			const base64 = reader.result;
+			if (typeof base64 === 'string') {
+				return base64;
+			}
+		};
+		reader.onerror = function (error) {
+			console.log('Error: ', error);
+		};
+		return '';
+	}
+	const toBase64 = (file: File) =>
+		new Promise<string>((resolve, reject) => {
+			const reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = () => resolve(reader.result);
+			reader.onerror = reject;
+		});
+
+	// ------ Handle from page -------
+	// console.log($page.url.pathname);
+	let url = $page.url.pathname.split('/');
+	// console.log($page.url.searchParams.get('from'));
+	$: from_degree = $page.url.pathname.split('?from=')[1];
+	// console.log(from_degree);
 </script>
 
 <main class="max-w-5xl p-4 mx-auto">
@@ -167,9 +200,13 @@
 			<h1 class="text-xl font-semibold text-base-content">Carica i tuoi file</h1>
 		</div>
 		<div class="navbar-end flex items-center">
-			<a class="btn btn-square btn-ghost" title="Indietro" href="/">
+			<button
+				class="btn btn-square btn-ghost"
+				title="Indietro"
+				on:click|preventDefault={() => history.back()}
+			>
 				<span class="text-primary icon-[akar-icons--arrow-back-thick-fill]"></span>
-			</a>
+			</button>
 		</div>
 	</nav>
 	<form class="form-control font-semibold m-3">
@@ -281,9 +318,10 @@
 					</div>
 				{/each}
 			</div>
-			<h1 class="flex">
-				* Rinomina eventuali file sottolineati in <p class="text-error ml-1 mr-1">rosso</p>
-				in kebab-case per velocizzare l'approvazione.
+			<h1>
+				<span>* Rinomina eventuali file sottolineati in </span>
+				<span class="text-error">rosso</span>
+				<span> in kebab-case per velocizzare l'approvazione.</span>
 			</h1>
 		{/if}
 		<button

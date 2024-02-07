@@ -221,7 +221,13 @@
 			</div>
 		</div>
 		<div class="navbar-end">
-			<div class="flex flex-1 justify-end">
+			<div class="flex flex-1 justify-end items-center">
+				<a
+					class="sm:ml-2 transition flex items-center justify-center self-center hover:bg-base-content hover:shadow-lg hover:shadow-base-content/50 bg-primary rounded-lg btn-ghost flex-shrink-0 w-9"
+					href="/upld?{urlParts}?{$page.url.searchParams}"
+				>
+					<span class="text-2xl font-extrabold text-neutral icon-[akar-icons--cloud-upload]"></span>
+				</a>
 				<a
 					class="sm:ml-2 p-1 flex items-center rounded-lg btn-ghost flex-shrink-0 w-8"
 					href={editUrls.github_repo}
