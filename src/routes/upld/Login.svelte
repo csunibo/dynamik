@@ -1,4 +1,17 @@
-<div class="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm">
+<script lang="ts">
+	export let show: boolean;
+
+	function handleClick() {
+		show = !show;
+	}
+</script>
+
+<button
+	class="fixed inset-0 cursor-default flex items-center justify-center z-50 backdrop-blur-sm {show
+		? 'hidden'
+		: ''}"
+	on:click={handleClick}
+>
 	<div
 		class="relative bg-accent rounded-xl shadow-xl bg-opacity-90 backdrop-blur backdrop-filter w-max p-8 m-auto"
 	>
@@ -10,7 +23,7 @@
 		</div>
 		<div class="mt-10 grid space-y-4">
 			<button
-				class="group h-12 px-6 border-2 border-base-300 rounded-full transition duration-300 hover:border-accent-200 bg-neutral hover:bg-primary/80 focus:bg-accent/50 active:bg-accent-100"
+				class="group h-12 px-6 border-2 border-base-300 rounded-full transition duration-300 hover:border-accent-200 bg-neutral hover:bg-primary focus:bg-accent/50 active:bg-accent"
 				><a
 					href="https://github.com/login/oauth/authorize?client_id=Iv1.8b86c79d96cfb064&redirect_uri=http://130.136.3.76:8000/oauth/redirect"
 				>
@@ -27,4 +40,4 @@
 			</button>
 		</div>
 	</div>
-</div>
+</button>

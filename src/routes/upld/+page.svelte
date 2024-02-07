@@ -105,6 +105,7 @@
 	$: logged = true; // true se è già loggato, false mostra popup login github
 
 	function submit(): void {
+		logged = checkLogin();
 		let fileNames: string[] = [];
 		let files: File[] = [];
 
@@ -119,12 +120,11 @@
 			file_name: fileNames,
 			file: files
 		});
-
-		logged = checkLogin();
 	}
 
-	function checkLogin(): boolean {
-		return false;
+	function checkLogin() {
+		if (!logged) return true;
+		else return false;
 	}
 
 	// ------ DRAG & DROP -------
@@ -296,6 +296,6 @@
 
 	<!-- Modal login -->
 	{#if !logged}
-		<Login />
+		<Login show={logged} />
 	{/if}
 </main>
