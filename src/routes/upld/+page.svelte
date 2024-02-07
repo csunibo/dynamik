@@ -15,27 +15,32 @@
 	const repo = ['appunti', 'dispense', 'esercizi', 'lavagne', 'libri', 'lucidi', 'prove', 'varie'];
 
 	const search = writable('');
-	let selectedTeaching = '';
-	let allTeachingNames: string[] = teachings.map((teaching) => teaching.name);
-	let teachingNameUrlPairs: { [key: string]: string } = {};
-
-	teachings.forEach((teaching) => {
-		teachingNameUrlPairs[teaching.name] = teaching.url;
-	});
 
 	let isOpen = false;
 	let selectedIndex = 0;
-	let selectedDir = '';
 
+	let allTeachingNames: string[] = teachings.map((teaching) => teaching.name);
+	let teaching_Pair: { [key: string]: string } = {};
+
+	teachings.forEach((teaching) => {
+		teaching_Pair[teaching.name] = teaching.url;
+	});
 	$: filteredTeachings = $search
 		? allTeachingNames.filter((teaching) => teaching.toLowerCase().includes($search.toLowerCase()))
 		: allTeachingNames;
 
 	const selectTeaching = (teaching: string): void => {
-		selectedTeaching = teaching;
 		search.set(teaching);
 		isOpen = false;
 	};
+
+	// ------ Handle from page -------
+	$: selectedDir = '';
+	$: {
+		let url = $page.url.toString().split('?')[1].split(',');
+		$search = Object.keys(teaching_Pair).find((key) => teaching_Pair[key] === url[0] || '') || '';
+		selectedDir = url[1] || '';
+	}
 
 	enum Key {
 		ArrowDown = 'ArrowDown',
@@ -67,7 +72,6 @@
 		if (fileInput.files) {
 			for (let i = 0; i < fileInput.files.length; i++) {
 				const file = fileInput.files[i];
-				convertFileToBase64(file);
 				file_uploads = [
 					...file_uploads,
 					{
@@ -116,7 +120,7 @@
 			files.push(upload.file);
 		});
 
-		let urlselectedTeaching = teachingNameUrlPairs[selectedTeaching];
+		let urlselectedTeaching = teaching_Pair[$search];
 
 		UPLD.set({
 			repo: urlselectedTeaching,
@@ -162,20 +166,6 @@
 		}
 	}
 
-	function convertFileToBase64(file: File): string {
-		const reader = new FileReader();
-		reader.readAsDataURL(file);
-		reader.onload = function () {
-			const base64 = reader.result;
-			if (typeof base64 === 'string') {
-				return base64;
-			}
-		};
-		reader.onerror = function (error) {
-			console.log('Error: ', error);
-		};
-		return '';
-	}
 	const toBase64 = (file: File) =>
 		new Promise<string>((resolve, reject) => {
 			const reader = new FileReader();
@@ -183,13 +173,6 @@
 			reader.onload = () => resolve(reader.result);
 			reader.onerror = reject;
 		});
-
-	// ------ Handle from page -------
-	// console.log($page.url.pathname);
-	let url = $page.url.pathname.split('/');
-	// console.log($page.url.searchParams.get('from'));
-	$: from_degree = $page.url.pathname.split('?from=')[1];
-	// console.log(from_degree);
 </script>
 
 <main class="max-w-5xl p-4 mx-auto">
@@ -209,7 +192,7 @@
 			</button>
 		</div>
 	</nav>
-	<form class="form-control font-semibold m-3">
+	<div class="form-control font-semibold m-3">
 		<!-- Choose teaching -->
 		<label for="repository">Scegli la repository</label>
 		<input
@@ -294,43 +277,39 @@
 								file_uploads = [...file_uploads];
 							}}
 						>
-							<div class="group">
-								<span
-									class="group-hover:hidden text-accent icon-[solar--file-smile-bold-duotone] text-8xl"
-								></span>
-								<span
-									class="hidden group-hover:block text-error icon-[solar--file-remove-bold-duotone] text-8xl"
-								></span>
-							</div>
+							<span
+								class="transition hover:transition text-accent hover:text-error icon-[solar--file-smile-bold-duotone] hover:icon-[solar--file-remove-bold-duotone] text-8xl"
+							></span>
 						</button>
-						<div class="flex items-center">
+						<div class="flex items-center relative">
 							<input
 								required
 								class="input border-b-accent relative focus:outline-accent {upload.isNameValid
 									? 'border-b-success'
-									: 'border-b-error border-b-4'}"
+									: 'border-b-error border-b-4'} pr-7"
 								type="text"
 								bind:value={upload.file_name}
 								on:input={(event) => handleInputChange(event, upload.id)}
 							/>
-							<span class="text-lg icon-[akar-icons--pencil]"></span>
+							<span
+								class="absolute right-2 top-1/2 transform -translate-y-1/2 text-lg icon-[akar-icons--pencil]"
+							></span>
 						</div>
 					</div>
 				{/each}
 			</div>
-			<h1>
-				<span>* Rinomina eventuali file sottolineati in </span>
-				<span class="text-error">rosso</span>
-				<span> in kebab-case per velocizzare l'approvazione.</span>
-			</h1>
 		{/if}
+		<h1>
+			<span>* Rinomina eventuali file sottolineati in </span>
+			<span class="text-error">rosso</span>
+			<span> in kebab-case per velocizzare l'approvazione.</span>
+		</h1>
 		<button
-			type="submit"
-			class="m-5 flex justify-center items-center bg-primary shadow-lg hover:bg-success hover:shadow-success/50 shadow-primary/50 text-white font-bold py-2 px-4 rounded"
+			class="m-5 flex transition justify-center items-center bg-primary shadow-lg hover:bg-success hover:shadow-success/50 shadow-primary/50 text-white font-bold py-2 px-4 rounded"
 			on:click={submit}
 			><span class="m-1 text-lg icon-[akar-icons--send]"></span>Crea una Pull Request su GitHub</button
 		>
-	</form>
+	</div>
 
 	<!-- Modal login -->
 	{#if !logged}
