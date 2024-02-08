@@ -39,7 +39,7 @@
 	// ------ Handle from page -------
 	let selectedDir = writable('');
 	$: {
-		let url = $page.url.toString().split('?')[1].split(',');
+		let url = $page.url.toString().split('?')[1]?.split(',') || '';
 		$search = Object.keys(teaching_Pair).find((key) => teaching_Pair[key] === url[0] || '') || '';
 		$selectedDir = url[1] || '';
 	}
