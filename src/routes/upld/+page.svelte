@@ -31,13 +31,10 @@
 		: allTeachingNames;
 
 	function selectTeaching(teaching: string, index: number) {
-		console.log("Prima dell'assegnamento teaching: " + teaching + ', index: ' + index);
 		selectedIndex = index;
 		search.set(teaching);
-		console.log("Dopo l'assegnamento teaching: " + teaching + ', index: ' + index);
 		isOpen = false;
 	}
-	console.log($page.url.toString().split('?')[1], '-----------');
 
 	// ------ Handle from page -------
 	let selectedDir = writable('');
@@ -142,16 +139,16 @@
 
 	// ------ DRAG & DROP -------
 	let isDraggingOver = false;
-	function dragOverHandler(event): void {
+	function dragOverHandler(event: { preventDefault: () => void; }): void {
 		event.preventDefault();
 		isDraggingOver = true;
 	}
 
-	function dragLeaveHandler(event): void {
+	function dragLeaveHandler(event: any): void {
 		isDraggingOver = false;
 	}
 
-	async function dropHandler(event): Promise<void> {
+	async function dropHandler(event: { preventDefault: () => void; dataTransfer: { files: any; }; }): Promise<void> {
 		event.preventDefault();
 		isDraggingOver = false;
 		const files = event.dataTransfer.files;
@@ -175,7 +172,7 @@
 		new Promise<string>((resolve, reject) => {
 			const reader = new FileReader();
 			reader.readAsDataURL(file);
-			reader.onload = () => resolve(reader.result);
+			reader.onload = () => resolve(reader.result as string);
 			reader.onerror = reject;
 		});
 </script>
