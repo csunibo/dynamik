@@ -4,6 +4,7 @@
 	import UPLD from '$lib/upld';
 	import teachings from '../../config/teachings.json';
 	import { page } from '$app/stores';
+	import Error from '../+error.svelte';
 
 	interface FileUpload {
 		file: string;
@@ -206,6 +207,10 @@
 			on:input={() => {
 				isOpen = true;
 			}}
+            on:change={(value) => {
+                // TODO:fix me!
+                // selectTeaching(value.target.value);
+            }}
 			on:blur={() => setTimeout(() => (isOpen = false), 100)}
 			on:keydown={handleKeyDown}
 			placeholder="Select a teaching..."

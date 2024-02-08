@@ -11,7 +11,7 @@
         email: string;
         jwt_token: string;
     }
-	const backendBase = 'http://130.136.3.76:8000';
+	const backendBase = 'https://130.136.3.76:8000';
     const backendCallback = `${backendBase}/oauth/redirect?code=`;
 
     let urlParams;
@@ -46,13 +46,28 @@
 
     async function uploadFiles(code: string) {
         const backendUrl = `${backendCallback}${code}`;
-        const response = await fetch(backendUrl);
-        const cookie = response.headers.get('set-cookie');
-        // parse cookie into dict
+
+        // Just used to set the cookie to the client
+        // TODO: set to local storage so it is seen as logged!?
+        // For credentials see https://stackoverflow.com/questions/22432616/why-is-the-browser-not-setting-cookies-after-an-ajax-request-returns
+        const response = await fetch(backendUrl, {
+            method: 'GET',
+            credentials: 'include'
+        });
         const data = await response.json();
-        const cookieDict = parseCookie(cookie as string);
-        // redirect to my link pls
-        // return redirect(302, '/upld');
+        // const cookie = parseCookie(response.headers.get('Set-Cookie') || '');
+        // console.log(cookie)
+        // if (!cookie.access_token) {
+        //     console.log('no access token');
+        //     //TODO: handle error
+        //     return;
+        // }
+
+        accessToken = data;
+        // accessToken.jwt_token = cookie.access_token;
+
+        console.log(response.headers);
+
         const upldStore = get(UPLD);
     
         // const UPLD: string | null  = localStorage.getItem('upload');
@@ -70,10 +85,9 @@
         const uploadResponse = await fetch(`${backendBase}/api/uploadfiles`, {
         	method: 'POST',
         	body: formData,
-            headers: {
-            	'Content-Type': 'multipart/form-data',
-            	Cookie: `access_token=${accessToken.jwt_token}`
-            },
+            // headers: {
+            // 	Cookie: `access_token=${accessToken.jwt_token}`
+            // },
             credentials: 'include'
         });
         console.log(await uploadResponse.text());
