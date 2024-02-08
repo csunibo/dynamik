@@ -35,11 +35,11 @@
 	};
 
 	// ------ Handle from page -------
-	$: selectedDir = '';
+	let selectedDir = writable('');
 	$: {
 		let url = $page.url.toString().split('?')[1].split(',');
 		$search = Object.keys(teaching_Pair).find((key) => teaching_Pair[key] === url[0] || '') || '';
-		selectedDir = url[1] || '';
+		$selectedDir = url[1] || '';
 	}
 
 	enum Key {
@@ -233,7 +233,7 @@
 		<select
 			required
 			class="select select-primary text-base"
-			bind:value={selectedDir}
+			bind:value={$selectedDir}
 			id="select-dir"
 		>
 			{#each repo as dir}

@@ -52,6 +52,7 @@ export async function GET({ url }) {
 	});
 
 	// TODO: pensare a come rispondere e settare la roba nel frontend (dico accessToken).
+
 	const min = Number(url.searchParams.get('min') ?? '0');
 	const max = Number(url.searchParams.get('max') ?? '1');
 	const d = max - min;
@@ -61,3 +62,17 @@ export async function GET({ url }) {
 	const random = min + Math.random() * d;
 	return new Response(String(random));
 }
+// in base a 130.136... devo abilitare le richieste cors
+// const express = require('express');
+// const cors = require('cors');
+
+// const app = express();
+
+// // Abilita CORS per tutte le richieste
+// app.use(cors());
+
+// // Il tuo codice qui...
+
+// app.listen(8000, () => {
+// 	console.log('Server listening on port 8000');
+// });

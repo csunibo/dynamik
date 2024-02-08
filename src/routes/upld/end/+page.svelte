@@ -6,7 +6,6 @@
 	const backendBase = 'http://130.136.3.76:8000';
 
 	// redirect to my link pls
-	// return redirect(302, '/upld');
 	const upldStore = get(UPLD);
 
 	// const UPLD: string | null  = localStorage.getItem('upload');
@@ -22,16 +21,17 @@
 		formData.append('files', newFile);
 	});
 
-	const uploadResponse = await fetch(`${backendBase}/api/uploadfiles`, {
-		method: 'POST',
-		body: formData
-		// ho commentato per non aver errori
-		// headers: {
-		// 	'Content-Type': 'multipart/form-data',
-		// 	Cookie: `access_token=${accessToken.jwt_token}`
-		// }
-		// credentials: 'include'
-	});
+	function uploadFiles() {
+		const uploadResponse = fetch(`${backendBase}/api/uploadfiles`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(upldStore)
+		});
+		console.log(uploadResponse);
+	}
+	uploadFiles();
 
 	// console.log(await uploadResponse.text());
 	/**
