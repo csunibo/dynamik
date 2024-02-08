@@ -1,39 +1,85 @@
 <script lang="ts">
 	import { get } from 'svelte/store';
 	import UPLD from '$lib/upld.js';
-	// console.log(data);
-	// )
+    import { onMount } from 'svelte';
+
+
+    // TODO: move this to a type section
+    interface oAuthResponse {
+        access_token: string;
+        username: string;
+        email: string;
+        jwt_token: string;
+    }
 	const backendBase = 'http://130.136.3.76:8000';
+    const backendCallback = `${backendBase}/oauth/redirect?code=`;
 
-	// redirect to my link pls
-	// return redirect(302, '/upld');
-	const upldStore = get(UPLD);
+    let urlParams;
+    $: code = '';
+    $: accessToken = {} as oAuthResponse;
+    onMount(() => {
+        urlParams = new URLSearchParams(window.location.search);
+        const paramCode = urlParams.get('code');
+        if (paramCode) {
+            code = paramCode;
+            uploadFiles(code);
+        } else {
+            // TODO: handle error
+            console.log('no code');
+        }
+        console.log(code);
+        
+    });
+    // https://www.30secondsofcode.org/js/s/parse-or-serialize-cookie/
+    const parseCookie = (str: string) =>
+    str
+    .split(';')
+    .map((v) => v.split('='))
+    .reduce(
+        (acc, v) => {
+            if (v.length < 2) return acc;
+            acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim());
+            return acc;
+        },
+        {} as Record<string, string>
+    );
 
-	// const UPLD: string | null  = localStorage.getItem('upload');
-	console.log(upldStore.repo + '---');
+    async function uploadFiles(code: string) {
+        const backendUrl = `${backendCallback}${code}`;
+        const response = await fetch(backendUrl);
+        const cookie = response.headers.get('set-cookie');
+        // parse cookie into dict
+        const data = await response.json();
+        const cookieDict = parseCookie(cookie as string);
+        // redirect to my link pls
+        // return redirect(302, '/upld');
+        const upldStore = get(UPLD);
+    
+        // const UPLD: string | null  = localStorage.getItem('upload');
+        console.log(upldStore.repo + '---');
+    
+        const formData = new FormData();
+        formData.append('repository', upldStore.repo);
+        formData.append('path', upldStore.dir);
+    
+        upldStore.file.forEach((file, i) => {
+            // Decode base 64 to file
+            const newFile = new File([file], upldStore.file_name[i]);
+            formData.append('files', newFile);
+        });
+        const uploadResponse = await fetch(`${backendBase}/api/uploadfiles`, {
+        	method: 'POST',
+        	body: formData,
+            headers: {
+            	'Content-Type': 'multipart/form-data',
+            	Cookie: `access_token=${accessToken.jwt_token}`
+            },
+            credentials: 'include'
+        });
+        console.log(await uploadResponse.text());
+    }
 
-	const formData = new FormData();
-	formData.append('repository', upldStore.repo);
-	formData.append('path', upldStore.dir);
 
-	upldStore.file.forEach((file, i) => {
-		// Decode base 64 to file
-		const newFile = new File([file], upldStore.file_name[i]);
-		formData.append('files', newFile);
-	});
-
-	const uploadResponse = await fetch(`${backendBase}/api/uploadfiles`, {
-		method: 'POST',
-		body: formData
-		// ho commentato per non aver errori
-		// headers: {
-		// 	'Content-Type': 'multipart/form-data',
-		// 	Cookie: `access_token=${accessToken.jwt_token}`
-		// }
-		// credentials: 'include'
-	});
-
-	// console.log(await uploadResponse.text());
 	/**
     let params = new URLSearchParams();
 
@@ -56,3 +102,7 @@
 </script>
 
 <div>CIAO</div>
+
+    <p> uploading </p>
+    <p> uploaded </p>
+    <!-- <p style="color: red"> {error.message} </p> -->

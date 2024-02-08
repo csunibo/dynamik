@@ -34,13 +34,15 @@
 		isOpen = false;
 	};
 
+    console.log($page.url.toString().split('?')[1], "-----------");
+
 	// ------ Handle from page -------
 	$: selectedDir = '';
-	$: {
-		let url = $page.url.toString().split('?')[1].split(',');
-		$search = Object.keys(teaching_Pair).find((key) => teaching_Pair[key] === url[0] || '') || '';
-		selectedDir = url[1] || '';
-	}
+	// $: {
+	// 	let url = $page.url.toString().split('?')[1].split(',');
+	// 	$search = Object.keys(teaching_Pair).find((key) => teaching_Pair[key] === url[0] || '') || '';
+	// 	selectedDir = url[1] || '';
+	// }
 
 	enum Key {
 		ArrowDown = 'ArrowDown',
