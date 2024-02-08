@@ -4,6 +4,7 @@
 	import UPLD from '$lib/upld';
 	import teachings from '../../config/teachings.json';
 	import { page } from '$app/stores';
+	import Error from '../+error.svelte';
 
 	interface FileUpload {
 		file: string;
@@ -33,6 +34,8 @@
 		search.set(teaching);
 		isOpen = false;
 	};
+
+    console.log($page.url.toString().split('?')[1], "-----------");
 
 	// ------ Handle from page -------
 	let selectedDir = writable('');
@@ -124,7 +127,7 @@
 
 		UPLD.set({
 			repo: urlselectedTeaching,
-			dir: selectedDir,
+			dir: selectedDir.toString(),
 			file_name: fileNames,
 			file: files
 		});
@@ -203,6 +206,11 @@
 			bind:value={$search}
 			on:input={() => {
 				isOpen = true;
+			}}
+			on:change={(value) => {
+				if (value.target) {
+					selectTeaching(value.target.value);
+				}
 			}}
 			on:blur={() => setTimeout(() => (isOpen = false), 100)}
 			on:keydown={handleKeyDown}

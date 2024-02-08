@@ -25,7 +25,7 @@
 			<button
 				class="group h-12 px-6 border-2 border-base-300 rounded-full transition duration-300 hover:border-accent-200 bg-neutral hover:bg-primary focus:bg-accent/50 active:bg-accent"
 				><a
-					href="https://github.com/login/oauth/authorize?client_id=c2dcc487bc2996e9eb75&redirect_uri=http://localhost:5173/api/upld&scope=read:user,user:email"
+					href="https://github.com/login/oauth/authorize?client_id=c2dcc487bc2996e9eb75&redirect_uri=http://localhost:5173/upld/end&scope=read:user,user:email"
 				>
 					<div class="relative flex items-center space-x-4 justify-center">
 						<span
