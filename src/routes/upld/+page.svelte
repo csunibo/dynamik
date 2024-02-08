@@ -17,8 +17,8 @@
 
 	const search = writable('');
 
-	let isOpen = false;
-	let selectedIndex = 0;
+	$: isOpen = false;
+	$: selectedIndex = -1;
 
 	let allTeachingNames: string[] = teachings.map((teaching) => teaching.name);
 	let teaching_Pair: { [key: string]: string } = {};
@@ -30,12 +30,14 @@
 		? allTeachingNames.filter((teaching) => teaching.toLowerCase().includes($search.toLowerCase()))
 		: allTeachingNames;
 
-	const selectTeaching = (teaching: string): void => {
+	function selectTeaching(teaching: string, index: number) {
+		console.log("Prima dell'assegnamento teaching: " + teaching + ', index: ' + index);
+		selectedIndex = index;
 		search.set(teaching);
+		console.log("Dopo l'assegnamento teaching: " + teaching + ', index: ' + index);
 		isOpen = false;
-	};
-
-    console.log($page.url.toString().split('?')[1], "-----------");
+	}
+	console.log($page.url.toString().split('?')[1], '-----------');
 
 	// ------ Handle from page -------
 	let selectedDir = writable('');
@@ -60,7 +62,7 @@
 				if (selectedIndex > 0) selectedIndex--;
 				break;
 			case Key.Enter:
-				selectTeaching(filteredTeachings[selectedIndex]);
+				selectTeaching(filteredTeachings[selectedIndex], selectedIndex);
 				break;
 		}
 	};
@@ -207,11 +209,6 @@
 			on:input={() => {
 				isOpen = true;
 			}}
-			on:change={(value) => {
-				if (value.target) {
-					selectTeaching(value.target.value);
-				}
-			}}
 			on:blur={() => setTimeout(() => (isOpen = false), 100)}
 			on:keydown={handleKeyDown}
 			placeholder="Select a teaching..."
@@ -221,14 +218,20 @@
 			<ul
 				class="mt-20 absolute rounded-lg shadow-lg bg-base-100 text-base-content bg-opacity-60 backdrop-blur backdrop-filter w-full max-w-md z-50 max-h-96 overflow-auto"
 			>
-				{#each filteredTeachings as teaching, index (teaching)}
+				{#each filteredTeachings as teaching, index}
 					<li
 						class="cursor-pointer hover:bg-primary hover:text-base-100 px-4 py-2 {selectedIndex ===
 						index
 							? 'bg-primary text-base-100'
 							: ''}"
 					>
-						<button on:click={() => selectTeaching(teaching)}>
+						<button
+							on:mousedown={() => {
+								selectTeaching(teaching, index);
+								$search = teaching;
+								isOpen = false;
+							}}
+						>
 							{teaching}
 						</button>
 					</li>
