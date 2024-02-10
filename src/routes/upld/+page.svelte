@@ -124,9 +124,10 @@
 
 		let urlselectedTeaching = teaching_Pair[$search];
 
+        console.log($selectedDir, "----")
 		UPLD.set({
 			repo: urlselectedTeaching,
-			dir: selectedDir.toString(),
+			dir: $selectedDir.toString(),
 			file_name: fileNames,
 			file: files
 		});
