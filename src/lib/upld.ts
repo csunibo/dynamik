@@ -36,7 +36,7 @@ export const apiCreateFilesAndPush = async (repo: string, path :string, files: F
         data.append('files', file);
     });
 
-    const res = await fetch(`${CSGITBOT_URL}/api/uploadfiles`, {
+    const res = await fetch(`${CSGITBOT_URL}/api/uploadfiles/`, {
         method: 'POST',
         body: data,
         credentials: 'include' 
@@ -52,7 +52,7 @@ export const apiCreatePR = async (repo: string, branch_name: string, title: stri
     params.append('branch_name', branch_name);
     params.append('title', title);
 
-    const res = await fetch(`${CSGITBOT_URL}/api/create-pr`, {
+    const res = await fetch(`${CSGITBOT_URL}/api/create-pr/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
