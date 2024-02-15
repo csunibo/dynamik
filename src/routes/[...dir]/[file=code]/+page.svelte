@@ -2,25 +2,38 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 
-	import { BUNDLED_LANGUAGES, getHighlighter, setCDN } from 'shiki';
-	setCDN('https://cdn.jsdelivr.net/npm/shiki/');
+	import { bundledLanguagesInfo, codeToHtml } from 'shiki';
 
 	export let data: PageData;
 
-	let code: HTMLElement;
+	let container: HTMLElement;
 
 	onMount(async () => {
 		const lang = data.extension;
-		const selectedLang = BUNDLED_LANGUAGES.filter(
+		const selectedLangs = bundledLanguagesInfo.filter(
 			(bundle) => bundle.id === lang || bundle.aliases?.includes(lang)
 		);
 
-		const highlighter = await getHighlighter({
-			theme: 'dark-plus',
-			langs: selectedLang
+		if (selectedLangs.length === 0) {
+			console.error(`Language not found: ${lang}`);
+			return;
+		}
+
+		const selectedLang = selectedLangs[0].id;
+
+		container.innerHTML = await codeToHtml(data.body, {
+			lang: selectedLang,
+			theme: 'dark-plus'
 		});
-		code.innerHTML = highlighter.codeToHtml(data.body, { lang: lang });
 	});
 </script>
 
-<pre><code bind:this={code}>{data.body}</code></pre>
+<div bind:this={container}>
+	<pre>{data.body}</pre>
+</div>
+
+<style>
+	:global(pre) {
+		padding: 1rem;
+	}
+</style>
