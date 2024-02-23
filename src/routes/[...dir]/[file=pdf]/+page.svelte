@@ -4,6 +4,16 @@
 	import type { OnProgressParameters } from 'pdfjs-dist';
 	import type { PDFPageProxy } from 'pdfjs-dist/types/src/display/api';
 
+	interface QuestionItem {
+		ID: number;
+		CreatedAt: string;
+		UpdatedAt: string;
+		DeletedAt: string | null;
+		document: string;
+		start: number;
+		end: number;
+	}
+
 	interface Part {
 		start: number;
 		end?: number;
@@ -19,13 +29,19 @@
 		height = 0;
 
 	let pages: PDFPageProxy[] = [];
-	let parts: Part[] = [];
-
-	console.log(data);
 
 	onMount(async () => {
 		const pageCtx = pageCanvas.getContext('2d')!;
 		const fullCtx = fullCanvas.getContext('2d')!;
+
+		const res = await fetch(`http://10.1.30.46:3000/documents/${data.id}`, {
+			credentials: 'same-origin'
+		});
+		const body: QuestionItem[] | { error: string } = await res.json();
+		let questions = [];
+		if (!(body as { error: string }).error) {
+			questions = body as QuestionItem[];
+		}
 
 		const { GlobalWorkerOptions, getDocument } = await import('pdfjs-dist');
 		GlobalWorkerOptions.workerSrc = new URL(
@@ -71,7 +87,7 @@
 			pageCanvas.height = 0;
 		}
 
-		for (const question of doc.questions) {
+		for (const question of data.questions) {
 			const canvas = (question as any).canvas as HTMLCanvasElement;
 			canvas.height = (question.end - question.start) * scale;
 			canvas.width = width;
@@ -90,7 +106,7 @@
 {#each data.questions as part, index}
 	<canvas
 		data-id={index}
-		bind:this={doc.questions[index].canvas}
+		bind:this={data.questions[index].canvas}
 		style="--width: {width / scale}px; --height: {part.end - part.start}px"
 	/>
 	<div>answer goes here</div>
