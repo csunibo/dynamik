@@ -3,11 +3,11 @@ import { SvelteKitPWA } from '@vite-pwa/sveltekit';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-	plugins: [
-		sveltekit(),
-		SvelteKitPWA({
-			/* other pwa options */
-		})
-	],
-	optimizeDeps: {}
+  plugins: [
+    sveltekit(),
+    SvelteKitPWA({
+      /* other pwa options */
+    })
+  ],
+  optimizeDeps: {}
 });
