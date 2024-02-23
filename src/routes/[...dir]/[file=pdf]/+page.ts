@@ -16,7 +16,7 @@ export const load = (async ({ fetch, params }) => {
   const path = params.dir + '/' + params.file
   const id = sha256(path)
 
-  const res = await fetch(ASSET_URL(params.dir + '/' + id));
+  const res = await fetch(`http://10.1.30.46:3000/documents/${id}`);
   const body: QuestionItem[] = await res.json();
   const QuestionMappedData = body.map(item => ({
     ID: item.ID,

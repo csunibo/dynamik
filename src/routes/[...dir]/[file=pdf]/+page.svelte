@@ -1,39 +1,32 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, afterUpdate } from 'svelte';
 	import type { PageData } from './$types';
 	import type { OnProgressParameters } from 'pdfjs-dist';
+	import type { PDFPageProxy } from 'pdfjs-dist/types/src/display/api';
 
 	interface Part {
 		start: number;
 		end?: number;
+		canvas?: HTMLCanvasElement;
 	}
 
 	export let data: PageData;
-	let canvas;
+	const scale = 2;
+
 	let loaded = 0.0; // percentage
-	let width = 0;
+	let pageCanvas: HTMLCanvasElement, fullCanvas: HTMLCanvasElement;
+	let width = 0,
+		height = 0;
+
+	let pages: PDFPageProxy[] = [];
 	let parts: Part[] = [];
-	let pageCoords: number[] = [];
 
 	console.log(data);
-	const doc = {
-		id: data.id,
-		questions: [
-			{
-				id: 1,
-				start: 200,
-				end: 200
-			},
-			{
-				id: 1,
-				start: 400,
-				end: 500
-			}
-		]
-	};
-	console.log(parts);
 
 	onMount(async () => {
+		const pageCtx = pageCanvas.getContext('2d')!;
+		const fullCtx = fullCanvas.getContext('2d')!;
+
 		const { GlobalWorkerOptions, getDocument } = await import('pdfjs-dist');
 		GlobalWorkerOptions.workerSrc = new URL(
 			'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -46,35 +39,61 @@
 		};
 		const pdf = await loadingPdf.promise;
 
-		let maxHeight = 0;
 		for (let i = 1; i <= pdf.numPages; i++) {
 			const page = await pdf.getPage(i);
-			const viewport = page.getViewport({ scale: 1 });
-			maxHeight += viewport.height;
-			width = viewport.width;
-			console.log(maxHeight);
+			pages.push(page);
+
+			// rendering onto the temporary canvas
+			const viewport = page.getViewport({ scale });
+			width = Math.max(fullCanvas.width, viewport.width);
+			height += viewport.height;
 		}
-		parts = doc.questions.reduce<Part[]>((parts, question) => {
-			if (parts.length == 0) {
-				parts = [{ start: 0 }];
-			}
-			parts[parts.length - 1].end = question.start;
-			return [...parts, { start: question.end }];
-		}, []);
-		parts[parts.length - 1].end = maxHeight;
-		console.log(parts);
+
+		fullCanvas.width = width;
+		fullCanvas.height = height;
+		let currHeight = 0;
+		for (const page of pages) {
+			const viewport = page.getViewport({ scale });
+			pageCanvas.width = viewport.width;
+			pageCanvas.height = viewport.height;
+			await page.render({
+				canvasContext: pageCtx,
+				viewport: viewport
+			}).promise;
+
+			// copying it over to the full canvas
+			fullCtx.drawImage(pageCanvas, 0, currHeight);
+			currHeight += viewport.height;
+
+			// cleanup
+			pageCtx.clearRect(0, 0, viewport.width, viewport.height);
+			pageCanvas.width = 0;
+			pageCanvas.height = 0;
+		}
+
+		for (const question of doc.questions) {
+			const canvas = (question as any).canvas as HTMLCanvasElement;
+			canvas.height = (question.end - question.start) * scale;
+			canvas.width = width;
+			const ctx = canvas.getContext('2d');
+			ctx?.drawImage(fullCanvas, 0, -question.start * 2);
+		}
 	});
 </script>
 
-{#each parts as part, index}
+<canvas bind:this={pageCanvas} />
+<canvas
+	bind:this={fullCanvas}
+	style="width: {width / scale}px; height: {height / scale}px; display: none"
+/>
+
+{#each data.questions as part, index}
 	<canvas
 		data-id={index}
-		bind:this={canvas}
-		style="--width: {width}px; --height: {part.end - part.start}px"
+		bind:this={doc.questions[index].canvas}
+		style="--width: {width / scale}px; --height: {part.end - part.start}px"
 	/>
-	{#if index != parts.length - 1}
-		<div>answer goes here</div>
-	{/if}
+	<div>answer goes here</div>
 {/each}
 
 <style>
