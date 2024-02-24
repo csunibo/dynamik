@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import settings from '$lib/settings';
+	import { SvelteToast } from '@zerodevx/svelte-toast';
 
 	onMount(() => {
 		settings.subscribe(() => {
@@ -10,6 +11,8 @@
 </script>
 
 <slot />
+
+<SvelteToast />
 
 <style>
 	@tailwind base;

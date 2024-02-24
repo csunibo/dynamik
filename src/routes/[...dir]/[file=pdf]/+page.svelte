@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, afterUpdate } from 'svelte';
+	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import type { OnProgressParameters } from 'pdfjs-dist';
 	import type { PDFPageProxy } from 'pdfjs-dist/types/src/display/api';
@@ -13,34 +13,43 @@
 		start: number;
 		end: number;
 	}
+	import { toast } from '@zerodevx/svelte-toast';
+	import { Carta, CartaEditor } from 'carta-md';
+	import { emoji } from '@cartamd/plugin-emoji';
+	import { slash } from '@cartamd/plugin-slash';
+	import { code } from '@cartamd/plugin-code';
+	import 'carta-md/dark.css';
+	import '$lib/styles/github.scss';
 
-	interface Part {
-		start: number;
-		end?: number;
-		canvas?: HTMLCanvasElement;
-	}
+	const carta = new Carta({
+		extensions: [emoji(), slash(), code()]
+	});
 
 	export let data: PageData;
 	const scale = 2;
 
 	let loaded = 0.0; // percentage
 	let pageCanvas: HTMLCanvasElement, fullCanvas: HTMLCanvasElement;
+	let canvases: HTMLCanvasElement[] = [];
 	let width = 0,
 		height = 0;
 
 	let pages: PDFPageProxy[] = [];
+	let values: string[] = [];
+	let numPages: number;
+
+	console.log(data);
 
 	onMount(async () => {
 		const pageCtx = pageCanvas.getContext('2d')!;
 		const fullCtx = fullCanvas.getContext('2d')!;
 
-		const res = await fetch(`http://10.1.30.46:3000/documents/${data.id}`, {
-			credentials: 'same-origin'
+		const res = await fetch(`http://localhost:3000/documents/${data.id}`, {
+			credentials: 'include'
 		});
 		const body: QuestionItem[] | { error: string } = await res.json();
-		let questions = [];
 		if (!(body as { error: string }).error) {
-			questions = body as QuestionItem[];
+			data.questions = body as QuestionItem[];
 		}
 
 		const { GlobalWorkerOptions, getDocument } = await import('pdfjs-dist');
@@ -54,6 +63,7 @@
 			loaded = params.loaded / params.total;
 		};
 		const pdf = await loadingPdf.promise;
+		numPages = pdf.numPages;
 
 		for (let i = 1; i <= pdf.numPages; i++) {
 			const page = await pdf.getPage(i);
@@ -87,14 +97,46 @@
 			pageCanvas.height = 0;
 		}
 
-		for (const question of data.questions) {
-			const canvas = (question as any).canvas as HTMLCanvasElement;
+		for (let i = 0; i < data.questions.length; i++) {
+			const canvas = canvases[i];
+			const question = data.questions[i];
 			canvas.height = (question.end - question.start) * scale;
 			canvas.width = width;
 			const ctx = canvas.getContext('2d');
 			ctx?.drawImage(fullCanvas, 0, -question.start * 2);
 		}
 	});
+
+	async function sendComment(index: number) {
+		let res = await (
+			await fetch('http://localhost:3000/answers', {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ question: data.questions[index].ID, content: values[index] }),
+				method: 'PUT',
+				credentials: 'include'
+			})
+		).json();
+
+		if (res.res === 'OK') {
+			toast.push('Success!', {
+				theme: {
+					'--toastColor': 'mintcream',
+					'--toastBackground': 'rgba(72,187,120,0.9)',
+					'--toastBarBackground': '#2F855A'
+				}
+			});
+		} else {
+			toast.push('Error!', {
+				theme: {
+					'--toastColor': 'mintcream',
+					'--toastBackground': 'rgba(244,67,54,0.9)',
+					'--toastBarBackground': '#e74c3c'
+				}
+			});
+		}
+	}
 </script>
 
 <canvas bind:this={pageCanvas} />
@@ -106,10 +148,12 @@
 {#each data.questions as part, index}
 	<canvas
 		data-id={index}
-		bind:this={data.questions[index].canvas}
+		bind:this={canvases[index]}
 		style="--width: {width / scale}px; --height: {part.end - part.start}px"
 	/>
 	<div>answer goes here</div>
+	<CartaEditor bind:value={values[index]} mode="tabs" theme="github" {carta} />
+	<button type="submit" on:click|preventDefault={() => sendComment(index)}> Comment! </button>
 {/each}
 
 <style>
