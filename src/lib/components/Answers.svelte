@@ -39,9 +39,9 @@
 				<div class="flex flex-col items-center p-2">
 					<!-- Upvote Button -->
 					<button
-						class="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full transition-colors hover:bg-success focus:outline-none"
+						class="flex items-center justify-center w-10 h-10 bg-neutral-content rounded-full transition-colors hover:bg-success focus:outline-none"
 					>
-						<span class="icon-[material-symbols--arrow-upward] text-gray-600"></span>
+						<span class="icon-[material-symbols--arrow-upward] text-neutral"></span>
 					</button>
 
 					<!-- Vote Count -->
@@ -49,9 +49,9 @@
 
 					<!-- Downvote Button -->
 					<button
-						class="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full transition-colors hover:bg-error focus:outline-none"
+						class="flex items-center justify-center w-10 h-10 bg-neutral-content rounded-full transition-colors hover:bg-error focus:outline-none"
 					>
-						<span class="icon-[material-symbols--arrow-downward] text-gray-600"></span>
+						<span class="icon-[material-symbols--arrow-downward] text-neutral"></span>
 					</button>
 				</div>
 				<!-- Answer Content -->
