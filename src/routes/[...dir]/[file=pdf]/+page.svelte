@@ -12,6 +12,8 @@
 	import 'carta-md/dark.css';
 	import '$lib/styles/github.scss';
 
+	import Answers from '$lib/components/Answers.svelte';
+
 	const carta = new Carta({
 		extensions: [emoji(), slash(), code()]
 	});
@@ -28,8 +30,6 @@
 	let pages: PDFPageProxy[] = [];
 	let values: string[] = [];
 	let numPages: number;
-
-	console.log(data);
 
 	onMount(async () => {
 		const pageCtx = pageCanvas.getContext('2d')!;
@@ -61,7 +61,6 @@
 		fullCanvas.width = width;
 		fullCanvas.height = height;
 		let currHeight = 0;
-		console.log(width);
 		for (const page of pages) {
 			const viewport = page.getViewport({ scale });
 			pageCanvas.width = viewport.width;
@@ -87,7 +86,6 @@
 			let sHeight: number = (question.end - question.start) * scale;
 			canvas.height = sHeight;
 			canvas.width = width;
-			console.log(sHeight);
 			canvas.style.width = `100%`;
 			const ctx = canvas.getContext('2d');
 			ctx?.drawImage(fullCanvas, 0, -question.start * scale);
@@ -129,12 +127,20 @@
 <canvas bind:this={pageCanvas} style="display: none" />
 <canvas bind:this={fullCanvas} style="display: none" />
 
-{#each data.questions as part, index}
+{#each data.questions as question, index}
 	<div style="width:100%">
 		<canvas data-id={index} bind:this={canvases[index]} />
-		<div>answer goes here</div>
-		<CartaEditor bind:value={values[index]} mode="tabs" theme="github" {carta} />
-		<button type="submit" on:click|preventDefault={() => sendComment(index)}> Comment! </button>
+		<Answers question={question.id} />
+		<div class="collapse">
+			<input type="checkbox" />
+			<div class="collapse-title flex items-center justify-center font-medium">Reply</div>
+			<div class="collapse-content flex flex-col items-end">
+				<div class="flex flex-1 w-full">
+					<CartaEditor bind:value={values[index]} mode="tabs" theme="github" {carta} />
+				</div>
+				<button type="submit" on:click|preventDefault={() => sendComment(index)}> Comment! </button>
+			</div>
+		</div>
 	</div>
 {/each}
 

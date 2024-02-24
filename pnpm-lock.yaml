@@ -29,6 +29,9 @@ dependencies:
   sha256:
     specifier: ^0.2.0
     version: 0.2.0
+  svelte-intersection-observer:
+    specifier: ^1.0.0
+    version: 1.0.0
 
 devDependencies:
   '@iconify-json/material-symbols':
@@ -2866,6 +2869,10 @@ packages:
     dependencies:
       svelte: 4.2.0
     dev: true
+
+  /svelte-intersection-observer@1.0.0:
+    resolution: {integrity: sha512-AoxSog8fSt9sSN8ajMYM1I48ndq+rmPlaZSkJFCRbZ7I3KO8IPX6pl5mewWxdYL1JDI06hHu/7epn3h5tlJV9w==}
+    dev: false
 
   /svelte-local-storage-store@0.6.0(svelte@4.2.0):
     resolution: {integrity: sha512-UbCY/yT/YUadU5IX/gZkoRQnA+ebFZHKKQjlJvfWHnBj3CPe9sNn8ndxYz/xy4LUzGjuBLq8+wH5RYK54ba3wA==}
