@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import settings from '$lib/settings';
 	import { DEGREES } from '$lib/teachings';
+	import { SvelteToast } from '@zerodevx/svelte-toast';
 
 	onMount(() => {
 		settings.subscribe(() => {
@@ -49,6 +50,8 @@
 </svelte:head>
 
 <slot />
+
+<SvelteToast />
 
 <style>
 </style>
