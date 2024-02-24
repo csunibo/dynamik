@@ -128,17 +128,21 @@
 <canvas bind:this={fullCanvas} style="display: none" />
 
 {#each data.questions as question, index}
-	<div style="width:100%">
+	<div class="w-full p-5 justify-center">
 		<canvas data-id={index} bind:this={canvases[index]} />
 		<Answers question={question.id} />
-		<div class="collapse">
-			<input type="checkbox" />
-			<div class="collapse-title flex items-center justify-center font-medium">Reply</div>
-			<div class="collapse-content flex flex-col items-end">
+		<div class="flex justify-center flex-1">
+			<div class="flex w-4/6 flex-col gap-1">
 				<div class="flex flex-1 w-full">
 					<CartaEditor bind:value={values[index]} mode="tabs" theme="github" {carta} />
 				</div>
-				<button type="submit" on:click|preventDefault={() => sendComment(index)}> Comment! </button>
+				<button
+					class="btn btn-active hover:btn-secondary"
+					type="submit"
+					on:click|preventDefault={() => sendComment(index)}
+				>
+					Comment!
+				</button>
 			</div>
 		</div>
 	</div>
