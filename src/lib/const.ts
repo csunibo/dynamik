@@ -20,3 +20,4 @@ export const EDIT_URLS = (path: string) => {
 const POLLEG_BASE_URL = 'http://localhost:3000';
 export const DOCUMENT_URL = (id: string) => `${POLLEG_BASE_URL}/documents/${id}`;
 export const QUESTION_URL = (id: number) => `${POLLEG_BASE_URL}/questions/${id}`;
+export const VOTE_URL = (id: number) => `${POLLEG_BASE_URL}/answers/${id}/vote`;

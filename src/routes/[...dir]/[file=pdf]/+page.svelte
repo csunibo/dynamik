@@ -21,6 +21,8 @@
 	export let data: PageData;
 	const scale = 3;
 
+	console.log(data);
+
 	let loaded = 0.0; // percentage
 	let pageCanvas: HTMLCanvasElement, fullCanvas: HTMLCanvasElement;
 	let canvases: HTMLCanvasElement[] = [];
@@ -92,19 +94,19 @@
 		}
 	});
 
-	async function sendComment(index: number) {
+	async function sendComment(qid: number, index: number) {
 		let res = await (
 			await fetch('http://localhost:3000/answers', {
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ question: data.questions[index].ID, content: values[index] }),
+				body: JSON.stringify({ question: qid, content: values[index] }),
 				method: 'PUT',
 				credentials: 'include'
 			})
 		).json();
 
-		if (res.res === 'OK') {
+		if (res.id) {
 			toast.push('Success!', {
 				theme: {
 					'--toastColor': 'mintcream',
@@ -139,7 +141,7 @@
 				<button
 					class="btn btn-active hover:btn-secondary"
 					type="submit"
-					on:click|preventDefault={() => sendComment(index)}
+					on:click|preventDefault={() => sendComment(question.id, index)}
 				>
 					Comment!
 				</button>
