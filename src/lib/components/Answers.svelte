@@ -1,31 +1,33 @@
 <script lang="ts">
 	import IntersectionObserver from 'svelte-intersection-observer';
-	import { QUESTION_URL } from '$lib/const';
+	import { QUESTION_URL, VOTE_URL } from '$lib/const';
 	import type { Question } from '$lib/polleg';
 
 	export let question: number;
-	let data: Question;
+	let data: Question = {};
 	let spinner: HTMLSpanElement;
 	let visible: boolean;
 
 	const load = async () => {
 		const res = await fetch(QUESTION_URL(question));
 		data = await res.json();
+		console.log(data);
+		visible = true;
 	};
 
-	const dataTest = [
-		{
-			user: 'erik',
-			content:
-				'lorem ipsumjdaskdjas kjda ksjdka sjdkjas dkjasn jkdnsa kjdn akjs ndjkas ndkja nskjd naskj dnkjsa ndkja nsd',
-			vote: -3
-		},
-		{
-			user: 'geno',
-			content: 'lorem ipsum',
-			vote: 4
-		}
-	];
+	const vote = async (answer: number, v: number) => {
+		const res = await (
+			await fetch(VOTE_URL(answer), {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ vote: v }),
+				method: 'POST',
+				credentials: 'include'
+			})
+		).json();
+		await load();
+	};
 
 	// when visible changes (i.e., is set to true) trigger the loading
 	$: visible, load();
@@ -33,23 +35,25 @@
 
 {#if visible}
 	<div class="flex w-full flex-col gap-2 items-center">
-		{#each dataTest as answer, index}
+		{#each data?.answers || [] as answer, index}
 			<div class="lg:w-4/6 w-full flex flex-row rounded-lg border-2 border-secondary shadow-md p-6">
 				<!-- Voting Section -->
 				<div class="flex flex-col items-center p-2">
 					<!-- Upvote Button -->
 					<button
 						class="flex items-center justify-center w-10 h-10 bg-neutral-content rounded-full transition-colors hover:bg-success focus:outline-none"
+						on:click={() => vote(answer.id, 1)}
 					>
 						<span class="icon-[material-symbols--arrow-upward] text-neutral"></span>
 					</button>
 
 					<!-- Vote Count -->
-					<span class="text-xl p-2 font-semibold">{answer.vote}</span>
+					<span class="text-xl p-2 font-semibold">{answer.upvotes - answer.downvotes}</span>
 
 					<!-- Downvote Button -->
 					<button
 						class="flex items-center justify-center w-10 h-10 bg-neutral-content rounded-full transition-colors hover:bg-error focus:outline-none"
+						on:click={() => vote(answer.id, -1)}
 					>
 						<span class="icon-[material-symbols--arrow-downward] text-neutral"></span>
 					</button>
@@ -78,6 +82,6 @@
 		{/each}
 	</div>
 {/if}
-<IntersectionObserver once element={spinner} bind:intersecting={visible}>
-	<span bind:this={spinner} class="loading loading-spinner loading-md"></span>
-</IntersectionObserver>
+<!-- <IntersectionObserver once element={spinner} bind:intersecting={visible}> -->
+<!-- 	<span bind:this={spinner} class="loading loading-spinner loading-md"></span> -->
+<!-- </IntersectionObserver> -->
