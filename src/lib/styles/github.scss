@@ -9,6 +9,7 @@
     background-color: $background;
     border: 1px solid $border;
     border-radius: 0.5rem;
+    flex: 1;
 
     &:focus-within {
       outline: 2px solid $accent;
