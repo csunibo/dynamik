@@ -13,6 +13,11 @@
 		start: number;
 		end: number;
 	}
+	interface QuestionReponse {
+		id: string;
+		questions: QuestionItem[];
+		url: string;
+	}
 	import { toast } from '@zerodevx/svelte-toast';
 	import { Carta, CartaEditor } from 'carta-md';
 	import { emoji } from '@cartamd/plugin-emoji';
@@ -38,6 +43,8 @@
 	let values: string[] = [];
 	let numPages: number;
 
+	console.log(data);
+
 	onMount(async () => {
 		const pageCtx = pageCanvas.getContext('2d')!;
 		const fullCtx = fullCanvas.getContext('2d')!;
@@ -45,9 +52,9 @@
 		const res = await fetch(`http://localhost:3000/documents/${data.id}`, {
 			credentials: 'include'
 		});
-		const body: QuestionItem[] | { error: string } = await res.json();
+		const body: QuestionReponse | { error: string } = await res.json();
 		if (!(body as { error: string }).error) {
-			data.questions = body as QuestionItem[];
+			data.questions = (body as QuestionReponse).questions;
 		}
 
 		const { GlobalWorkerOptions, getDocument } = await import('pdfjs-dist');
