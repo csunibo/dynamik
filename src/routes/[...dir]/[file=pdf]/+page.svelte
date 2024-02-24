@@ -4,20 +4,6 @@
 	import type { OnProgressParameters } from 'pdfjs-dist';
 	import type { PDFPageProxy } from 'pdfjs-dist/types/src/display/api';
 
-	interface QuestionItem {
-		ID: number;
-		CreatedAt: string;
-		UpdatedAt: string;
-		DeletedAt: string | null;
-		document: string;
-		start: number;
-		end: number;
-	}
-	interface QuestionReponse {
-		id: string;
-		questions: QuestionItem[];
-		url: string;
-	}
 	import { toast } from '@zerodevx/svelte-toast';
 	import { Carta, CartaEditor } from 'carta-md';
 	import { emoji } from '@cartamd/plugin-emoji';
@@ -48,14 +34,6 @@
 	onMount(async () => {
 		const pageCtx = pageCanvas.getContext('2d')!;
 		const fullCtx = fullCanvas.getContext('2d')!;
-
-		const res = await fetch(`http://localhost:3000/documents/${data.id}`, {
-			credentials: 'include'
-		});
-		const body: QuestionReponse | { error: string } = await res.json();
-		if (!(body as { error: string }).error) {
-			data.questions = (body as QuestionReponse).questions;
-		}
 
 		const { GlobalWorkerOptions, getDocument } = await import('pdfjs-dist');
 		GlobalWorkerOptions.workerSrc = new URL(
