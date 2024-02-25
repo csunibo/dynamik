@@ -56,7 +56,7 @@
 
 			// rendering onto the temporary canvas
 			const viewport = page.getViewport({ scale });
-			width = Math.max(fullCanvas.width, viewport.width);
+			width = Math.max(fullCanvas?.width, viewport.width);
 			height += viewport.height;
 		}
 
@@ -133,18 +133,24 @@
 	<div class="w-full p-5 justify-center">
 		<canvas data-id={index} bind:this={canvases[index]} />
 		<Answers question={question.id} />
-		<div class="flex justify-center flex-1">
-			<div class="flex w-4/6 flex-col gap-1">
-				<div class="flex flex-1 w-full">
-					<CartaEditor bind:value={values[index]} mode="tabs" theme="github" {carta} />
+		<div class="collapse">
+			<input type="checkbox" />
+			<div class="collapse-title flex items-center justify-center font-medium">Reply</div>
+			<div class="collapse-content flex flex-1 flex-col">
+				<div class="flex justify-center flex-1">
+					<div class="flex w-4/6 flex-col gap-1">
+						<div class="flex flex-1 w-full">
+							<CartaEditor bind:value={values[index]} mode="tabs" theme="github" {carta} />
+						</div>
+						<button
+							class="btn btn-active hover:btn-secondary"
+							type="submit"
+							on:click|preventDefault={() => sendComment(question.id, index)}
+						>
+							Comment!
+						</button>
+					</div>
 				</div>
-				<button
-					class="btn btn-active hover:btn-secondary"
-					type="submit"
-					on:click|preventDefault={() => sendComment(question.id, index)}
-				>
-					Comment!
-				</button>
 			</div>
 		</div>
 	</div>

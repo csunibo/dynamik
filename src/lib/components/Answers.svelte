@@ -82,6 +82,6 @@
 		{/each}
 	</div>
 {/if}
-<!-- <IntersectionObserver once element={spinner} bind:intersecting={visible}> -->
-<!-- 	<span bind:this={spinner} class="loading loading-spinner loading-md"></span> -->
-<!-- </IntersectionObserver> -->
+<IntersectionObserver once element={spinner} bind:intersecting={visible}>
+	<span bind:this={spinner} class="loading loading-spinner loading-md"></span>
+</IntersectionObserver>
