@@ -21,6 +21,8 @@
 	export let data: PageData;
 	const scale = 3;
 
+	let answers: Answers[] = [];
+
 	console.log(data);
 
 	let loaded = 0.0; // percentage
@@ -114,6 +116,8 @@
 					'--toastBarBackground': '#2F855A'
 				}
 			});
+
+			answers[index].load();
 		} else {
 			toast.push('Error!', {
 				theme: {
@@ -132,7 +136,7 @@
 {#each data.questions as question, index}
 	<div class="w-full p-5 justify-center">
 		<canvas data-id={index} bind:this={canvases[index]} />
-		<Answers question={question.id} />
+		<Answers question={question.id} bind:this={answers[index]} />
 		<div class="collapse">
 			<input type="checkbox" />
 			<div class="collapse-title flex items-center justify-center font-medium">Reply</div>

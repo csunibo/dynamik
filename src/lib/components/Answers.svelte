@@ -6,17 +6,15 @@
 	export let question: number;
 	let data: Question = {};
 	let spinner: HTMLSpanElement;
-	let visible: boolean;
+	let visible: boolean = false;
 
-	const load = async () => {
+	export const load = async () => {
 		const res = await fetch(QUESTION_URL(question));
 		data = await res.json();
-		console.log(data);
-		visible = true;
 	};
 
 	const vote = async (answer: number, v: number) => {
-		const res = await (
+		await (
 			await fetch(VOTE_URL(answer), {
 				headers: {
 					'Content-Type': 'application/json'
@@ -82,6 +80,8 @@
 		{/each}
 	</div>
 {/if}
-<IntersectionObserver once element={spinner} bind:intersecting={visible}>
-	<span bind:this={spinner} class="loading loading-spinner loading-md"></span>
-</IntersectionObserver>
+{#if !visible}
+	<IntersectionObserver once element={spinner} bind:intersecting={visible}>
+		<span bind:this={spinner} class="loading loading-spinner loading-md"></span>
+	</IntersectionObserver>
+{/if}
