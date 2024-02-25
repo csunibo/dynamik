@@ -58,18 +58,18 @@
 				</div>
 				<!-- Answer Content -->
 				<div class="flex flex-1 flex-col">
-					<div class="flex justify-end">
-						<div class="text-sm flex justify-center items-center">
-							<span>
+					<a href="https://github.com/{answer.user}">
+						<div class="flex justify-end">
+							<div class="text-sm flex justify-center items-center">
 								{answer.user}
-							</span>
+							</div>
+							<img
+								class="w-8 h-8 rounded-full ml-3"
+								src={'https://github.com/' + answer.user + '.png'}
+								alt={answer.user + ' profile picture'}
+							/>
 						</div>
-						<img
-							class="w-8 h-8 rounded-full ml-3"
-							src={'https://github.com/' + answer.user + '.png'}
-							alt={answer.user + ' profile picture'}
-						/>
-					</div>
+					</a>
 					<div class="flex flex-1 ml-1">
 						<p>
 							{answer.content}
