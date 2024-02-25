@@ -68,8 +68,8 @@
 						</div>
 						<img
 							class="w-8 h-8 rounded-full ml-3"
-							src="https://loremflickr.com/320/320/girl"
-							alt="jane"
+							src={'https://github.com/' + answer.user + '.png'}
+							alt={answer.user + ' profile picture'}
 						/>
 					</div>
 					<div class="flex flex-1 ml-1">
