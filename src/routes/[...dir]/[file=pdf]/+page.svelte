@@ -13,6 +13,7 @@
 	import '$lib/styles/github.scss';
 
 	import Answers from '$lib/components/Answers.svelte';
+	import PdfCutter from '$lib/components/PdfCutter.svelte';
 
 	const carta = new Carta({
 		extensions: [emoji(), slash(), code()]
@@ -20,6 +21,10 @@
 
 	export let data: PageData;
 	const scale = 3;
+
+	console.log(data);
+
+	let edit: boolean = false;
 
 	let answers: Answers[] = [];
 
@@ -36,6 +41,7 @@
 	let numPages: number;
 
 	onMount(async () => {
+		if (data?.questions.length === 0) return;
 		const pageCtx = pageCanvas.getContext('2d')!;
 		const fullCtx = fullCanvas.getContext('2d')!;
 
@@ -130,35 +136,54 @@
 	}
 </script>
 
-<canvas bind:this={pageCanvas} style="display: none" />
-<canvas bind:this={fullCanvas} style="display: none" />
+{#if edit}
+	<PdfCutter id={data.id} url={data.url} />
+{:else}
+	{#if data?.questions.length === 0}
+		<div class="flex justify-center">
+			<div class="text-center">
+				<h1 class="text-5xl my-12">:(</h1>
+				<p class="text-xl my-8">Documento non pronto</p>
 
-{#each data.questions as question, index}
-	<div class="w-full p-5 justify-center">
-		<canvas data-id={index} bind:this={canvases[index]} />
-		<Answers question={question.id} bind:this={answers[index]} />
-		<div class="collapse">
-			<input type="checkbox" />
-			<div class="collapse-title flex items-center justify-center font-medium">Reply</div>
-			<div class="collapse-content flex flex-1 flex-col">
-				<div class="flex justify-center flex-1">
-					<div class="flex w-4/6 flex-col gap-1">
-						<div class="flex flex-1 w-full">
-							<CartaEditor bind:value={values[index]} mode="tabs" theme="github" {carta} />
+				<button class="btn btn-ghost" on:click|preventDefault={() => (edit = true)}>
+					Preparalo
+				</button>
+				<button class="btn btn-ghost" on:click|preventDefault={() => history.back()}>
+					Torna indietro
+				</button>
+			</div>
+		</div>
+	{/if}
+	<canvas bind:this={pageCanvas} style="display: none" />
+	<canvas bind:this={fullCanvas} style="display: none" />
+
+	{#each data.questions as question, index}
+		<div class="w-full p-5 justify-center">
+			<canvas data-id={index} bind:this={canvases[index]} />
+			<Answers question={question.id} bind:this={answers[index]} />
+			<div class="collapse">
+				<input type="checkbox" />
+				<div class="collapse-title flex items-center justify-center font-medium">Reply</div>
+				<div class="collapse-content flex flex-1 flex-col">
+					<div class="flex justify-center flex-1">
+						<div class="flex w-4/6 flex-col gap-1">
+							<div class="flex flex-1 w-full">
+								<CartaEditor bind:value={values[index]} mode="tabs" theme="github" {carta} />
+							</div>
+							<button
+								class="btn btn-active hover:btn-secondary"
+								type="submit"
+								on:click|preventDefault={() => sendComment(question.id, index)}
+							>
+								Comment!
+							</button>
 						</div>
-						<button
-							class="btn btn-active hover:btn-secondary"
-							type="submit"
-							on:click|preventDefault={() => sendComment(question.id, index)}
-						>
-							Comment!
-						</button>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-{/each}
+	{/each}
+{/if}
 
 <style>
 	canvas {
