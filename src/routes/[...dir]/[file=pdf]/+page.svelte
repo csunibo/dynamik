@@ -145,11 +145,19 @@
 			});
 		}
 	}
+
+	async function removePdfCutter(reload: boolean) {
+		edit = false;
+		if (reload) {
+			// I know Luca, but I don't want/know how to change the state of the parent to reload questions
+			window.location.reload();
+		}
+	}
 </script>
 
 <div class="flex justify-center mt-4 text-4xl">Filename: {data.url.split('/').slice(-1)}</div>
 {#if edit}
-	<PdfCutter id={data.id} url={data.url} />
+	<PdfCutter id={data.id} url={data.url} show={removePdfCutter} />
 {:else}
 	{#if data?.questions.length === 0}
 		<div class="flex justify-center">
@@ -194,10 +202,10 @@
 			<canvas data-id={index} bind:this={canvases[index]} />
 			<div class="collapse">
 				<input type="checkbox" />
-				<div class="collapse-title flex items-center justify-center font-large">
+				<div class="collapse-title flex items-center justify-center font-large bg-secondary">
 					Show/hide answers
 				</div>
-				<div class="collapse-content flex flex-1 flex-col">
+				<div class="bg-secondary collapse-content flex flex-1 flex-col">
 					<div class="flex justify-center flex-1">
 						<Answers question={question.id} bind:this={answers[index]} />
 					</div>
