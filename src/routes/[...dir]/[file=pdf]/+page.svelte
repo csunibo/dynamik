@@ -24,11 +24,10 @@
 
 	console.log(data);
 
+	let user = undefined;
 	let edit: boolean = false;
 
 	let answers: Answers[] = [];
-
-	console.log(data);
 
 	let loaded = 0.0; // percentage
 	let pageCanvas: HTMLCanvasElement, fullCanvas: HTMLCanvasElement;
@@ -41,6 +40,7 @@
 	let numPages: number;
 
 	onMount(async () => {
+		await fetchUser();
 		if (data?.questions.length === 0) return;
 		const pageCtx = pageCanvas.getContext('2d')!;
 		const fullCtx = fullCanvas.getContext('2d')!;
@@ -102,6 +102,17 @@
 		}
 	});
 
+	async function fetchUser() {
+		let res = await await fetch('http://localhost:3000/whoami', {
+			method: 'GET',
+			credentials: 'include'
+		});
+
+		if (res.status == 200) {
+			user = await res.json();
+		}
+	}
+
 	async function sendComment(qid: number, index: number) {
 		let res = await (
 			await fetch('http://localhost:3000/answers', {
@@ -136,6 +147,7 @@
 	}
 </script>
 
+<div class="flex justify-center mt-4 text-4xl">Filename: {data.url.split('/').slice(-1)}</div>
 {#if edit}
 	<PdfCutter id={data.id} url={data.url} />
 {:else}
@@ -145,25 +157,57 @@
 				<h1 class="text-5xl my-12">:(</h1>
 				<p class="text-xl my-8">Documento non pronto</p>
 
-				<button class="btn btn-ghost" on:click|preventDefault={() => (edit = true)}>
-					Preparalo
-				</button>
+				{#if user === undefined}
+					<button
+						class="btn btn-ghost"
+						on:click|preventDefault={() =>
+							(window.location.href =
+								'http://localhost:3000/login?redirect_uri=http://localhost:5173' +
+								data.url.slice(25))}
+					>
+						Login
+					</button>
+				{/if}
+
+				{#if user?.admin}
+					<button class="btn btn-ghost" on:click|preventDefault={() => (edit = true)}>
+						Preparalo
+					</button>
+				{/if}
 				<button class="btn btn-ghost" on:click|preventDefault={() => history.back()}>
 					Torna indietro
 				</button>
 			</div>
 		</div>
+		<div class="flex justify-center mb-5">
+			<object data={data.url} type="application/pdf" width="75%" height="900vh">
+				<iframe src={data.url} width="75%" height="900vh">
+					<p>This browser does not support PDF!</p>
+				</iframe>
+			</object>
+		</div>
 	{/if}
 	<canvas bind:this={pageCanvas} style="display: none" />
 	<canvas bind:this={fullCanvas} style="display: none" />
-
 	{#each data.questions as question, index}
 		<div class="w-full p-5 justify-center">
 			<canvas data-id={index} bind:this={canvases[index]} />
-			<Answers question={question.id} bind:this={answers[index]} />
 			<div class="collapse">
 				<input type="checkbox" />
-				<div class="collapse-title flex items-center justify-center font-medium">Reply</div>
+				<div class="collapse-title flex items-center justify-center font-large">
+					Show/hide answers
+				</div>
+				<div class="collapse-content flex flex-1 flex-col">
+					<div class="flex justify-center flex-1">
+						<Answers question={question.id} bind:this={answers[index]} />
+					</div>
+				</div>
+			</div>
+			<div class="collapse">
+				<input type="checkbox" />
+				<div class="collapse-title flex items-center justify-center font-large">
+					Show/hide reply box
+				</div>
 				<div class="collapse-content flex flex-1 flex-col">
 					<div class="flex justify-center flex-1">
 						<div class="flex w-4/6 flex-col gap-1">

@@ -3,6 +3,7 @@
 	import type { OnProgressParameters } from 'pdfjs-dist';
 	import type { PDFPageProxy } from 'pdfjs-dist/types/src/display/api';
 	import { toast } from '@zerodevx/svelte-toast';
+	import { page } from '$app/stores';
 
 	const ENDPOINT = 'http://localhost:3000/documents';
 	export let url: string;
@@ -259,23 +260,33 @@
 
 		data.coords.sort((a: number[], b: number[]) => a[0] - b[0]);
 
-		let res = await (
-			await fetch(ENDPOINT, {
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(data),
-				method: 'PUT',
-				credentials: 'include'
-			})
-		).json();
-		toast.push('Success!', {
-			theme: {
-				'--toastColor': 'mintcream',
-				'--toastBackground': 'rgba(72,187,120,0.9)',
-				'--toastBarBackground': '#2F855A'
-			}
+		let res = await await fetch(ENDPOINT, {
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data),
+			method: 'PUT',
+			credentials: 'include'
 		});
+		let objRet = await res.json();
+		if (res.status == 200) {
+			toast.push('Success!', {
+				theme: {
+					'--toastColor': 'mintcream',
+					'--toastBackground': 'rgba(72,187,120,0.9)',
+					'--toastBarBackground': '#2F855A'
+				}
+			});
+		} else {
+			toast.push('Error: ' + objRet.error, {
+				theme: {
+					'--toastColor': 'mintcream',
+					'--toastBackground': 'rgba(244,67,54,0.9)',
+					'--toastBarBackground': '#e74c3c'
+				}
+			});
+			location.reload();
+		}
 	}
 </script>
 
