@@ -13,11 +13,16 @@
 		data = await res.json();
 		console.log(data.answers);
 		for (let i = 0; i < data?.answers?.length; i++) {
-			const resAns = await fetch(VOTE_URL(data.answers[i].id), {
-				credentials: 'include'
-			});
-			const dataAns = await resAns.json();
-			data.answers[i].vote = dataAns.vote;
+			try {
+				const resAns = await fetch(VOTE_URL(data.answers[i].id), {
+					credentials: 'include'
+				});
+				const dataAns = await resAns.json();
+				data.answers[i].vote = dataAns.vote;
+			} catch (e) {
+				// never done before
+				data.answers[i].vote = 0;
+			}
 		}
 		console.log(data);
 	};
