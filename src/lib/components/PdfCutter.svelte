@@ -24,7 +24,7 @@
 	lines[0] = [];
 	lines[1] = [];
 	let current = 0;
-	const strokeSize = 5;
+	const strokeSize = 3;
 	let totalWidth = 0;
 	let totalHeight = 0;
 	let numPages = 0;
@@ -40,8 +40,6 @@
 	onMount(async () => {
 		editContext = editCanvas.getContext('2d');
 		opacityContext = opacityCanvas.getContext('2d');
-		// contextMerged = canvasMerged.getContext('2d');
-		opacityContext.globalAlpha = 0.8;
 
 		pageContext = pageCanvas.getContext('2d')!;
 		fullContext = fullCanvas.getContext('2d')!;
@@ -136,7 +134,7 @@
 			opacityContext.rect(0, lastY + strokeSize / 2, opacityCanvas.width, height);
 		else opacityContext.rect(0, point.y - strokeSize / 2, opacityCanvas.width, height);
 
-		opacityContext.fillStyle = 'rgba(0,0,0,0.5)';
+		opacityContext.fillStyle = 'rgba(0,0,0,0.4)';
 		opacityContext.fill();
 	}
 
@@ -174,15 +172,14 @@
 	}
 
 	function clearSections(idxs: number[]) {
+		ratio = fullCanvas.height / fullCanvas.getBoundingClientRect().height;
 		for (const idx of idxs) {
-			// contextEdit.clearRect(0, lines[0][idx] - strokeSize / 2, totalWidth, strokeSize + 20);
-			// contextEdit.clearRect(0, lines[1][idx] - strokeSize / 2, totalWidth, strokeSize + 1);
 			let size = Math.abs(lines[1][idx] - lines[0][idx]);
 			let start = lines[0][idx];
 			if (lines[0][idx] > lines[1][idx]) start = lines[1][idx];
 
 			opacityContext.clearRect(0, start, opacityCanvas.width, size);
-			editContext.clearRect(0, start - strokeSize, editCanvas.width, size + (strokeSize * 3) / 2);
+			editContext.clearRect(0, start - strokeSize, editCanvas.width, size + strokeSize * 2);
 			lines[0].splice(lines[0].indexOf(lines[0][idx]), 1);
 			lines[1].splice(lines[1].indexOf(lines[1][idx]), 1);
 		}
@@ -201,8 +198,6 @@
 				opacityContext.rect(0, y2 + strokeSize / 2, opacityCanvas.width, size);
 			}
 		}
-		// contextOpacity.fillStyle = 'rgba(255,255,255,0.5)';
-		opacityContext.fillStyle = 'rgba(0,0,0,0.5)';
 		opacityContext.fill();
 	}
 
@@ -212,11 +207,13 @@
 		if (ev.buttons == 1) {
 			let idx = existsInLines(y);
 			if (idx.length > 0) return;
+			editContext.setLineDash([16, 16]);
 			editContext.beginPath();
 
 			editContext.lineWidth = strokeSize;
 			editContext.lineCap = 'round';
-			editContext.strokeStyle = current == 0 ? '#008000' : '#8B0000';
+			// editContext.strokeStyle = current == 0 ? '#008000' : '#8B0000';
+			editContext.strokeStyle = 'black';
 			editContext.moveTo(0, y);
 			editContext.lineTo(totalWidth, y);
 			editContext.stroke();
