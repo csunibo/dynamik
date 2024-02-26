@@ -37,9 +37,7 @@
 	{:else}
 		<div class="flex w-full flex-col gap-2 items-center">
 			{#each data?.answers || [] as answer, index}
-				<div
-					class="lg:w-4/6 w-full flex flex-row rounded-lg border-2 border-secondary shadow-md p-6"
-				>
+				<div class="w-full flex flex-row rounded-lg bg-base-100 border-secondary shadow-md p-6">
 					<!-- Voting Section -->
 					<div class="flex flex-col items-center p-2">
 						<!-- Upvote Button -->

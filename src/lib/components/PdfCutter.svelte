@@ -8,6 +8,7 @@
 	const ENDPOINT = 'http://localhost:3000/documents';
 	export let url: string;
 	export let id: string;
+	export let show: () => void;
 
 	// let url = new URL(prompt('Document URL')!);
 	// const url = new URL(
@@ -277,6 +278,7 @@
 					'--toastBarBackground': '#2F855A'
 				}
 			});
+			show(true);
 		} else {
 			toast.push('Error: ' + objRet.error, {
 				theme: {
@@ -305,6 +307,7 @@
 <!-- <canvas bind:this={canvasMerged} id="canvasMerged"></canvas> -->
 
 <div class="fab">
+	<button on:click={show} type="button" class="btn btn-secondary">cancel</button>
 	<button on:click={exportData} type="button" class="btn btn-primary" id="exportBtn">export</button>
 </div>
 
