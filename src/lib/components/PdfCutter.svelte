@@ -304,8 +304,17 @@
 <!-- <canvas bind:this={canvasMerged} id="canvasMerged"></canvas> -->
 
 <div class="fab">
-	<button on:click={show} type="button" class="btn btn-secondary">cancel</button>
-	<button on:click={exportData} type="button" class="btn btn-primary" id="exportBtn">export</button>
+	<button
+		on:click={show}
+		type="button"
+		class="btn bg-black-500 hover:bg-black-700 text-white rounded border-0">cancel</button
+	>
+	<button
+		on:click={exportData}
+		type="button"
+		id="exportBtn"
+		class="btn bg-purple-500 hover:bg-purple-700 text-white rounded border-0">export</button
+	>
 </div>
 
 <style>
