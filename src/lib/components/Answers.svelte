@@ -11,7 +11,6 @@
 	export const load = async () => {
 		const res = await fetch(QUESTION_URL(question));
 		data = await res.json();
-		console.log(data.answers);
 		for (let i = 0; i < data?.answers?.length; i++) {
 			try {
 				const resAns = await fetch(VOTE_URL(data.answers[i].id), {
@@ -57,8 +56,8 @@
 					<div class="flex flex-col items-center p-2">
 						<!-- Upvote Button -->
 						<button
-							class={'flex items-center justify-center w-10 h-10 bg-neutral-content rounded-full transition-colors hover:bg-success focus:outline-none ' +
-								(answer.vote === 1 ? 'bg-success' : '')}
+							class={'flex items-center justify-center w-10 h-10 rounded-full transition-colors hover:bg-success focus:outline-none ' +
+								(answer.vote == 1 ? 'bg-success' : 'bg-neutral-content')}
 							on:click={() => vote(answer.id, 1)}
 						>
 							<span class="icon-[material-symbols--arrow-upward] text-neutral"></span>
@@ -69,8 +68,8 @@
 
 						<!-- Downvote Button -->
 						<button
-							class={'flex items-center justify-center w-10 h-10 bg-neutral-content rounded-full transition-colors hover:bg-error focus:outline-none ' +
-								(answer.vote === -1 ? 'bg-error' : '')}
+							class={'flex items-center justify-center w-10 h-10 rounded-full transition-colors hover:bg-error focus:outline-none ' +
+								(answer.vote == -1 ? 'bg-error' : 'bg-neutral-content')}
 							on:click={() => vote(answer.id, -1)}
 						>
 							<span class="icon-[material-symbols--arrow-downward] text-neutral"></span>
