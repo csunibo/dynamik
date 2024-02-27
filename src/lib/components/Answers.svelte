@@ -151,11 +151,11 @@
 							</a>
 						</div>
 						<div class="flex flex-1 ml-2">
-							<p>{answer.content}</p>
+							<!-- <p>{answer.content}</p> -->
 							<!--
 								fa schifo sto componente
-								<CartaViewer value={answer.content} {carta} /> 
 							-->
+							<CartaViewer bind:value={answer.content} {carta} /> 
 						</div>
 
 						{#if user?.username == answer?.user || user?.admin}
