@@ -22,7 +22,7 @@
 	export let data: PageData;
 	const scale = 3;
 
-	console.log(data);
+	// console.log(data);
 
 	let user = undefined;
 	let edit: boolean = false;
@@ -39,7 +39,7 @@
 	let values: string[] = [];
 	let numPages: number;
 
-	onMount(async () => {
+	async function init() {
 		await fetchUser();
 		if (data?.questions.length === 0) return;
 		const pageCtx = pageCanvas.getContext('2d')!;
@@ -100,7 +100,9 @@
 			const ctx = canvas.getContext('2d');
 			ctx?.drawImage(fullCanvas, 0, -question.start * scale);
 		}
-	});
+	}
+
+	onMount(init);
 
 	async function fetchUser() {
 		let res = await await fetch('http://localhost:3000/whoami', {
@@ -146,12 +148,10 @@
 		}
 	}
 
-	async function removePdfCutter(reload: boolean) {
+	async function removePdfCutter(dataRet: PageData) {
 		edit = false;
-		if (reload) {
-			// I know Luca, but I don't want/know how to change the state of the parent to reload questions
-			window.location.reload();
-		}
+		data.questions = dataRet.questions;
+		await init();
 	}
 </script>
 
@@ -160,7 +160,7 @@
 	<PdfCutter id={data.id} url={data.url} show={removePdfCutter} />
 {:else}
 	{#if data?.questions.length === 0}
-		<div class="flex justify-center">
+		<div class="flex justify-center mb-2">
 			<div class="text-center">
 				<h1 class="text-5xl my-12">:(</h1>
 				<p class="text-xl my-8">Documento non pronto</p>
@@ -188,8 +188,8 @@
 			</div>
 		</div>
 		<div class="flex justify-center mb-5">
-			<object data={data.url} type="application/pdf" width="75%" height="900vh">
-				<iframe src={data.url} width="75%" height="900vh">
+			<object data={data.url} type="application/pdf" width="90%" height="900vh">
+				<iframe src={data.url} width="90%" height="900vh">
 					<p>This browser does not support PDF!</p>
 				</iframe>
 			</object>
@@ -207,7 +207,7 @@
 				</div>
 				<div class="bg-secondary collapse-content flex flex-1 flex-col">
 					<div class="flex justify-center flex-1">
-						<Answers question={question.id} bind:this={answers[index]} />
+						<Answers user={user} question={question.id} bind:this={answers[index]} />
 					</div>
 				</div>
 			</div>

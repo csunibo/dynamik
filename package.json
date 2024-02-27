@@ -55,6 +55,7 @@
   "packageManager": "pnpm@8.8.0",
   "type": "module",
   "dependencies": {
+    "@cartamd/plugin-attachment": "^3.1.0",
     "@cartamd/plugin-code": "^3.0.1",
     "@cartamd/plugin-emoji": "^3.1.0",
     "@cartamd/plugin-slash": "^3.1.0",

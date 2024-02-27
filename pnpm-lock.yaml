@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@cartamd/plugin-attachment':
+    specifier: ^3.1.0
+    version: 3.1.0(carta-md@3.5.0)(marked@7.0.5)(svelte@4.2.0)
   '@cartamd/plugin-code':
     specifier: ^3.0.1
     version: 3.0.1(carta-md@3.5.0)(marked@7.0.5)
@@ -170,6 +173,18 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.19
+
+  /@cartamd/plugin-attachment@3.1.0(carta-md@3.5.0)(marked@7.0.5)(svelte@4.2.0):
+    resolution: {integrity: sha512-Ep3OnPaRbCSWj7pTkzWoImrjZ0QvsE366EJ54LPlX1j8GHkJeh4usShBTNLxcXG52jeqKREyz+KQOrbvZ5LyCQ==}
+    peerDependencies:
+      carta-md: ^3.4.0
+      marked: ^9.1.5
+      svelte: ^3.54.0 || ^4.0.0
+    dependencies:
+      carta-md: 3.5.0(svelte@4.2.0)
+      marked: 7.0.5
+      svelte: 4.2.0
+    dev: false
 
   /@cartamd/plugin-code@3.0.1(carta-md@3.5.0)(marked@7.0.5):
     resolution: {integrity: sha512-xV9qxNtfYwg/ge84An64GwTKriKo1bL/CuYu31aX+dsOYXRvUOdCn9Sv9doTJYFOimGVTOmalvcFR+6jruEoHA==}
