@@ -8,7 +8,7 @@
 	const ENDPOINT = 'http://localhost:3000/documents';
 	export let url: string;
 	export let id: string;
-	export let show: () => void;
+	export let show: (string) => void;
 
 	// let url = new URL(prompt('Document URL')!);
 	// const url = new URL(
@@ -16,7 +16,6 @@
 	// );
 	let editCanvas: HTMLCanvasElement, editContext: any;
 	let opacityCanvas: HTMLCanvasElement, opacityContext: any;
-	// let canvasMerged: HTMLCanvasElement, contextMerged: any;
 	let fullCanvas: HTMLCanvasElement, fullContext: any;
 	let pageCanvas: HTMLCanvasElement, pageContext: any;
 	let pages: PDFPageProxy[] = [];
@@ -275,7 +274,7 @@
 					'--toastBarBackground': '#2F855A'
 				}
 			});
-			show(true);
+			show(objRet);
 		} else {
 			toast.push('Error: ' + objRet.error, {
 				theme: {

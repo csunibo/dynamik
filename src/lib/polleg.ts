@@ -17,6 +17,7 @@ interface Question {
   document: string;
   start: number;
   end: number;
+  counter: number;
   answers: Answer[]
 }
 
