@@ -155,86 +155,96 @@
 	}
 </script>
 
-<div class="flex justify-center mt-4 text-4xl">Filename: {data.url.split('/').slice(-1)}</div>
-{#if edit}
-	<PdfCutter id={data.id} url={data.url} show={removePdfCutter} />
-{:else}
-	{#if data?.questions.length === 0}
-		<div class="flex justify-center mb-2">
-			<div class="text-center">
-				<h1 class="text-5xl my-12">:(</h1>
-				<p class="text-xl my-8">Documento non pronto</p>
+{#if data.isTest}
+	<div class="flex justify-center mt-4 text-4xl">Filename: {data.url.split('/').slice(-1)}</div>
+	{#if edit}
+		<PdfCutter id={data.id} url={data.url} show={removePdfCutter} />
+	{:else}
+		{#if data?.questions.length === 0}
+			<div class="flex justify-center mb-2">
+				<div class="text-center">
+					<h1 class="text-5xl my-12">:(</h1>
+					<p class="text-xl my-8">Documento non pronto per scrivere le risposte</p>
 
-				{#if user === undefined}
-					<button
-						class="btn btn-ghost"
-						on:click|preventDefault={() =>
-							(window.location.href =
-								'http://localhost:3000/login?redirect_uri=http://localhost:5173' +
-								data.url.slice(25))}
-					>
-						Login
-					</button>
-				{/if}
+					{#if user === undefined}
+						<button
+							class="btn btn-ghost"
+							on:click|preventDefault={() =>
+								(window.location.href =
+									'http://localhost:3000/login?redirect_uri=http://localhost:5173' +
+									data.url.slice(25))}
+						>
+							Login
+						</button>
+					{/if}
 
-				{#if user?.admin}
-					<button class="btn btn-ghost" on:click|preventDefault={() => (edit = true)}>
-						Preparalo
+					{#if user?.admin}
+						<button class="btn btn-ghost" on:click|preventDefault={() => (edit = true)}>
+							Preparalo
+						</button>
+					{/if}
+					<button class="btn btn-ghost" on:click|preventDefault={() => history.back()}>
+						Torna indietro
 					</button>
-				{/if}
-				<button class="btn btn-ghost" on:click|preventDefault={() => history.back()}>
-					Torna indietro
-				</button>
-			</div>
-		</div>
-		<div class="flex justify-center mb-5">
-			<object data={data.url} type="application/pdf" width="90%" height="900vh">
-				<iframe src={data.url} width="90%" height="900vh">
-					<p>This browser does not support PDF!</p>
-				</iframe>
-			</object>
-		</div>
-	{/if}
-	<canvas bind:this={pageCanvas} style="display: none" />
-	<canvas bind:this={fullCanvas} style="display: none" />
-	{#each data.questions as question, index}
-		<div class="w-full p-5 justify-center">
-			<canvas data-id={index} bind:this={canvases[index]} />
-			<div class="collapse">
-				<input type="checkbox" />
-				<div class="collapse-title flex items-center justify-center font-large bg-secondary">
-					Show/hide answers
 				</div>
-				<div class="bg-secondary collapse-content flex flex-1 flex-col">
-					<div class="flex justify-center flex-1">
-						<Answers user={user} question={question.id} bind:this={answers[index]} />
+			</div>
+			<div class="flex justify-center mb-5">
+				<object data={data.url} type="application/pdf" width="90%" height="900vh">
+					<iframe src={data.url} width="90%" height="900vh">
+						<p>This browser does not support PDF!</p>
+					</iframe>
+				</object>
+			</div>
+		{/if}
+		<canvas bind:this={pageCanvas} style="display: none" />
+		<canvas bind:this={fullCanvas} style="display: none" />
+		{#each data?.questions as question, index}
+			<div class="w-full p-5 justify-center">
+				<canvas data-id={index} bind:this={canvases[index]} />
+				<div class="collapse">
+					<input type="checkbox" />
+					<div class="collapse-title flex items-center justify-center font-large bg-secondary">
+						Show/hide answers
+					</div>
+					<div class="bg-secondary collapse-content flex flex-1 flex-col">
+						<div class="flex justify-center flex-1">
+							<Answers {user} question={question.id} bind:this={answers[index]} />
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="collapse">
-				<input type="checkbox" />
-				<div class="collapse-title flex items-center justify-center font-large">
-					Show/hide reply box
-				</div>
-				<div class="collapse-content flex flex-1 flex-col">
-					<div class="flex justify-center flex-1">
-						<div class="flex w-4/6 flex-col gap-1">
-							<div class="flex flex-1 w-full">
-								<CartaEditor bind:value={values[index]} mode="tabs" theme="github" {carta} />
+				<div class="collapse">
+					<input type="checkbox" />
+					<div class="collapse-title flex items-center justify-center font-large">
+						Show/hide reply box
+					</div>
+					<div class="collapse-content flex flex-1 flex-col">
+						<div class="flex justify-center flex-1">
+							<div class="flex w-4/6 flex-col gap-1">
+								<div class="flex flex-1 w-full">
+									<CartaEditor bind:value={values[index]} mode="tabs" theme="github" {carta} />
+								</div>
+								<button
+									class="btn btn-active hover:btn-secondary"
+									type="submit"
+									on:click|preventDefault={() => sendComment(question.id, index)}
+								>
+									Comment!
+								</button>
 							</div>
-							<button
-								class="btn btn-active hover:btn-secondary"
-								type="submit"
-								on:click|preventDefault={() => sendComment(question.id, index)}
-							>
-								Comment!
-							</button>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	{/each}
+		{/each}
+	{/if}
+{:else}
+	<div class="flex justify-center mb-5">
+		<object data={data.url} type="application/pdf" width="90%" height="900vh">
+			<iframe src={data.url} width="90%" height="900vh">
+				<p>This browser does not support PDF!</p>
+			</iframe>
+		</object>
+	</div>
 {/if}
 
 <style>
