@@ -124,7 +124,6 @@
 
 		let urlselectedTeaching = teaching_Pair[$search];
 
-        console.log($selectedDir, "----")
 		UPLD.set({
 			repo: urlselectedTeaching,
 			dir: $selectedDir.toString(),
@@ -140,7 +139,7 @@
 
 	// ------ DRAG & DROP -------
 	let isDraggingOver = false;
-	function dragOverHandler(event: { preventDefault: () => void; }): void {
+	function dragOverHandler(event: { preventDefault: () => void }): void {
 		event.preventDefault();
 		isDraggingOver = true;
 	}
@@ -149,7 +148,10 @@
 		isDraggingOver = false;
 	}
 
-	async function dropHandler(event: { preventDefault: () => void; dataTransfer: { files: any; }; }): Promise<void> {
+	async function dropHandler(event: {
+		preventDefault: () => void;
+		dataTransfer: { files: any };
+	}): Promise<void> {
 		event.preventDefault();
 		isDraggingOver = false;
 		const files = event.dataTransfer.files;
