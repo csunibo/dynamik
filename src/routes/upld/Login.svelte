@@ -25,8 +25,9 @@
 			<button
 				class="group h-12 px-6 border-2 border-base-300 rounded-full transition duration-300 hover:border-accent-200 bg-neutral hover:bg-primary focus:bg-accent/50 active:bg-accent"
 				><a
-					href="https://github.com/login/oauth/authorize?client_id=c2dcc487bc2996e9eb75&redirect_uri=http://localhost:5173/upld/end&scope=read:user,user:email"
+					href="https://github.com/login/oauth/authorize?client_id=Iv1.8b86c79d96cfb064&redirect_uri=http://localhost:5173/upld/end&scope=read:user,user:email"
 				>
+                <!-- TODO: dovremmo mettere client token id,redirect uri nelle variabili d'ambiente quando lo facciamo per bene. -->
 					<div class="relative flex items-center space-x-4 justify-center">
 						<span
 							class="text-2xl group-hover:text-neutral transition duration-300 icon-[akar-icons--github-fill]"
