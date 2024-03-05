@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../app.css';
 	import { onMount } from 'svelte';
 	import settings from '$lib/settings';
 	import { DEGREES } from '$lib/teachings';
@@ -50,7 +51,5 @@
 <slot />
 
 <style>
-	@tailwind base;
-	@tailwind components;
-	@tailwind utilities;
+
 </style>
