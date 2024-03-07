@@ -25,23 +25,29 @@
 		commentData.vote = 0;
 		if (data?.answers === undefined) data.answers = [];
 		data?.answers.push(commentData);
-		customSort();
+		//customSort();
 	};
 
 	export const load = async () => {
 		const res = await fetch(QUESTION_URL(question));
 		data = await res.json();
+
 		for (let i = 0; i < data?.answers?.length; i++) {
-			try {
-				const resAns = await fetch(VOTE_URL(data.answers[i].id), {
-					credentials: 'include'
-				});
+			const resAns = await fetch(VOTE_URL(data.answers[i].id), {
+				credentials: 'include'
+			});
+
+			if (resAns.status == 200) {
+				//console.log('200');
+
 				const dataAns = await resAns.json();
-				data.answers[i].vote = dataAns.vote;
-			} catch (e) {
+				//console.log('ans', dataAns);
+				data.answers[i].vote = dataAns?.vote;
+			} else {
 				// never done before
 				data.answers[i].vote = 0;
 			}
+
 			data.answers[i].count = data.answers[i].upvotes - data.answers[i].downvotes;
 		}
 
@@ -124,7 +130,7 @@
 			}
 			data.answers[index].count = data.answers[index].upvotes - data.answers[index].downvotes;
 			data.answers[index].vote = newVote;
-			customSort();
+			//customSort();
 		} else {
 			toast.push('Error: ' + res.error, {
 				theme: {
