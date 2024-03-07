@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { onDestroy } from 'svelte';
 	import type { PageData } from './$types';
 	import type { OnProgressParameters } from 'pdfjs-dist';
 	import type { PDFPageProxy } from 'pdfjs-dist/types/src/display/api';
@@ -14,6 +15,8 @@
 
 	import Answers from '$lib/components/Answers.svelte';
 	import PdfCutter from '$lib/components/PdfCutter.svelte';
+	import { page } from '$app/stores';
+	import { base } from '$app/paths';
 
 	const carta = new Carta({
 		extensions: [emoji(), slash(), code()]
@@ -38,6 +41,27 @@
 	let pages: PDFPageProxy[] = [];
 	let values: string[] = [];
 	let numPages: number;
+
+	let parentPath = '/';
+
+	const getPartHref = (part: string) =>
+		$page.url.pathname
+			.split('/')
+			.slice(0, $page.url.pathname.split('/').indexOf(part) + 1)
+			.join('/');
+
+	onDestroy(() => {
+		pageUnsubscribe();
+	});
+
+	const pageUnsubscribe = page.subscribe((page) => {
+		const path = page.params.dir.split('/');
+		path.push(page.params.file);
+		path.pop();
+		parentPath = base + '/' + path.join('/');
+	});
+
+	$: urlParts = $page.url.pathname.split('/').slice(1);
 
 	async function init() {
 		await fetchUser();
@@ -154,8 +178,38 @@
 	}
 </script>
 
+<div class="max-w-6xl p-4 mx-auto">
+	<div class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
+		<div class="flex justify-between w-full">
+			<div class="lg:text-lg breadcrumbs text-sm">
+				<ul>
+					<li>🏠<a class="ml-1" href="/">Dynamik</a></li>
+					{#each urlParts as part}
+						{@const href = getPartHref(part)}
+						<li><a {href}>{part}</a></li>
+					{/each}
+				</ul>
+			</div>
+			<div>
+				{#if user === undefined}
+					<button
+						class="btn btn-ghost"
+						on:click|preventDefault={() =>
+							(window.location.href =
+								'http://localhost:3000/login?redirect_uri=http://localhost:5173' +
+								data.url.slice(25))}
+					>
+						Login
+					</button>
+				{:else}
+					<img src={user.avatarUrl} class="w-12 rounded-full" />
+				{/if}
+			</div>
+		</div>
+	</div>
+</div>
+
 {#if data.isTest}
-	<div class="flex justify-center mt-4 text-4xl">Filename: {data.url.split('/').slice(-1)}</div>
 	{#if edit}
 		<PdfCutter id={data.id} url={data.url} show={removePdfCutter} />
 	{:else}
