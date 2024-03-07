@@ -33,14 +33,7 @@
 	let replyBoxId: number = null;
 	let replyBoxIndex: number = -1;
 	let parentAnswer: number = null;
-	let parentAnswerAuthor: string;
-
-	$: replyParentString = () => {
-		let res = `Queston ${replyBoxIndex}`;
-		if (parentAnswer != null) {
-			res += `, Answer of ${parentAnswerAuthor}`;
-		}
-	};
+	let replyParentString: string;
 
 	let answers: Answers[] = [];
 	let values: string[] = [];
@@ -340,6 +333,13 @@
 						on:click|preventDefault={() => {
 							replyBoxId = question.id;
 							replyBoxIndex = index;
+
+							let res = `Queston ${replyBoxIndex + 1}`;
+
+							if (parentAnswer != null) {
+								res += `, Answer of ${parentAnswerAuthor}`;
+							}
+							replyParentString = res;
 						}}
 						>Propose an Answer
 					</button>
@@ -352,7 +352,7 @@
 					class="flex justify-center flex-1 bg-slate-700 bg-opacity-60 rounded-tl-xl rounded-tr-xl"
 				>
 					<div class="flex w-4/6 flex-col gap-1 p-8">
-						<h2 class="text-lg mx-5 pl-16 font-bold bg-slate-700">Reply to {currentReply}</h2>
+						<h2 class="text-lg mx-5 pl-16 font-bold bg-slate-700">Reply to {replyParentString}</h2>
 						<div class="flex flex-1 w-full">
 							<CartaEditor bind:value={values[replyBoxIndex]} mode="tabs" theme="github" {carta} />
 						</div>
