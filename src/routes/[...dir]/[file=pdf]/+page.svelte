@@ -215,7 +215,9 @@
 							<li>
 								<a
 									on:click|preventDefault={() => {
-										document.cookie = 'auth=;';
+										window.location.href =
+											'http://localhost:3000/logout?redirect_uri=http://localhost:5173' +
+											data.url.slice(25);
 										user = undefined;
 									}}>Logout</a
 								>
