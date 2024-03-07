@@ -7,6 +7,7 @@
 	import { code } from '@cartamd/plugin-code';
 	import type { Question } from '$lib/polleg';
 	import { toast } from '@zerodevx/svelte-toast';
+	import Page from '../../routes/+page.svelte';
 
 	const carta = new Carta({
 		extensions: [emoji(), slash(), code()]
@@ -18,6 +19,14 @@
 	let data: Question = {};
 	let spinner: HTMLSpanElement;
 	let visible: boolean = false;
+
+	export const addComment = (commentData: any) => {
+		commentData.count = 0;
+		commentData.vote = 0;
+		if (data?.answers === undefined) data.answers = [];
+		data?.answers.push(commentData);
+		customSort();
+	};
 
 	export const load = async () => {
 		const res = await fetch(QUESTION_URL(question));
@@ -34,9 +43,12 @@
 				data.answers[i].vote = 0;
 			}
 			data.answers[i].count = data.answers[i].upvotes - data.answers[i].downvotes;
-			// data?.answers[i].count = data?.answers[i].upvotes - data?.answer[i].downvotes
 		}
 
+		customSort();
+	};
+
+	const customSort = () => {
 		data.answers = data?.answers?.sort(function (a: any, b: any) {
 			let x: number = a.count;
 			let y: number = b.count;
@@ -50,7 +62,7 @@
 		});
 	};
 
-	export const deleteAnswer = async (id: number) => {
+	const deleteAnswer = async (id: number) => {
 		let res = await fetch(ANSWER_URL(id), {
 			method: 'DELETE',
 			credentials: 'include'
@@ -65,12 +77,10 @@
 				}
 			});
 
-			// let newAns = data?.answers?.filter(function (item: any) {
-			// 	// console.log(item.id, id);
-			// 	return item.id != id;
-			// });
-			// data.answers = newAns;
-			await load();
+			let newAns = data?.answers?.filter(function (item: any) {
+				return item.id != id;
+			});
+			data.answers = newAns;
 		} else {
 			res = await res.json();
 			toast.push('Error: ' + res.error, {
@@ -83,19 +93,47 @@
 		}
 	};
 
-	const vote = async (answer: number, v: number) => {
-		if (data?.answers?.filter((ans: any) => ans.id == answer)[0].vote == v) v = 0;
-		await (
-			await fetch(VOTE_URL(answer), {
+	const vote = async (index: number, answerId: number, newVote: number) => {
+		if (data?.answers[index].vote == newVote) newVote = 0;
+
+		let res = await (
+			await fetch(VOTE_URL(answerId), {
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ vote: v }),
+				body: JSON.stringify({ vote: newVote }),
 				method: 'POST',
 				credentials: 'include'
 			})
 		).json();
-		await load();
+
+		if (res) {
+			let oldVote = data.answers[index].vote;
+			if (oldVote == 1 && (newVote == 0 || newVote == -1)) {
+				data.answers[index].upvotes--;
+			}
+			if (oldVote == -1 && (newVote == 0 || newVote == 1)) {
+				data.answers[index].downvotes--;
+			}
+
+			if (newVote == 1) {
+				data.answers[index].upvotes++;
+			}
+			if (newVote == -1) {
+				data.answers[index].downvotes++;
+			}
+			data.answers[index].count = data.answers[index].upvotes - data.answers[index].downvotes;
+			data.answers[index].vote = newVote;
+			customSort();
+		} else {
+			toast.push('Error: ' + res.error, {
+				theme: {
+					'--toastColor': 'mintcream',
+					'--toastBackground': 'rgba(244,67,54,0.9)',
+					'--toastBarBackground': '#e74c3c'
+				}
+			});
+		}
 	};
 
 	// when visible changes (i.e., is set to true) trigger the loading
@@ -116,7 +154,7 @@
 						<button
 							class={'flex items-center justify-center w-10 h-10 rounded-full transition-colors hover:bg-success focus:outline-none ' +
 								(answer?.vote == 1 ? 'bg-success' : 'bg-neutral-content')}
-							on:click={() => vote(answer.id, 1)}
+							on:click={() => vote(index, answer.id, 1)}
 						>
 							<span class="icon-[material-symbols--arrow-upward] text-neutral"></span>
 						</button>
@@ -128,7 +166,7 @@
 						<button
 							class={'flex items-center justify-center w-10 h-10 rounded-full transition-colors hover:bg-error focus:outline-none ' +
 								(answer?.vote == -1 ? 'bg-error' : 'bg-neutral-content')}
-							on:click={() => vote(answer.id, -1)}
+							on:click={() => vote(index, answer.id, -1)}
 						>
 							<span class="icon-[material-symbols--arrow-downward] text-neutral"></span>
 						</button>
@@ -151,11 +189,11 @@
 							</a>
 						</div>
 						<div class="flex flex-1 ml-2">
-							<!-- <p>{answer.content}</p> -->
+							<p>{answer.content}</p>
 							<!--
 								fa schifo sto componente
 							-->
-							<CartaViewer bind:value={answer.content} {carta} /> 
+							<!-- <CartaViewer bind:value={answer.content} {carta} />  -->
 						</div>
 
 						{#if user?.username == answer?.user || user?.admin}

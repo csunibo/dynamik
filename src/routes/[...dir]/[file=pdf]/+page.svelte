@@ -135,8 +135,7 @@
 					'--toastBarBackground': '#2F855A'
 				}
 			});
-
-			answers[index].load();
+			answers[index].addComment(res);
 		} else {
 			toast.push('Error!', {
 				theme: {
