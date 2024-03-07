@@ -202,7 +202,20 @@
 						Login
 					</button>
 				{:else}
-					<img src={user.avatarUrl} class="w-12 rounded-full" />
+					<!--  -->
+					<details class="dropdown">
+						<summary class="btn"><img src={user.avatarUrl} class="w-12 rounded-full" /></summary>
+						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+							<li>
+								<a
+									on:click|preventDefault={() => {
+										document.cookie = 'auth=;';
+										user = undefined;
+									}}>Logout</a
+								>
+							</li>
+						</ul>
+					</details>
 				{/if}
 			</div>
 		</div>
