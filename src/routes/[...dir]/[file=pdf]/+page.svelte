@@ -174,6 +174,9 @@
 	async function removePdfCutter(dataRet: PageData) {
 		edit = false;
 		data.questions = dataRet.questions;
+		if (data.questions == null) {
+			data.questions = [];
+		}
 		await init();
 	}
 </script>
