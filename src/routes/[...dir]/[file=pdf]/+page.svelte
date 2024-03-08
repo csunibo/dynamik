@@ -324,7 +324,7 @@
 							showReplyBoxFor = null;
 						}}
 						bind:unfinishedReply={values[index]}
-						question={index}
+						questionIndex={index}
 						questionId={question.id}
 						{sendAnswerCallback}
 					/>

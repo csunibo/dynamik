@@ -8,6 +8,7 @@
 	import type { Question } from '$lib/polleg';
 	import { toast } from '@zerodevx/svelte-toast';
 	import Page from '../../routes/+page.svelte';
+	import ReplyBox from './ReplyBox.svelte';
 
 	const carta = new Carta({
 		extensions: [emoji(), slash(), code()]
@@ -19,6 +20,9 @@
 	let data: Question = {};
 	let spinner: HTMLSpanElement;
 	let visible: boolean = false;
+
+	let showReplyBoxFor: number = null;
+	let unfinishedReplies: string[] = [];
 
 	export const addComment = (commentData: any) => {
 		commentData.count = 0;
@@ -202,18 +206,38 @@
 							<!-- <CartaViewer bind:value={answer.content} {carta} />  -->
 						</div>
 
-						{#if user?.username == answer?.user || user?.admin}
-							<div class="flex justify-end">
+						<div class="flex justify-end">
+							{#if user?.username == answer?.user || user?.admin}
 								<button
-									class="btn btn-error"
+									class="btn btn-error mr-5"
 									on:click|preventDefault={() => deleteAnswer(answer.id)}
 								>
 									Delete
 								</button>
-							</div>
-						{/if}
+							{/if}
+							<button
+								class="btn btn-primary"
+								on:click|preventDefault={() => {
+									showReplyBoxFor = index;
+								}}>Comment</button
+							>
+						</div>
 					</div>
 				</div>
+				{#if showReplyBoxFor === index}
+					<div class="fixed bottom-0 w-full z-10">
+						<ReplyBox
+							closeCallback={() => {
+								showReplyBoxFor = null;
+							}}
+							bind:unfinishedReply={unfinishedReplies[index]}
+							questionId={question}
+							sendAnswerCallback={() => {}}
+							parentAuthor={answer.user}
+							parentAnswerId={answer.id}
+						/>
+					</div>
+				{/if}
 			{/each}
 		</div>
 	{/if}
