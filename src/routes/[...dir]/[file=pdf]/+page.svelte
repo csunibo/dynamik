@@ -6,21 +6,14 @@
 	import type { PDFPageProxy } from 'pdfjs-dist/types/src/display/api';
 
 	import { toast } from '@zerodevx/svelte-toast';
-	import { Carta, CartaEditor } from 'carta-md';
-	import { emoji } from '@cartamd/plugin-emoji';
-	import { slash } from '@cartamd/plugin-slash';
-	import { code } from '@cartamd/plugin-code';
 	import 'carta-md/dark.css';
 	import '$lib/styles/github.scss';
 
 	import Answers from '$lib/components/Answers.svelte';
 	import PdfCutter from '$lib/components/PdfCutter.svelte';
+	import ReplyBox from '$lib/components/ReplyBox.svelte';
 	import { page } from '$app/stores';
 	import { base } from '$app/paths';
-
-	const carta = new Carta({
-		extensions: [emoji(), slash(), code()]
-	});
 
 	export let data: PageData;
 	const scale = 3;
@@ -30,10 +23,7 @@
 	let user = undefined;
 	let edit: boolean = false;
 
-	let replyBoxId: number = null;
-	let replyBoxIndex: number = -1;
-	let parentAnswer: number = null;
-	let replyParentString: string;
+	let showReplyBoxFor: number = null;
 
 	let answers: Answers[] = [];
 	let values: string[] = [];
@@ -144,18 +134,16 @@
 		}
 	}
 
-	async function sendComment(qid: number, index: number) {
-		let res = await (
-			await fetch('http://localhost:3000/answers', {
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ question: qid, content: values[index] }),
-				method: 'PUT',
-				credentials: 'include'
-			})
-		).json();
+	async function removePdfCutter(dataRet: PageData) {
+		edit = false;
+		data.questions = dataRet.questions;
+		if (data.questions == null) {
+			data.questions = [];
+		}
+		await init();
+	}
 
+	function sendAnswerCallback(res, index) {
 		if (res.id) {
 			toast.push('Success!', {
 				theme: {
@@ -165,7 +153,6 @@
 				}
 			});
 			answers[index].addComment(res);
-			replyBoxId = null;
 		} else {
 			toast.push('Error!', {
 				theme: {
@@ -175,15 +162,6 @@
 				}
 			});
 		}
-	}
-
-	async function removePdfCutter(dataRet: PageData) {
-		edit = false;
-		data.questions = dataRet.questions;
-		if (data.questions == null) {
-			data.questions = [];
-		}
-		await init();
 	}
 
 	//function showReplyBox(question, index) {}
@@ -331,50 +309,28 @@
 					<button
 						class="btn btn-primary"
 						on:click|preventDefault={() => {
-							replyBoxId = question.id;
-							replyBoxIndex = index;
-
-							let res = `Queston ${replyBoxIndex + 1}`;
-
-							if (parentAnswer != null) {
-								res += `, Answer of ${parentAnswerAuthor}`;
-							}
-							replyParentString = res;
+							showReplyBoxFor = index;
+							console.log(values);
 						}}
 						>Propose an Answer
 					</button>
 				</div>
 			</div>
-		{/each}
-		{#if replyBoxId != null}
-			<div class="fixed bottom-0 w-full">
-				<div
-					class="flex justify-center flex-1 bg-slate-700 bg-opacity-60 rounded-tl-xl rounded-tr-xl"
-				>
-					<div class="flex w-4/6 flex-col gap-1 p-8">
-						<h2 class="text-lg mx-5 pl-16 font-bold bg-slate-700">Reply to {replyParentString}</h2>
-						<div class="flex flex-1 w-full">
-							<CartaEditor bind:value={values[replyBoxIndex]} mode="tabs" theme="github" {carta} />
-						</div>
-						<div class="flex flex-row-reverse justify-around">
-							<button
-								class="btn btn-active hover:btn-secondary"
-								type="submit"
-								on:click|preventDefault={() => sendComment(replyBoxId, replyBoxIndex)}
-							>
-								Comment!
-							</button>
-							<button
-								class="btn btn-active hover:btn-neutral"
-								on:click|preventDefault={() => {
-									replyBoxId = null;
-								}}>cancel</button
-							>
-						</div>
-					</div>
+
+			{#if showReplyBoxFor == index}
+				<div class="fixed bottom-0 w-full z-10">
+					<ReplyBox
+						closeCallback={() => {
+							showReplyBoxFor = null;
+						}}
+						bind:unfinishedReply={values[index]}
+						question={index}
+						questionId={question.id}
+						{sendAnswerCallback}
+					/>
 				</div>
-			</div>
-		{/if}
+			{/if}
+		{/each}
 	{/if}
 {:else}
 	<div class="flex justify-center mb-5">
