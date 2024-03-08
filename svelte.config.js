@@ -4,7 +4,6 @@ import nodeAdapter from '@sveltejs/adapter-node';
 
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
-/** @type {import('@sveltejs/kit').Config} */
 const BASE_PATH = process.env.BASE_PATH || '';
 const GITHUB_PAGES = process.env.GITHUB_ACTIONS === 'true';
 const CSUNIBO_DEPLOY = process.env.CSUNIBO_DEPLOY === 'true';
@@ -23,6 +22,7 @@ function chooseAdapter() {
 	}
 }
 
+/** @type {import('@sveltejs/kit').Config} */
 const config = {
 	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
 	// for more information about preprocessors
@@ -34,7 +34,7 @@ const config = {
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: chooseAdapter(),
 		paths: {
-			base: BASE_PATH
+			base: BASE_PATH == '' ? '' : `/${BASE_PATH}`
 		}
 	}
 };
