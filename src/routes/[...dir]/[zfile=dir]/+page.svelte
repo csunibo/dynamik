@@ -1,21 +1,18 @@
 <script lang="ts">
-	import Fuse from 'fuse.js';
-
 	import { page } from '$app/stores';
-	import { base } from '$app/paths';
 
 	import Line from '$lib/components/Line.svelte';
-	import type { FuzzyFile } from '$lib/api';
 	import type { Degree, Year } from '$lib/teachings';
-	import { EDIT_URLS, RISORSE_BASE_URL } from '$lib/const';
+	import { EDIT_URLS } from '$lib/const';
+	import { doneFiles, anyFileDone } from '$lib/todo-file';
 
 	import type { PageData } from './$types';
+	import FuzzySearch from './FuzzySearch.svelte';
 	export let data: PageData;
 
+	let fuzzy: FuzzySearch;
+
 	let editUrls = EDIT_URLS($page.url.pathname);
-	let searchActive = false;
-	let searchInput: HTMLInputElement;
-	let resultList: HTMLUListElement;
 
 	// -- breadcrumbs --
 	let breadcrumbMobile = true;
@@ -23,63 +20,16 @@
 		breadcrumbMobile = !breadcrumbMobile;
 	}
 
-	let searchQuery = '';
-	let fuse: Fuse<FuzzyFile> = new Fuse(data.fuzzy, {
-		keys: ['name']
-	});
-	let active = 0;
-
-	$: fuseResult = fuse
-		? fuse.search(searchQuery, {
-				limit: 7
-			})
-		: [];
-
-	// Set first result as "active"
-	$: {
-		if (fuseResult) {
-			active = 0;
-		}
-	}
-
-	$: urlParts = $page.url.pathname.split('/').slice(1);
+	$: urlParts = $page.url.pathname
+		.split('/')
+		.slice(1)
+		.filter((p) => p !== ''); // otherwise we get an empty string at the end
 
 	const getPartHref = (part: string) =>
 		$page.url.pathname
 			.split('/')
 			.slice(0, $page.url.pathname.split('/').indexOf(part) + 1)
 			.join('/');
-
-	function keydown(e: KeyboardEvent) {
-		if (e.key === 'Escape') {
-			if (searchActive) searchActive = false;
-		} else if (e.key === 'k' && e.ctrlKey) {
-			e.preventDefault();
-			if (!searchActive) searchActive = true;
-			setTimeout(() => {
-				searchInput.focus();
-			}, 100);
-		} else if (e.key === 'ArrowDown' && resultList) {
-			e.preventDefault();
-			active = active < resultList.children.length - 1 ? active + 1 : active;
-		} else if (e.key === 'ArrowUp' && resultList) {
-			e.preventDefault();
-			active = active > 0 ? active - 1 : 0;
-		} else if (e.key === 'Enter' && resultList) {
-			const activeEL = resultList.children[active] as HTMLLIElement;
-			const aEl = activeEL.querySelector('a') as HTMLAnchorElement;
-			if (aEl) {
-				aEl.click();
-			}
-		}
-	}
-
-	function viewMobileFinder() {
-		searchActive = !searchActive;
-		setTimeout(() => {
-			searchInput.focus();
-		}, 100);
-	}
 
 	function kebabToTitle(str: string) {
 		return str
@@ -159,14 +109,24 @@
 	}
 
 	$: degree = guessDegree(urlParts[0]);
+
+	// Done file status
+	$: isDone = anyFileDone(data.manifest.files?.map((f) => f.url) ?? []);
+
+	function cleanDone() {
+		doneFiles.update((old) => {
+			data.manifest.files?.forEach((f) => {
+				old[f.url] = false;
+			});
+			return old;
+		});
+	}
 </script>
 
 <svelte:head>
 	<title>{title}</title>
 	<meta property="og:title" content={title} />
 </svelte:head>
-
-<svelte:body on:keydown={keydown} />
 
 <main class="max-w-6xl min-w-fit p-4 mx-auto">
 	<div class="navbar flex bg-base-200 rounded-box shadow-sm px-5 mb-5">
@@ -216,20 +176,32 @@
 		</div>
 		<div class="flex flex-1 justify-end mr-2">
 			<button
-				class="lg:ml-2 md:min-w-max p-2 flex items-center bg-base-300 rounded-xl btn-ghost"
-				title="ctrl + k"
-				on:click|preventDefault={() => viewMobileFinder()}
+				title="Search"
+				class="lg:ml-2 md:min-w-max p-2 bg-base-300 rounded-xl btn-ghost"
+				on:click|preventDefault={() => fuzzy.show()}
 			>
-				<span class="text-primary icon-[akar-icons--search]"></span>
-				<kbd class="kbd-sm hidden md:inline-block">ctrl + k </kbd>
+				<span class="text-primary icon-[akar-icons--search] align-middle"></span>
+				<span class="hidden md:inline">
+					<kbd class="kbd-sm">Ctrl</kbd>+
+					<kbd class="kbd-sm">K</kbd>
+				</span>
 			</button>
 		</div>
 	</div>
-	<div class="flex flex-1 justify-end mr-4 mb-3">
-		<button class="lg:ml-2 p-1 flex items-center rounded-xl bg-primary" on:click={toggleReverse}>
-			<span
-				class="text-base-100 text-xl icon-[solar--sort-vertical-bold-duotone]"
-				class:flip={reverseMode}
+	<div class="flex flex-1 justify-start mr-4 mb-3">
+		{#if $isDone}
+			<button
+				class="lg:ml-2 p-1 flex mr-2 items-center"
+				on:click={cleanDone}
+				title="Clean all done files in this page"
+			>
+				<span class="text-warning text-xl icon-[solar--broom-bold-duotone]"></span>
+			</button>
+		{/if}
+		<!-- Reverse Mode -->
+		<button class="lg:ml-2 p-1 flex items-center rounded-xl text-primary" on:click={toggleReverse}>
+			Nome
+			<span class="ms-2 text-xl icon-[solar--sort-vertical-bold-duotone]" class:flip={reverseMode}
 			></span>
 		</button>
 	</div>
@@ -262,34 +234,7 @@
 	</div>
 </main>
 
-<input type="checkbox" id="my-modal" class="modal-toggle" checked={searchActive} />
-
-<label for="my-modal" class="modal cursor-pointer" role="search">
-	<label class="modal-box relative">
-		<input
-			class="input input-bordered input-primary w-full mb-2"
-			type="text"
-			placeholder="Search..."
-			bind:this={searchInput}
-			bind:value={searchQuery}
-		/>
-		{#if searchQuery != ''}
-			<ul class="menu p-2" bind:this={resultList}>
-				{#each fuseResult as result, i}
-					{@const href =
-						result.item.mime === 'text/statik-link'
-							? result.item.url
-							: base + result.item.url.split(RISORSE_BASE_URL)[1]}
-					<li>
-						<a {href} class:active={i === active}>
-							{result.item.name}
-						</a>
-					</li>
-				{/each}
-			</ul>
-		{/if}
-	</label>
-</label>
+<FuzzySearch data={data.fuzzy} bind:this={fuzzy} />
 
 <style>
 	.flip {
