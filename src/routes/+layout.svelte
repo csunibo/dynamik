@@ -51,5 +51,4 @@
 <slot />
 
 <style>
-
 </style>
