@@ -1,4 +1,5 @@
 <script lang="ts">
+	console.log('ciaop');
 	import { Carta, CartaEditor } from 'carta-md';
 	import { emoji } from '@cartamd/plugin-emoji';
 	import { slash } from '@cartamd/plugin-slash';
@@ -11,16 +12,19 @@
 	export let unfinishedReply: string;
 	export let closeCallback: () => void;
 	export let sendAnswerCallback: () => void;
-	export let question: number;
+	export let questionIndex: number = -1;
 	export let questionId: number;
-	export const parentAuthor: string = '';
+	export let parentAuthor: string = '';
+	export let parentAnswerId: number = '';
 
 	function composeRecipientName() {
-		let res = `Queston ${question + 1}`;
+		console.log(parentAuthor);
+		let res = `Queston ${questionIndex + 1}`;
 
 		if (parentAuthor != '') {
-			res += `, Answer of ${parentAuthor}`;
+			res = `Answer of ${parentAuthor}`;
 		}
+
 		return res;
 	}
 
@@ -40,7 +44,7 @@
 			unfinishedReply = '';
 			closeCallback();
 		}
-		sendAnswerCallback(res, question);
+		sendAnswerCallback(res, index);
 	}
 
 	const recipientName = composeRecipientName();
@@ -57,7 +61,7 @@
 				class="btn btn-active hover:btn-secondary"
 				type="submit"
 				on:click|preventDefault={() => {
-					sendComment(questionId, question);
+					sendComment(questionId, questionIndex);
 				}}
 			>
 				Comment!
