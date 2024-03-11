@@ -24,11 +24,12 @@
 	let showReplyBoxFor: number = null;
 	let unfinishedReplies: string[] = [];
 
-	export const addComment = (commentData: any) => {
-		commentData.count = 0;
-		commentData.vote = 0;
+	export const addComment = (answerData: any) => {
+		answerData.count = 0;
+		answerData.vote = 0;
 		if (data?.answers === undefined) data.answers = [];
-		data?.answers.push(commentData);
+		data.answers.push(answerData);
+		console.log('aggiunto');
 		//customSort();
 	};
 
@@ -215,12 +216,14 @@
 									Delete
 								</button>
 							{/if}
-							<button
-								class="btn btn-primary"
-								on:click|preventDefault={() => {
-									showReplyBoxFor = index;
-								}}>Comment</button
-							>
+							{#if user}
+								<button
+									class="btn btn-primary"
+									on:click|preventDefault={() => {
+										showReplyBoxFor = index;
+									}}>Comment</button
+								>
+							{/if}
 						</div>
 					</div>
 				</div>

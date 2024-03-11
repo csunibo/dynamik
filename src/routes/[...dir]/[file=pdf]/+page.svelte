@@ -305,16 +305,17 @@
 					</div>
 				</div>
 
-				<div class="mt-6 flex items-center justify-center font-large">
-					<button
-						class="btn btn-primary"
-						on:click|preventDefault={() => {
-							showReplyBoxFor = index;
-							console.log(values);
-						}}
-						>Propose an Answer
-					</button>
-				</div>
+				{#if user}
+					<div class="mt-6 flex items-center justify-center font-large">
+						<button
+							class="btn btn-primary"
+							on:click|preventDefault={() => {
+								showReplyBoxFor = index;
+							}}
+							>Propose an Answer
+						</button>
+					</div>
+				{/if}
 			</div>
 
 			{#if showReplyBoxFor == index}
