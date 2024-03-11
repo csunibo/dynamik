@@ -10,10 +10,6 @@
 	import Page from '../../routes/+page.svelte';
 	import ReplyBox from './ReplyBox.svelte';
 
-	const carta = new Carta({
-		extensions: [emoji(), slash(), code()]
-	});
-
 	export let question: number;
 	export let user;
 
@@ -43,10 +39,8 @@
 			});
 
 			if (resAns.status == 200) {
-				//console.log('200');
-
 				const dataAns = await resAns.json();
-				//console.log('ans', dataAns);
+
 				data.answers[i].vote = dataAns?.vote;
 			} else {
 				// never done before
@@ -220,27 +214,58 @@
 								<button
 									class="btn btn-primary"
 									on:click|preventDefault={() => {
-										showReplyBoxFor = index;
+										if (showReplyBoxFor != null) {
+											showReplyBoxFor = null;
+										} else {
+											showReplyBoxFor = index;
+										}
 									}}>Comment</button
 								>
 							{/if}
 						</div>
+
+						{#if showReplyBoxFor === index}
+							<div class="w-full z-10">
+								<ReplyBox
+									closeCallback={() => {
+										showReplyBoxFor = null;
+									}}
+									bind:unfinishedReply={unfinishedReplies[index]}
+									questionId={question}
+									sendAnswerCallback={() => {
+										showReplyBoxFor = null;
+									}}
+									parentAuthor={answer.user}
+									parentAnswerId={answer.id}
+								/>
+							</div>
+						{/if}
+
+						<div class="mt-12">
+							{#each answer.replies || [] as reply, index}
+								<div class="divider"></div>
+								<div class="ml-8">
+									<div class="flex justify-end">
+										<div class="text-sm flex justify-center items-center">
+											<a href="https://github.com/{answer.user}">
+												{answer.user}
+											</a>
+										</div>
+
+										<a href="https://github.com/{answer.user}">
+											<img
+												class="w-8 h-8 rounded-full ml-3"
+												src={'https://github.com/' + answer.user + '.png'}
+												alt={answer.user + ' profile picture'}
+											/>
+										</a>
+									</div>
+									<div>{reply.content}</div>
+								</div>
+							{/each}
+						</div>
 					</div>
 				</div>
-				{#if showReplyBoxFor === index}
-					<div class="fixed bottom-0 w-full z-10">
-						<ReplyBox
-							closeCallback={() => {
-								showReplyBoxFor = null;
-							}}
-							bind:unfinishedReply={unfinishedReplies[index]}
-							questionId={question}
-							sendAnswerCallback={() => {}}
-							parentAuthor={answer.user}
-							parentAnswerId={answer.id}
-						/>
-					</div>
-				{/if}
 			{/each}
 		</div>
 	{/if}

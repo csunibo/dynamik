@@ -291,7 +291,7 @@
 		<canvas bind:this={pageCanvas} style="display: none" />
 		<canvas bind:this={fullCanvas} style="display: none" />
 		{#each data?.questions as question, index}
-			<div class="w-full p-5 justify-center">
+			<div class="w-full p-16 justify-center">
 				<canvas data-id={index} bind:this={canvases[index]} />
 				<div class="collapse">
 					<input type="checkbox" />
@@ -306,31 +306,31 @@
 				</div>
 
 				{#if user}
-					<div class="mt-6 flex items-center justify-center font-large">
-						<button
-							class="btn btn-primary"
-							on:click|preventDefault={() => {
-								showReplyBoxFor = index;
-							}}
-							>Propose an Answer
-						</button>
+					<div class="collapse mt-5">
+						<input type="checkbox" />
+						<div
+							class="collapse-title flex items-center justify-center font-large bg-primary text-black"
+						>
+							Show/hide answers
+						</div>
+						<div class="bg-primary collapse-content flex flex-1 flex-col">
+							<ReplyBox
+								closeCallback={() => {
+									showReplyBoxFor = null;
+								}}
+								bind:unfinishedReply={values[index]}
+								questionIndex={index}
+								questionId={question.id}
+								{sendAnswerCallback}
+							/>
+						</div>
 					</div>
 				{/if}
 			</div>
-
+			<!-- 
 			{#if showReplyBoxFor == index}
-				<div class="fixed bottom-0 w-full z-10">
-					<ReplyBox
-						closeCallback={() => {
-							showReplyBoxFor = null;
-						}}
-						bind:unfinishedReply={values[index]}
-						questionIndex={index}
-						questionId={question.id}
-						{sendAnswerCallback}
-					/>
-				</div>
-			{/if}
+				<div class="fixed bottom-0 w-full z-10"></div>
+			{/if} -->
 		{/each}
 	{/if}
 {:else}
