@@ -15,7 +15,7 @@
 	export let questionIndex: number = -1;
 	export let questionId: number;
 	export let parentAuthor: string = '';
-	export let parentAnswerId: number = '';
+	export let parentAnswerId: number = null;
 
 	function composeRecipientName() {
 		console.log(parentAuthor);
@@ -28,13 +28,17 @@
 		return res;
 	}
 
-	async function sendComment(qid: number, index: number) {
+	async function sendComment(qid: number, index: number, parent: number) {
+		let answer = { question: qid, content: unfinishedReply };
+		if (parent != null) {
+			answer = { question: qid, content: unfinishedReply, parent: parent };
+		}
 		let res = await (
 			await fetch('http://localhost:3000/answers', {
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ question: qid, content: unfinishedReply }),
+				body: JSON.stringify(answer),
 				method: 'PUT',
 				credentials: 'include'
 			})
@@ -50,9 +54,9 @@
 	const recipientName = composeRecipientName();
 </script>
 
-<div class="flex justify-center flex-1 bg-slate-700 bg-opacity-60 rounded-tl-xl rounded-tr-xl">
+<div class="flex justify-center flex-1">
 	<div class="flex w-4/6 flex-col gap-1 p-8">
-		<h2 class="text-lg mx-5 pl-16 font-bold bg-slate-700">Reply to {recipientName}</h2>
+		<!-- <h2 class="text-lg mx-5 pl-16 font-bold bg-slate-700">Reply to {recipientName}</h2> -->
 		<div class="flex flex-1 w-full">
 			<CartaEditor bind:value={unfinishedReply} mode="tabs" theme="github" {carta} />
 		</div>
@@ -61,7 +65,7 @@
 				class="btn btn-active hover:btn-secondary"
 				type="submit"
 				on:click|preventDefault={() => {
-					sendComment(questionId, questionIndex);
+					sendComment(questionId, questionIndex, parentAnswerId);
 				}}
 			>
 				Comment!
