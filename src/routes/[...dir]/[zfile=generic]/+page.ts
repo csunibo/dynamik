@@ -9,7 +9,7 @@ export const load: PageLoad = async ({ params }) => {
 	const isIOS = !import.meta.env.SSR && navigator.userAgent.match(/(iPad|iPhone|iPod)/g); // ! workaround
 	if (isIOS) {
 		// redirect to the original file
-		throw redirect(302, fileUrl);
+		redirect(302, fileUrl);
 	}
 	return {
 		url: fileUrl

@@ -8,7 +8,7 @@ export const load = (async ({ fetch, params }) => {
 		degree = DEGREES.find((c) => c.id === degreeParam);
 
 	if (degree == null) {
-		throw error(404, `Degree '${degreeParam}' not found`);
+		error(404, `Degree '${degreeParam}' not found`);
 	}
 
 	return {
