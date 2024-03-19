@@ -32,12 +32,8 @@
 	$: isDone = getDoneStatus(data.url);
 
 	function splitDate(date: string) {
-		let split_date = { day: '', month: '', year: '', time: '' };
-		split_date.day = date.split(' ')[0];
-		split_date.month = date.split(' ')[1];
-		split_date.year = date.split(' ')[2];
-		split_date.time = date.split(' ')[3];
-		return split_date;
+		const [day, month, year, time] = date.split(' ');
+		return { day, month, year, time };
 	}
 </script>
 
@@ -108,18 +104,13 @@
 		<span class="hidden md:block">
 			{#if $settings.isoDates}
 				{data.time ? formatDate($settings, data.time) : '-'}
-			{:else}
+			{:else if data.time}
+				{@const dateParts = splitDate(formatDate($settings, data.time))}
 				<div class="ml-4 grid grid_date grid-flow-col">
-					<div class="justify-self-end mr-2">
-						{data.time ? splitDate(formatDate($settings, data.time)).day : '-'}
-					</div>
-					<div>
-						{data.time ? splitDate(formatDate($settings, data.time)).month : '-'}
-					</div>
-					<div>
-						{data.time ? splitDate(formatDate($settings, data.time)).year : '-'}
-					</div>
-					<div class="ml-1">{data.time ? splitDate(formatDate($settings, data.time)).time : '-'}</div>
+					<div class="justify-self-end mr-2">{dateParts.day}</div>
+					<div>{dateParts.month}</div>
+					<div>{dateParts.year}</div>
+					<div class="ml-1">{dateParts.time}</div>
 				</div>
 			{/if}
 		</span>
