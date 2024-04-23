@@ -51,7 +51,7 @@
 		"svelte-check": "^3.6.9",
 		"svelte-local-storage-store": "^0.6.4",
 		"tailwindcss": "^3.4.3",
-		"tocbot": "^4.25.0",
+		"tocbot": "^4.27.4",
 		"tslib": "^2.6.2",
 		"typescript": "^5.4.5",
 		"vite": "^5.2.8"
