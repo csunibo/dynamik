@@ -17,7 +17,7 @@
 	 *
 	 * This function is especially created for '/libri/'.
 	 */
-	function checkBaseUrl() {
+	function isUsingExternalBase(data) {
 		if (data.url.startsWith('https://csunibo.github.io')) {
 			return false;
 		}
@@ -88,7 +88,7 @@
 				<span class="flex icon-[solar--folder-bold] text-xl mr-2" style="color: #FDE74C"></span>
 				<a
 					class="flex link link-hover sm:flex-wrap text-primary"
-					href={checkBaseUrl()
+					href={isUsingExternalBase(data)
 						? base + '/' + data.name + '?' + $page.url.searchParams
 						: data.url + '?' + $page.url.searchParams}
 				>
