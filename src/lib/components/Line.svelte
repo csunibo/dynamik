@@ -7,11 +7,23 @@
 
 	export let data: File | Directory;
 	export let customUrl: string | undefined = undefined;
-	$: base = $page.url.pathname.split('?')[0];
 
+	$: base = $page.url.pathname.split('?')[0];
 	$: isFile = 'mime' in data;
 	$: external = 'mime' in data ? data.mime === 'text/statik-link' : false;
 
+	/**
+	 * Check if the statik url for the data uses an external link to 'csunibo.github.io'
+	 * 
+	 * This function is especially created for '/libri/'.
+	 */
+	function checkBaseUrl() {
+		if (data.url.startsWith('https://csunibo.github.io')) {
+			return false;
+		}
+		return true;
+	}
+	
 	let isSpinning = false;
 	async function downloadFile() {
 		isSpinning = true;
@@ -76,7 +88,7 @@
 				<span class="flex icon-[solar--folder-bold] text-xl mr-2" style="color: #FDE74C"></span>
 				<a
 					class="flex link link-hover sm:flex-wrap text-primary"
-					href={customUrl ?? base + '/' + data.name + '?' + $page.url.searchParams}
+					href={checkBaseUrl() ? base + '/' + data.name + '?' + $page.url.searchParams : data.url + '?' + $page.url.searchParams}
 				>
 					{data.name}
 				</a>
