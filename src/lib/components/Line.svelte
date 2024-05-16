@@ -17,7 +17,7 @@
 	 *
 	 * This function is especially created for '/libri/'.
 	 */
-	function isUsingExternalBase(data) {
+	function isUsingExternalBase(data: File | Directory) {
 		if (data.url.startsWith('https://csunibo.github.io')) {
 			return false;
 		}
