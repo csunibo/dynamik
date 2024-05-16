@@ -6,7 +6,7 @@
 	import { getDoneStatus } from '$lib/todo-file';
 
 	export let data: File | Directory;
-	export let customUrl: string | undefined = undefined;
+	// export let customUrl: string | undefined = undefined;
 
 	$: base = $page.url.pathname.split('?')[0];
 	$: isFile = 'mime' in data;
