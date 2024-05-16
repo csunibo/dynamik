@@ -14,7 +14,7 @@
 
 	/**
 	 * Check if the statik url for the data uses an external link to 'csunibo.github.io'
-	 * 
+	 *
 	 * This function is especially created for '/libri/'.
 	 */
 	function checkBaseUrl() {
@@ -23,7 +23,7 @@
 		}
 		return true;
 	}
-	
+
 	let isSpinning = false;
 	async function downloadFile() {
 		isSpinning = true;
@@ -88,7 +88,9 @@
 				<span class="flex icon-[solar--folder-bold] text-xl mr-2" style="color: #FDE74C"></span>
 				<a
 					class="flex link link-hover sm:flex-wrap text-primary"
-					href={checkBaseUrl() ? base + '/' + data.name + '?' + $page.url.searchParams : data.url + '?' + $page.url.searchParams}
+					href={checkBaseUrl()
+						? base + '/' + data.name + '?' + $page.url.searchParams
+						: data.url + '?' + $page.url.searchParams}
 				>
 					{data.name}
 				</a>
