@@ -55,22 +55,22 @@
 </script>
 
 <div class="flex justify-center flex-1">
-	<div class="flex w-4/6 flex-col gap-1 p-8">
+	<div class="flex w-5/6 flex-col gap-1 p-4">
 		<!-- <h2 class="text-lg mx-5 pl-16 font-bold bg-slate-700">Reply to {recipientName}</h2> -->
 		<div class="flex flex-1 w-full">
 			<CartaEditor bind:value={unfinishedReply} mode="tabs" theme="github" {carta} />
 		</div>
-		<div class="flex flex-row-reverse justify-around">
+		<div class="flex flex-row-reverse justify-around mt-2">
 			<button
-				class="btn btn-active hover:btn-secondary"
+				class="btn btn-outline btn-base-100 hover:btn-secondary"
 				type="submit"
 				on:click|preventDefault={() => {
 					sendComment(questionId, questionIndex, parentAnswerId);
 				}}
 			>
-				Comment!
+				add answer
 			</button>
-			<button class="btn btn-active hover:btn-neutral" on:click|preventDefault={closeCallback()}
+			<button class="btn btn-outline hover:btn-neutral" on:click|preventDefault={closeCallback()}
 				>cancel</button
 			>
 		</div>

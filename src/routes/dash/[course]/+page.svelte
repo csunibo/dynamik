@@ -74,7 +74,10 @@
 								{/if}
 							</a>
 							{#if teaching.telegram}
-								<a href="https://t.me/{teaching.telegram}" class="text-center text-lg join-item border-l-2">👥</a>
+								<a
+									href="https://t.me/{teaching.telegram}"
+									class="text-center text-lg join-item border-l-2">👥</a
+								>
 							{/if}
 						</li>
 					{/each}

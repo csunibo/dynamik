@@ -3,6 +3,7 @@
 ## Developing
 
 Clone the repository, install dependencies and update git submodule:
+
 ```bash
 pnpm install
 git submodule init
