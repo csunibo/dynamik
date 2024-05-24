@@ -165,6 +165,7 @@
 	}
 
 	//function showReplyBox(question, index) {}
+	$: isExpanded = true;
 </script>
 
 <div class="max-w-6xl p-4 mx-auto">
@@ -267,8 +268,10 @@
 		{#if data?.questions.length === 0}
 			<div class="flex justify-center mb-2">
 				<div class="text-center">
-					<h1 class="text-5xl my-12">:(</h1>
-					<p class="text-xl my-8">Documento non pronto per scrivere le risposte</p>
+					<span class="text-5xl icon-[solar--sad-circle-broken]"></span>
+					<p class="text-xl mb-8">
+						Sorry, but the document isn't ready for responses yet. Please check back soon!
+					</p>
 
 					{#if user?.admin}
 						<button class="btn btn-ghost" on:click|preventDefault={() => (edit = true)}>
@@ -291,41 +294,49 @@
 		<canvas bind:this={pageCanvas} style="display: none" />
 		<canvas bind:this={fullCanvas} style="display: none" />
 		{#each data?.questions as question, index}
-			<div class="w-full p-16 justify-center">
+			<div class="w-fit m-16 justify-center">
 				<canvas data-id={index} bind:this={canvases[index]} />
-				<div class="collapse">
-					<input type="checkbox" />
-					<div class="collapse-title flex items-center justify-center font-large bg-secondary">
-						Show/hide answers
-					</div>
-					<div class="bg-secondary collapse-content flex flex-1 flex-col">
-						<div class="flex justify-center flex-1">
-							<Answers {user} question={question.id} bind:this={answers[index]} />
-						</div>
-					</div>
-				</div>
-
-				{#if user}
-					<div class="collapse mt-5">
-						<input type="checkbox" />
+				<div class="flex justify-around items-start {isExpanded ? 'flex-wrap':''}">
+					<div class="collapse collapse-arrow rounded-3xl {isExpanded?'mb-3':'w-fit'}">
+						<input type="checkbox" bind:checked={isExpanded} />
 						<div
-							class="collapse-title flex items-center justify-center font-large bg-primary text-black"
+							class="collapse-title flex items-center justify-start text-lg font-extrabold bg-secondary/70 text-bold rounded-3xl w-fit peer-checked:bg-secondary/20"
 						>
-							Show/hide answers
+							<span class="icon-[solar--chat-line-bold-duotone] text-3xl mr-3"></span>
+							Answers
 						</div>
-						<div class="bg-primary collapse-content flex flex-1 flex-col">
-							<ReplyBox
-								closeCallback={() => {
-									showReplyBoxFor = null;
-								}}
-								bind:unfinishedReply={values[index]}
-								questionIndex={index}
-								questionId={question.id}
-								{sendAnswerCallback}
-							/>
+						<div
+							class="bg-secondary/50 pt-4 collapse-content flex flex-1 flex-col peer-checked:bg-secondary/20 rounded-3xl"
+						>
+							<div class="flex justify-center flex-1">
+								<Answers {user} question={question.id} bind:this={answers[index]} />
+							</div>
 						</div>
 					</div>
-				{/if}
+
+					{#if user}
+						<div class="collapse rounded-3xl m-1 {isExpanded?'':'w-full'}">
+							<input type="checkbox" />
+							<div
+								class="collapse-title flex items-center justify-center text-lg font-extrabold bg-primary/70 text-bold rounded-3xl w-fit"
+							>
+								<span class="icon-[solar--add-circle-bold-duotone] text-3xl mr-2"></span>
+								Add your answer
+							</div>
+							<div class="bg-primary/60 collapse-content flex flex-1 flex-col rounded-3xl">
+								<ReplyBox
+									closeCallback={() => {
+										showReplyBoxFor = null;
+									}}
+									bind:unfinishedReply={values[index]}
+									questionIndex={index}
+									questionId={question.id}
+									{sendAnswerCallback}
+								/>
+							</div>
+						</div>
+					{/if}
+				</div>
 			</div>
 			<!-- 
 			{#if showReplyBoxFor == index}
@@ -348,5 +359,6 @@
 		width: var(--width);
 		height: var(--height);
 		padding: 1rem 0;
+		border-radius: 0.5rem;
 	}
 </style>

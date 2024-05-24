@@ -147,7 +147,11 @@
 
 {#if visible}
 	{#if data?.answers == null || data?.answers?.length == 0}
-		<div class="flex justify-center">No answer found</div>
+		<div
+			class="flex justify-center text-xl text-center font-semibold items-center mt-2 text-base-content/50"
+		>
+			There are no solutions yet.<br />Be the first to add one!
+		</div>
 	{:else}
 		<div class="flex w-full flex-col gap-2 items-center">
 			{#each data?.answers || [] as answer, index}
@@ -202,25 +206,23 @@
 						</div>
 
 						<div class="flex justify-end">
-							{#if user?.username == answer?.user || user?.admin}
-								<button
-									class="btn btn-error mr-5"
-									on:click|preventDefault={() => deleteAnswer(answer.id)}
-								>
-									Delete
-								</button>
-							{/if}
 							{#if user}
 								<button
-									class="btn btn-primary"
+									class="btn"
 									on:click|preventDefault={() => {
 										if (showReplyBoxFor != null) {
 											showReplyBoxFor = null;
 										} else {
 											showReplyBoxFor = index;
 										}
-									}}>Comment</button
+									}}><span class="icon-[solar--reply-outline] text-primary text-3xl"></span></button
 								>
+							{/if}
+							{#if user?.username == answer?.user || user?.admin}
+								<button class="btn ml-5" on:click|preventDefault={() => deleteAnswer(answer.id)}>
+									<span class="icon-[solar--trash-bin-minimalistic-bold] text-error text-3xl"
+									></span>
+								</button>
 							{/if}
 						</div>
 

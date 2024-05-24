@@ -155,6 +155,7 @@
 				</ul>
 			</div>
 		</div>
+<<<<<<< HEAD
 		<div class="navbar-end">
 			<div class="flex flex-1 justify-end">
 				<a
@@ -176,6 +177,15 @@
 					<kbd class="kbd-sm">Ctrl</kbd>+
 					<kbd class="kbd-sm">K</kbd>
 				</span>
+=======
+		<div class="flex flex-1 justify-end mr-2">
+			<button
+				class="lg:ml-2 p-1 bg-base-300 rounded-lg btn-ghost"
+				title="ctrl + k"
+				on:click|preventDefault={() => viewMobileFinder()}
+			>
+				🔍 <kbd class="kbd-sm hidden lg:inline-block">ctrl + k </kbd>
+>>>>>>> 919c126 (style: answers flexy)
 			</button>
 		</div>
 	</div>
@@ -225,6 +235,7 @@
 	</div>
 </main>
 
+<<<<<<< HEAD
 <FuzzySearch data={data.fuzzy} bind:this={fuzzy} />
 
 <style>
@@ -232,3 +243,33 @@
 		transform: scaleX(-1) scaleY(-1);
 	}
 </style>
+=======
+<input type="checkbox" id="my-modal" class="modal-toggle" checked={searchActive} />
+
+<label for="my-modal" class="modal cursor-pointer" role="search">
+	<label class="modal-box relative">
+		<input
+			class="input input-bordered input-primary w-full mb-2"
+			type="text"
+			placeholder="Search..."
+			bind:this={searchInput}
+			bind:value={searchQuery}
+		/>
+		{#if searchQuery != ''}
+			<ul class="menu p-2" bind:this={resultList}>
+				{#each fuseResult as result, i}
+					{@const href =
+						result.item.mime === 'text/statik-link'
+							? result.item.url
+							: base + result.item.url.split(GH_PAGES_BASE_URL)[1]}
+					<li>
+						<a {href} class:active={i === active}>
+							{result.item.name}
+						</a>
+					</li>
+				{/each}
+			</ul>
+		{/if}
+	</label>
+</label>
+>>>>>>> 919c126 (style: answers flexy)
