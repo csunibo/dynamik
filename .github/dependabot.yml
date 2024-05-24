@@ -4,3 +4,22 @@ updates:
     directory: '/'
     schedule:
       interval: 'weekly'
+    groups:
+      minor-patches:
+        patterns:
+          - '*'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+
+  - package-ecosystem: 'gitsubmodule'
+    directory: '/'
+    allow:
+      - dependency-name: 'src/config'
+    schedule:
+      interval: 'daily'

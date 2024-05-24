@@ -155,17 +155,17 @@
 	{:else}
 		<div class="flex w-full flex-col gap-2 items-center">
 			{#each data?.answers || [] as answer, index}
-				<div class="w-full flex flex-row rounded-lg bg-base-100 border-secondary shadow-md p-6">
+				<div class="w-full flex flex-row rounded-lg bg-base-200 border-secondary shadow-md p-4">
 					<!-- Voting Section -->
-					<div class="flex flex-col items-center p-2">
+					<div class="flex flex-col items-center m-1">
 						<!-- Upvote Button -->
 						<!-- {console.log("voto", answer?.vote)} -->
 						<button
-							class={'flex items-center justify-center w-10 h-10 rounded-full transition-colors hover:bg-success focus:outline-none ' +
-								(answer?.vote == 1 ? 'bg-success' : 'bg-neutral-content')}
+							class={'flex items-center justify-center w-10 h-10 rounded-full transition-colors hover:outline hover:outline-success focus:outline-none ' +
+								(answer?.vote == 1 ? 'text-success' : 'text-neutral-content')}
 							on:click={() => vote(index, answer.id, 1)}
 						>
-							<span class="icon-[material-symbols--arrow-upward] text-neutral"></span>
+							<span class="icon-[akar-icons--circle-chevron-up-fill] text-4xl"></span>
 						</button>
 
 						<!-- Vote Count -->
@@ -173,25 +173,20 @@
 
 						<!-- Downvote Button -->
 						<button
-							class={'flex items-center justify-center w-10 h-10 rounded-full transition-colors hover:bg-error focus:outline-none ' +
-								(answer?.vote == -1 ? 'bg-error' : 'bg-neutral-content')}
+							class={'flex items-center justify-center w-10 h-10 rounded-full transition-colors hover:outline hover:outline-error focus:outline-none ' +
+								(answer?.vote == -1 ? 'text-error' : 'text-neutral-content')}
 							on:click={() => vote(index, answer.id, -1)}
 						>
-							<span class="icon-[material-symbols--arrow-downward] text-neutral"></span>
+							<span class="icon-[akar-icons--circle-chevron-down-fill] text-4xl"></span>
 						</button>
 					</div>
 					<!-- Answer Content -->
 					<div class="flex flex-1 flex-col">
-						<div class="flex justify-end">
-							<div class="text-sm flex justify-center items-center">
-								<a href="https://github.com/{answer.user}">
-									{answer.user}
-								</a>
-							</div>
-
-							<a href="https://github.com/{answer.user}">
+						<div class="flex justify-end items-center w-full text-sm">
+							<a class="flex italic items-center" href="https://github.com/{answer.user}">
+								{answer.user}
 								<img
-									class="w-8 h-8 rounded-full ml-3"
+									class="w-8 h-8 rounded-full ml-2"
 									src={'https://github.com/' + answer.user + '.png'}
 									alt={answer.user + ' profile picture'}
 								/>
@@ -208,20 +203,24 @@
 						<div class="flex justify-end">
 							{#if user}
 								<button
-									class="btn"
+									class="btn btn-circle hover:btn-accent text-accent hover:text-base-content"
 									on:click|preventDefault={() => {
 										if (showReplyBoxFor != null) {
 											showReplyBoxFor = null;
 										} else {
 											showReplyBoxFor = index;
 										}
-									}}><span class="icon-[solar--reply-outline] text-primary text-3xl"></span></button
+									}}
 								>
+									<span class="icon-[ic--round-reply] text-3xl"></span>
+								</button>
 							{/if}
 							{#if user?.username == answer?.user || user?.admin}
-								<button class="btn ml-5" on:click|preventDefault={() => deleteAnswer(answer.id)}>
-									<span class="icon-[solar--trash-bin-minimalistic-bold] text-error text-3xl"
-									></span>
+								<button
+									class="btn btn-circle ml-3 hover:btn-error text-error hover:text-base-200"
+									on:click|preventDefault={() => deleteAnswer(answer.id)}
+								>
+									<span class="icon-[solar--trash-bin-minimalistic-bold] text-3xl"></span>
 								</button>
 							{/if}
 						</div>
@@ -243,26 +242,20 @@
 							</div>
 						{/if}
 
-						<div class="mt-12">
+						<div class="my-6">
 							{#each answer.replies || [] as reply, index}
-								<div class="divider"></div>
-								<div class="ml-8">
-									<div class="flex justify-end">
-										<div class="text-sm flex justify-center items-center">
-											<a href="https://github.com/{answer.user}">
-												{answer.user}
-											</a>
-										</div>
-
-										<a href="https://github.com/{answer.user}">
-											<img
-												class="w-8 h-8 rounded-full ml-3"
-												src={'https://github.com/' + answer.user + '.png'}
-												alt={answer.user + ' profile picture'}
-											/>
-										</a>
-									</div>
-									<div>{reply.content}</div>
+								<div class="divider divider-end divider-secondary mr-4">
+									<a class="flex italic items-center" href="https://github.com/{answer.user}">
+										{answer.user}
+										<img
+											class="w-8 h-8 rounded-full ml-2"
+											src={'https://github.com/' + answer.user + '.png'}
+											alt={answer.user + ' profile picture'}
+										/>
+									</a>
+								</div>
+								<div class="pl-4">
+									{reply.content}
 								</div>
 							{/each}
 						</div>

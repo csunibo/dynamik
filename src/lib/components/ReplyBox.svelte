@@ -62,16 +62,16 @@
 		</div>
 		<div class="flex flex-row-reverse justify-around mt-2">
 			<button
-				class="btn btn-outline btn-base-100 hover:btn-secondary"
+				class="btn btn-primary hover:btn-primary-dark"
 				type="submit"
 				on:click|preventDefault={() => {
 					sendComment(questionId, questionIndex, parentAnswerId);
 				}}
 			>
-				add answer
+				ADD YOUR ANSWER
 			</button>
-			<button class="btn btn-outline hover:btn-neutral" on:click|preventDefault={closeCallback()}
-				>cancel</button
+			<button class="btn btn-outline hover:btn-error" on:click|preventDefault={closeCallback()}
+				>CANCEL</button
 			>
 		</div>
 	</div>

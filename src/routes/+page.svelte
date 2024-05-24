@@ -1,32 +1,71 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import type { Course } from '$lib/teachings';
+	import type { Degree } from '$lib/teachings';
+	import Line from './Line.svelte';
+	import { setBannerClosed, shouldShowBanner } from '$lib/newsBanners';
+	import { browser } from '$app/environment';
 
 	export let data: {
-		courses: Course[];
+		degrees: Degree[];
 	};
 </script>
 
 <svelte:head>
-	<title>Dynamik | Homepage</title>
+	<title>Risorse CSUnibo</title>
+	<!-- OG meta graph -->
+	<meta name="title" property="og:title" content="Dashboard" />
+	<meta
+		name="description"
+		property="og:description"
+		content="Risorse per gli studenti dei corsi di laurea del dipartimento di informatica (DISI) dell'Università di Bologna"
+	/>
 </svelte:head>
+
+{#if $shouldShowBanner && browser}
+	<div class="bg-info bg-opacity-50 text-content p-4">
+		<div class="flex items-center justify-between">
+			<div><!-- justifier --></div>
+			<p class="font-semibold">
+				<i><b>🔥Nuova feature: ToDo List🔥</b></i>
+				All'interno di tutte le pagine con file cliccando sopra l'icona
+				<span class="inline-flex items-baseline icon-[solar--file-bold-duotone]"></span>
+				potrai segnarlo e salvarlo come "fatto"
+				<span class="inline-flex items-baseline text-success icon-[solar--file-check-bold-duotone]"
+				></span>, cancella i tuoi "ToDo" nella pagina corrente con
+				<span class="inline-flex items-baseline text-warning icon-[solar--broom-bold-duotone]"
+				></span>
+			</p>
+			<button
+				class="text-content hover:text-error focus:outline-none"
+				on:click={() => setBannerClosed()}
+			>
+				<span class="text-xl icon-[akar-icons--x-small]"></span>
+			</button>
+		</div>
+	</div>
+{/if}
 
 <div class="flex justify-center">
 	<div class="container max-w-5xl">
-		<h1 class="text-4xl m-10 font-semibold text-center">Benvenuto su Dynamik! 👋</h1>
-
+		<div class="m-10">
+			<h1 class="text-4xl font-semibold text-center">Risorse</h1>
+			<h3 class="text-2 font-semibold text-center">
+				Raccolte di materiali per lo studio da <span class="underline"
+					><a href="https://csunibo.students.cs.unibo.it">CSUnibo</a></span
+				>
+			</h3>
+		</div>
 		<ul class="menu p-2 text-lg">
-			{#each data.courses as course}
-				<li>
-					<a class="py-10 justify-center" href="{base}/dash/{course.id}">
-						{course.icon}
-						{course.name}
-						{course.icon}
-					</a>
-				</li>
+			{#each data.degrees as degree}
+				{#if degree.years}
+					<Line name={degree.name} icon={degree.icon} href="{base}/dash/{degree.id}" />
+				{:else}
+					<Line name={degree.name} icon={degree.icon} href="{base}/{degree.id}" />
+				{/if}
 			{/each}
 
-			<li><a class="py-10 justify-center" href="{base}/settings">🔧 Settings 🔧</a></li>
+			<Line name="Impostazioni" icon="🔧" href="{base}/settings" />
+			<Line name="Stato" icon="📊" href="{base}/build" />
 		</ul>
 	</div>
 </div>

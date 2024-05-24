@@ -9,7 +9,19 @@
 		// Focus the iframe
 		iframe.contentWindow?.focus();
 	});
+
+	$: title = getTitle(data.url);
+
+	function getTitle(url: string) {
+		const part = url.split('/');
+		return part[part.length - 1].split('?')[0];
+	}
 </script>
+
+<svelte:head>
+	<title>{title}</title>
+	<meta property="og:title" content={title} />
+</svelte:head>
 
 <iframe bind:this={iframe} title="Embedded resource" src={data.url} />
 

@@ -1,12 +1,22 @@
 <script lang="ts">
 	import { derived } from 'svelte/store';
-	import settings, { themes as allThemes } from '$lib/settings';
+	import settings, { themes as allThemes, DEFAULT_COURSE_KEY } from '$lib/settings';
+	import { DEGREES } from '$lib/teachings';
 
 	let themes = derived(settings, ({ theme }) => allThemes.filter((t) => t != theme));
 </script>
 
 <main class="md:container md:m-auto p-4">
-	<h1 class="text-3xl font-bold my-8 text-primary">Settings</h1>
+	<nav class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
+		<div class="navbar-start">
+			<h1 class="text-xl font-semibold text-base-content">Impostazioni</h1>
+		</div>
+		<div class="navbar-end flex items-center">
+			<a class="btn btn-square btn-ghost" title="Indietro" href="/">
+				<span class="text-primary icon-[akar-icons--arrow-back-thick-fill]"></span>
+			</a>
+		</div>
+	</nav>
 
 	<div class="form-control my-4">
 		<label class="label">
@@ -34,6 +44,18 @@
 				<a href="https://en.wikipedia.org/wiki/ISO_8601" class="link">ISO8601</a>
 			</span>
 			<input type="checkbox" class="toggle toggle-primary" bind:checked={$settings.isoDates} />
+		</label>
+	</div>
+
+	<div class="form-control my-4">
+		<label class="label">
+			<span class="label-text">Pick your favourite course to go straight to its dashboard</span>
+			<select class="select select-primary w-min" bind:value={$settings.defaultCourse}>
+				<option value={DEFAULT_COURSE_KEY}>- No preference - </option>
+				{#each DEGREES as course}
+					<option value={course.id}>{course.name}</option>
+				{/each}
+			</select>
 		</label>
 	</div>
 </main>

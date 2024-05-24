@@ -1,10 +1,10 @@
 import type { ParamMatcher } from '@sveltejs/kit';
-import { BUNDLED_LANGUAGES } from 'shiki';
+import { bundledLanguagesInfo } from 'shiki/langs';
 
 const IGNORED_LANGUAGES = ['md', 'html'];
 
 const EXTRA_BUNDLED_LANGUAGES = [
-	...BUNDLED_LANGUAGES.map((bundle) => [bundle.id, ...(bundle.aliases || [])]).flat(),
+	...bundledLanguagesInfo.map((info) => [info.id, ...(info.aliases || [])]).flat(),
 	'txt',
 	'c++',
 	'tsx',

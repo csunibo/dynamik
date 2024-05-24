@@ -15,10 +15,11 @@
 	import { page } from '$app/stores';
 	import { base } from '$app/paths';
 
+	import type { Degree, Year } from '$lib/teachings';
+	import { EDIT_URLS } from '$lib/const';
+
 	export let data: PageData;
 	const scale = 3;
-
-	// console.log(data);
 
 	let user = undefined;
 	let edit: boolean = false;
@@ -39,12 +40,6 @@
 
 	let parentPath = '/';
 
-	const getPartHref = (part: string) =>
-		$page.url.pathname
-			.split('/')
-			.slice(0, $page.url.pathname.split('/').indexOf(part) + 1)
-			.join('/');
-
 	onDestroy(() => {
 		pageUnsubscribe();
 	});
@@ -55,8 +50,6 @@
 		path.pop();
 		parentPath = base + '/' + path.join('/');
 	});
-
-	$: urlParts = $page.url.pathname.split('/').slice(1);
 
 	async function init() {
 		await fetchUser();
@@ -166,100 +159,181 @@
 
 	//function showReplyBox(question, index) {}
 	$: isExpanded = true;
+
+	// -- breadcrumbs --
+	let editUrls = EDIT_URLS($page.url.pathname);
+	let breadcrumbMobile = true;
+	function mobileBreadcrumb() {
+		breadcrumbMobile = !breadcrumbMobile;
+	}
+
+	$: urlParts = $page.url.pathname
+		.split('/')
+		.slice(1)
+		.filter((p) => p !== ''); // otherwise we get an empty string at the end
+
+	const getPartHref = (part: string) =>
+		$page.url.pathname
+			.split('/')
+			.slice(0, $page.url.pathname.split('/').indexOf(part) + 1)
+			.join('/');
+
+	function kebabToTitle(str: string) {
+		return str
+			.split('-')
+			.map((s) => s[0].toUpperCase() + s.slice(1))
+			.join(' ');
+	}
+
+	function titleToAcronym(str: string) {
+		return str
+			.split(' ')
+			.map((s) => s[0].toUpperCase())
+			.join('');
+	}
+
+	function genTitle(parts: string[]) {
+		if (parts.length === 0) return 'Risorse';
+		const title = kebabToTitle(parts[0]);
+
+		if (parts.length === 1) {
+			return title;
+		} else if (parts.length === 2) {
+			return titleToAcronym(title) + ' > ' + kebabToTitle(parts[1]);
+		} else {
+			return titleToAcronym(title) + ' >...> ' + kebabToTitle(parts[parts.length - 1]);
+		}
+	}
+
+	$: title = genTitle(urlParts);
+
+	// Computes either all mandatory teachings or elective teachings for a year
+	function getTeachings(y: Year, electives: boolean): string[] | undefined {
+		if (!y) return undefined;
+		const studyDiagram = y.teachings;
+		if (!studyDiagram) return undefined;
+		return electives ? studyDiagram.electives : studyDiagram.mandatory;
+	}
+
+	// Checks if a teaching is part of a certain degree
+	function isInDegree(teachingName: string, degree: Degree, elective: boolean): boolean {
+		const years = degree.years;
+		if (!years) return false;
+		return !!years.find((y) => getTeachings(y, elective)?.includes(teachingName));
+	}
+
+	// Skims through degrees looking for a given teaching
+	function skimDegrees(teachingName: string, electives: boolean): string | undefined {
+		const degree = data.degrees.find((d) => isInDegree(teachingName, d, electives));
+		return degree ? degree.id : undefined;
+	}
+
+	// Picks a containing degree for this teaching
+	function guessDegree(teachingName: string): string | null {
+		// Plan A: "from" url parameter
+		if (data.from) return data.from;
+		// Plan B: "degree" field in Teachings
+		const teaching = data.teachings.get(teachingName);
+		if (teaching?.degree) return teaching.degree;
+		// Plan C: any degree featuring this teaching as mandatory
+		const mandatoryDegree = skimDegrees(teachingName, false);
+		if (mandatoryDegree) return mandatoryDegree;
+		// Plan D: any degree featuring this teaching as an elective
+		const electiveDegree = skimDegrees(teachingName, true);
+		if (electiveDegree) return electiveDegree;
+		// Plan E: give up
+		return null;
+	}
+
+	// $: degree = guessDegree(urlParts[0]);
 </script>
 
-<div class="max-w-6xl p-4 mx-auto">
-	<div class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
-		<div class="flex justify-between w-full">
-			<div class="lg:text-lg breadcrumbs text-sm">
+<main class="max-w-6xl min-w-fit p-4 mx-auto">
+	<div class="navbar flex bg-base-200 rounded-box shadow-sm px-5 mb-5">
+		<div class="sm:hidden flex justify-start items-center">
+			<button class="sm:hidden flex btn btn-ghost btn-sm" on:click={mobileBreadcrumb}>
+				<span
+					class="sm:hidden flex text-2xl items-center text-accent icon-[solar--folder-path-connect-bold-duotone]"
+				>
+				</span>
+				<p class="text-accent" class:hidden={!breadcrumbMobile}>{title}</p>
+			</button>
+		</div>
+		<div class="navbar min-h-0 p-0 justify-start items-center">
+			<div
+				class="breadcrumbs sm:flex lg:text-lg sm:items-start text-sm sm:flex-wrap font-semibold"
+				class:hidden={breadcrumbMobile}
+			>
 				<ul>
-					<li>🏠<a class="ml-1" href="/">Dynamik</a></li>
+					<li>
+						<a class="ml-1 flex items-center" href="/">
+							<span class="text-xl icon-[akar-icons--home-alt1]"></span>
+						</a>
+					</li>
+					<!-- {#if degree}
+						<li>
+							<a class="flex items-center" href={'/dash/' + degree}>
+								<span class="text-xl icon-[ic--round-school]"></span>
+							</a>
+						</li>
+					{/if} -->
 					{#each urlParts as part}
-						{@const href = getPartHref(part)}
-						<li><a {href}>{part}</a></li>
+						{@const href = getPartHref(part) + '?' + $page.url.searchParams}
+						<li><a {href} class="flex flex-wrap whitespace-normal">{part}</a></li>
 					{/each}
 				</ul>
 			</div>
-			<div>
-				{#if user === undefined}
-					<button
-						class="btn btn-ghost"
-						on:click|preventDefault={() =>
-							(window.location.href =
-								'http://localhost:3000/login?redirect_uri=http://localhost:5173' +
-								data.url.slice(25))}
-					>
-						Login with <svg
-							xmlns="http://www.w3.org/2000/svg"
-							x="0px"
-							y="0px"
-							width="32"
-							height="32"
-							viewBox="0,0,256,256"
-						>
-							<g
-								fill-opacity="0"
-								fill="#dddddd"
-								fill-rule="nonzero"
-								stroke="none"
-								stroke-width="1"
-								stroke-linecap="butt"
-								stroke-linejoin="miter"
-								stroke-miterlimit="10"
-								stroke-dasharray=""
-								stroke-dashoffset="0"
-								font-family="none"
-								font-weight="none"
-								font-size="none"
-								text-anchor="none"
-								style="mix-blend-mode: normal"
-								><path d="M0,256v-256h256v256z" id="bgRectangle"></path></g
-							><g
-								fill="#ffffff"
-								fill-rule="nonzero"
-								stroke="none"
-								stroke-width="1"
-								stroke-linecap="butt"
-								stroke-linejoin="miter"
-								stroke-miterlimit="10"
-								stroke-dasharray=""
-								stroke-dashoffset="0"
-								font-family="none"
-								font-weight="none"
-								font-size="none"
-								text-anchor="none"
-								style="mix-blend-mode: normal"
-								><g transform="scale(8.53333,8.53333)"
-									><path
-										d="M15,3c-6.627,0 -12,5.373 -12,12c0,5.623 3.872,10.328 9.092,11.63c-0.056,-0.162 -0.092,-0.35 -0.092,-0.583v-2.051c-0.487,0 -1.303,0 -1.508,0c-0.821,0 -1.551,-0.353 -1.905,-1.009c-0.393,-0.729 -0.461,-1.844 -1.435,-2.526c-0.289,-0.227 -0.069,-0.486 0.264,-0.451c0.615,0.174 1.125,0.596 1.605,1.222c0.478,0.627 0.703,0.769 1.596,0.769c0.433,0 1.081,-0.025 1.691,-0.121c0.328,-0.833 0.895,-1.6 1.588,-1.962c-3.996,-0.411 -5.903,-2.399 -5.903,-5.098c0,-1.162 0.495,-2.286 1.336,-3.233c-0.276,-0.94 -0.623,-2.857 0.106,-3.587c1.798,0 2.885,1.166 3.146,1.481c0.896,-0.307 1.88,-0.481 2.914,-0.481c1.036,0 2.024,0.174 2.922,0.483c0.258,-0.313 1.346,-1.483 3.148,-1.483c0.732,0.731 0.381,2.656 0.102,3.594c0.836,0.945 1.328,2.066 1.328,3.226c0,2.697 -1.904,4.684 -5.894,5.097c1.098,0.573 1.899,2.183 1.899,3.396v2.734c0,0.104 -0.023,0.179 -0.035,0.268c4.676,-1.639 8.035,-6.079 8.035,-11.315c0,-6.627 -5.373,-12 -12,-12z"
-									></path></g
-								></g
-							>
-						</svg>
-					</button>
-				{:else}
-					<details class="dropdown">
-						<summary class="btn btn-circle p-2"
-							><img src={user.avatarUrl} class="w-12 rounded-full" /></summary
-						>
-						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-300 rounded-box">
-							<li>
-								<a
-									on:click|preventDefault={() => {
-										window.location.href =
-											'http://localhost:3000/logout?redirect_uri=http://localhost:5173' +
-											data.url.slice(25);
-										user = undefined;
-									}}>Logout</a
-								>
-							</li>
-						</ul>
-					</details>
-				{/if}
+		</div>
+		<div class="navbar-end">
+			<div class="flex flex-1 justify-end">
+				<a
+					class="sm:ml-2 p-1 flex items-center rounded-lg btn-ghost flex-shrink-0 w-8"
+					href={editUrls.github_repo}
+				>
+					<span class="text-2xl icon-[akar-icons--github-fill]"></span>
+				</a>
 			</div>
 		</div>
+		<div class="flex flex-1 justify-end mr-2">
+			{#if user === undefined}
+				<button
+					class="btn btn-ghost text-accent hover:bg-accent/20 hover:text-base-content"
+					on:click|preventDefault={() =>
+						(window.location.href =
+							'http://localhost:3000/login?redirect_uri=http://localhost:5173' +
+							data.url.slice(25))}
+				>
+					Login with
+					<span class="text-2xl icon-[akar-icons--github-fill]"></span>
+				</button>
+			{:else}
+				<details class="dropdown">
+					<summary class="btn btn-circle p-2"
+						><img src={user.avatarUrl} class="w-12 rounded-full" /></summary
+					>
+					<ul class="shadow menu dropdown-content">
+						<li>
+							<button
+								class="btn btn-neutral hover:bg-accent/80"
+								on:click|preventDefault={() => {
+									window.location.href =
+										'http://localhost:3000/logout?redirect_uri=http://localhost:5173' +
+										data.url.slice(25);
+									user = undefined;
+								}}
+							>
+								<div class="inline-flex items-center">
+									<span class="icon-[akar-icons--sign-out] mr-2 text-lg"></span>
+									<p class="">LogOut</p>
+								</div>
+							</button>
+						</li>
+					</ul>
+				</details>
+			{/if}
+		</div>
 	</div>
-</div>
+</main>
 
 {#if data.isTest}
 	{#if edit}
@@ -296,8 +370,8 @@
 		{#each data?.questions as question, index}
 			<div class="w-fit m-16 justify-center">
 				<canvas data-id={index} bind:this={canvases[index]} />
-				<div class="flex justify-around items-start {isExpanded ? 'flex-wrap':''}">
-					<div class="collapse collapse-arrow rounded-3xl {isExpanded?'mb-3':'w-fit'}">
+				<div class="flex justify-around items-start {isExpanded ? 'flex-wrap' : ''}">
+					<div class="collapse collapse-arrow rounded-3xl {isExpanded ? 'mb-3' : 'w-fit'}">
 						<input type="checkbox" bind:checked={isExpanded} />
 						<div
 							class="collapse-title flex items-center justify-start text-lg font-extrabold bg-secondary/70 text-bold rounded-3xl w-fit peer-checked:bg-secondary/20"
@@ -315,7 +389,7 @@
 					</div>
 
 					{#if user}
-						<div class="collapse rounded-3xl m-1 {isExpanded?'':'w-full'}">
+						<div class="collapse rounded-3xl m-1 {isExpanded ? '' : 'w-full'}">
 							<input type="checkbox" />
 							<div
 								class="collapse-title flex items-center justify-center text-lg font-extrabold bg-primary/70 text-bold rounded-3xl w-fit"
