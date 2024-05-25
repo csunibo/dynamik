@@ -257,6 +257,44 @@
 					</details>
 				{/if}
 			</div>
+			<div class="flex flex-1 justify-end">
+				{#if user === undefined}
+					<button
+						class="btn btn-outline btn-sm text-accent hover:btn-ghost hover:btn-accent hover:text-base-content"
+						on:click|preventDefault={() =>
+							(window.location.href =
+								'http://localhost:3000/login?redirect_uri=http://localhost:5173' +
+								data.url.slice(25))}
+					>
+						Login with
+						<span class="text-2xl icon-[akar-icons--github-fill]"></span>
+					</button>
+				{:else}
+					<details class="dropdown">
+						<summary class="btn btn-circle p-2"
+							><img src={user.avatarUrl} class="w-12 rounded-full" /></summary
+						>
+						<ul class="shadow menu dropdown-content">
+							<li>
+								<button
+									class="btn btn-neutral hover:bg-accent/80"
+									on:click|preventDefault={() => {
+										window.location.href =
+											'http://localhost:3000/logout?redirect_uri=http://localhost:5173' +
+											data.url.slice(25);
+										user = undefined;
+									}}
+								>
+									<div class="inline-flex items-center">
+										<span class="icon-[akar-icons--sign-out] mr-2 text-lg"></span>
+										<p class="">LogOut</p>
+									</div>
+								</button>
+							</li>
+						</ul>
+					</details>
+				{/if}
+			</div>
 		</div>
 	</div>
 </div>

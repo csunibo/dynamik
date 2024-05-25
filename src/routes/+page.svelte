@@ -22,10 +22,12 @@
 </svelte:head>
 
 {#if $shouldShowBanner && browser}
+<!-- FEATURE BANNER -->
 	<div class="bg-info bg-opacity-50 text-content p-4">
 		<div class="flex items-center justify-between">
 			<div><!-- justifier --></div>
 			<p class="font-semibold">
+				<!-- TODO update banner for polleg -->
 				<i><b>🔥Nuova feature: ToDo List🔥</b></i>
 				All'interno di tutte le pagine con file cliccando sopra l'icona
 				<span class="inline-flex items-baseline icon-[solar--file-bold-duotone]"></span>
