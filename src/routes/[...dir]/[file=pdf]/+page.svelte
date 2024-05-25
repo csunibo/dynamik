@@ -18,9 +18,7 @@
 	export let data: PageData;
 	const scale = 3;
 
-	// console.log(data);
-
-	let user = undefined;
+	let user: { avatarUrl: any; admin: any } | undefined = undefined;
 	let edit: boolean = false;
 
 	let showReplyBoxFor: number = null;
@@ -143,7 +141,7 @@
 		await init();
 	}
 
-	function sendAnswerCallback(res, index) {
+	function sendAnswerCallback(res: { id: any }, index: string | number) {
 		if (res.id) {
 			toast.push('Success!', {
 				theme: {
@@ -166,6 +164,57 @@
 
 	//function showReplyBox(question, index) {}
 	$: isExpanded = true;
+
+	// -- breadcrumbs --
+	let editUrls = EDIT_URLS($page.url.pathname);
+	let breadcrumbMobile = true;
+	function mobileBreadcrumb() {
+		breadcrumbMobile = !breadcrumbMobile;
+	}
+
+	$: urlParts = $page.url.pathname
+		.split('/')
+		.slice(1)
+		.filter((p) => p !== ''); // otherwise we get an empty string at the end
+
+	const getPartHref = (part: string) =>
+		$page.url.pathname
+			.split('/')
+			.slice(0, $page.url.pathname.split('/').indexOf(part) + 1)
+			.join('/');
+
+	function kebabToTitle(str: string) {
+		return str
+			.split('-')
+			.map((s) => s[0].toUpperCase() + s.slice(1))
+			.join(' ');
+	}
+
+	function titleToAcronym(str: string) {
+		return str
+			.split(' ')
+			.map((s) => s[0].toUpperCase())
+			.join('');
+	}
+
+	function genTitle(parts: string[]) {
+		if (parts.length === 0) return 'Risorse';
+		const title = kebabToTitle(parts[0]);
+
+		if (parts.length === 1) {
+			return title;
+		} else if (parts.length === 2) {
+			return titleToAcronym(title) + ' > ' + kebabToTitle(parts[1]);
+		} else {
+			return titleToAcronym(title) + ' >...> ' + kebabToTitle(parts[parts.length - 1]);
+		}
+	}
+
+	$: title = genTitle(urlParts);
+	let isOpen = false;
+	const gh_mobile_dropdown = () => {
+		isOpen = !isOpen;
+	};
 </script>
 
 <div class="max-w-6xl p-4 mx-auto">
@@ -271,9 +320,14 @@
 					</button>
 				{:else}
 					<details class="dropdown">
-						<summary class="btn btn-circle p-2"
-							><img src={user.avatarUrl} class="w-12 rounded-full" /></summary
-						>
+						<summary class="btn btn-circle p-2">
+							<img
+								src={user.avatarUrl}
+								title="GitHub user avatar"
+								alt="GitHub user avatar"
+								class="w-12 rounded-full"
+							/>
+						</summary>
 						<ul class="shadow menu dropdown-content">
 							<li>
 								<button
@@ -322,8 +376,19 @@
 				</div>
 			</div>
 			<div class="flex justify-center mb-5">
-				<object data={data.url} type="application/pdf" width="90%" height="900vh">
-					<iframe src={data.url} width="90%" height="900vh">
+				<object
+					data={data.url}
+					title="PDF Document"
+					type="application/pdf"
+					width="90%"
+					height="900vh"
+				>
+					<iframe
+						src={data.url}
+						title="PDF not supported on this browser"
+						width="90%"
+						height="900vh"
+					>
 						<p>This browser does not support PDF!</p>
 					</iframe>
 				</object>
@@ -338,7 +403,7 @@
 					<div class="collapse collapse-arrow rounded-3xl {isExpanded?'mb-3':'w-fit'}">
 						<input type="checkbox" bind:checked={isExpanded} />
 						<div
-							class="collapse-title flex items-center justify-start text-lg font-extrabold bg-secondary/70 text-bold rounded-3xl w-fit peer-checked:bg-secondary/20"
+							class="collapse-title flex items-center justify-start text-lg font-extrabold bg-secondary/70 text-bold rounded-3xl w-fit peer-checked:bg-secondary/20 sm:text-xl"
 						>
 							<span class="icon-[solar--chat-line-bold-duotone] text-3xl mr-3"></span>
 							Answers
@@ -384,8 +449,8 @@
 	{/if}
 {:else}
 	<div class="flex justify-center mb-5">
-		<object data={data.url} type="application/pdf" width="90%" height="900vh">
-			<iframe src={data.url} width="90%" height="900vh">
+		<object data={data.url} title="PDF Document" type="application/pdf" width="90%" height="900vh">
+			<iframe src={data.url} title="PDF not supported on your browser" width="90%" height="900vh">
 				<p>This browser does not support PDF!</p>
 			</iframe>
 		</object>
@@ -396,7 +461,6 @@
 	canvas {
 		width: var(--width);
 		height: var(--height);
-		padding: 1rem 0;
 		border-radius: 0.5rem;
 	}
 </style>
