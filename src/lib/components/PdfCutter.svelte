@@ -303,16 +303,13 @@
 <!-- <canvas bind:this={canvasMerged} id="canvasMerged"></canvas> -->
 
 <div class="fab">
-	<button
-		on:click={show}
-		type="button"
-		class="btn bg-black-500 hover:bg-black-700 text-white rounded border-0">cancel</button
-	>
+	<button on:click={show} type="button" class="btn btn-neutral rounded-lg border-0">CANCEL</button>
 	<button
 		on:click={exportData}
 		type="button"
 		id="exportBtn"
-		class="btn bg-purple-500 hover:bg-purple-700 text-white rounded border-0">export</button
+		class="btn btn-primary hover:glass hover:bg-primary rounded-lg border-0"
+		>EXPORT<span class="icon-[ic--round-send]"></span></button
 	>
 </div>
 

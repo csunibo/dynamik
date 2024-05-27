@@ -17,7 +17,7 @@
 	let spinner: HTMLSpanElement;
 	let visible: boolean = false;
 
-	let showReplyBoxFor: number = null;
+	$: showReplyBoxFor = null;
 	let unfinishedReplies: string[] = [];
 
 	export const addComment = (answerData: any) => {

@@ -15,6 +15,9 @@
 	import { page } from '$app/stores';
 	import { base } from '$app/paths';
 
+	import type { Degree, Year } from '$lib/teachings';
+	import { EDIT_URLS } from '$lib/const';
+
 	export let data: PageData;
 	const scale = 3;
 
@@ -37,12 +40,6 @@
 
 	let parentPath = '/';
 
-	const getPartHref = (part: string) =>
-		$page.url.pathname
-			.split('/')
-			.slice(0, $page.url.pathname.split('/').indexOf(part) + 1)
-			.join('/');
-
 	onDestroy(() => {
 		pageUnsubscribe();
 	});
@@ -53,8 +50,6 @@
 		path.pop();
 		parentPath = base + '/' + path.join('/');
 	});
-
-	$: urlParts = $page.url.pathname.split('/').slice(1);
 
 	async function init() {
 		await fetchUser();
@@ -163,7 +158,11 @@
 	}
 
 	//function showReplyBox(question, index) {}
-	$: isExpanded = true;
+	$: isExpanded = [];
+	function toggleExpanded(index: number) {
+		if (isExpanded[index] == undefined) isExpanded[index] = true;
+		else isExpanded[index] = !isExpanded[index];
+	}
 
 	// -- breadcrumbs --
 	let editUrls = EDIT_URLS($page.url.pathname);
@@ -217,96 +216,113 @@
 	};
 </script>
 
-<div class="max-w-6xl p-4 mx-auto">
-	<div class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
-		<div class="flex justify-between w-full">
-			<div class="lg:text-lg breadcrumbs text-sm">
+<main class="max-w-6xl min-w-fit p-4 mx-auto">
+	<div class="navbar flex bg-base-200 rounded-box shadow-sm px-5 mb-5">
+		<div class="sm:hidden flex justify-start items-center">
+			<button class="sm:hidden flex btn btn-ghost btn-sm" on:click={mobileBreadcrumb}>
+				<span
+					class="sm:hidden flex text-2xl items-center text-accent icon-[solar--folder-path-connect-bold-duotone]"
+				>
+				</span>
+				<p class="text-accent" class:hidden={!breadcrumbMobile}>{title}</p>
+			</button>
+		</div>
+		<div class="navbar min-h-0 p-0 justify-start items-center">
+			<div
+				class="breadcrumbs sm:flex lg:text-lg sm:items-start text-sm sm:flex-wrap font-semibold"
+				class:hidden={breadcrumbMobile}
+			>
 				<ul>
-					<li>🏠<a class="ml-1" href="/">Dynamik</a></li>
+					<li>
+						<a class="ml-1 flex items-center" href="/">
+							<span class="text-xl icon-[akar-icons--home-alt1]"></span>
+						</a>
+					</li>
+					<!-- {#if degree}
+						<li>
+							<a class="flex items-center" href={'/dash/' + degree}>
+								<span class="text-xl icon-[ic--round-school]"></span>
+							</a>
+						</li>
+					{/if} -->
 					{#each urlParts as part}
-						{@const href = getPartHref(part)}
-						<li><a {href}>{part}</a></li>
+						{@const href = getPartHref(part) + '?' + $page.url.searchParams}
+						<li><a {href} class="flex flex-wrap whitespace-normal">{part}</a></li>
 					{/each}
 				</ul>
 			</div>
-			<div>
-				{#if user === undefined}
-					<button
-						class="btn btn-ghost"
-						on:click|preventDefault={() =>
-							(window.location.href =
-								'http://localhost:3000/login?redirect_uri=http://localhost:5173' +
-								data.url.slice(25))}
+		</div>
+		<div class="navbar-end">
+			<details class="dropdown dropdown-end sm:hidden" on:toggle={gh_mobile_dropdown}>
+				<summary class="flex flex-1 justify-end">
+					<div
+						class={`btn btn-sm hover:text-primary ${isOpen ? 'bg-primary text-base-100' : ' focus:text-primary'} p-0.5`}
 					>
-						Login with <svg
-							xmlns="http://www.w3.org/2000/svg"
-							x="0px"
-							y="0px"
-							width="32"
-							height="32"
-							viewBox="0,0,256,256"
-						>
-							<g
-								fill-opacity="0"
-								fill="#dddddd"
-								fill-rule="nonzero"
-								stroke="none"
-								stroke-width="1"
-								stroke-linecap="butt"
-								stroke-linejoin="miter"
-								stroke-miterlimit="10"
-								stroke-dasharray=""
-								stroke-dashoffset="0"
-								font-family="none"
-								font-weight="none"
-								font-size="none"
-								text-anchor="none"
-								style="mix-blend-mode: normal"
-								><path d="M0,256v-256h256v256z" id="bgRectangle"></path></g
-							><g
-								fill="#ffffff"
-								fill-rule="nonzero"
-								stroke="none"
-								stroke-width="1"
-								stroke-linecap="butt"
-								stroke-linejoin="miter"
-								stroke-miterlimit="10"
-								stroke-dasharray=""
-								stroke-dashoffset="0"
-								font-family="none"
-								font-weight="none"
-								font-size="none"
-								text-anchor="none"
-								style="mix-blend-mode: normal"
-								><g transform="scale(8.53333,8.53333)"
-									><path
-										d="M15,3c-6.627,0 -12,5.373 -12,12c0,5.623 3.872,10.328 9.092,11.63c-0.056,-0.162 -0.092,-0.35 -0.092,-0.583v-2.051c-0.487,0 -1.303,0 -1.508,0c-0.821,0 -1.551,-0.353 -1.905,-1.009c-0.393,-0.729 -0.461,-1.844 -1.435,-2.526c-0.289,-0.227 -0.069,-0.486 0.264,-0.451c0.615,0.174 1.125,0.596 1.605,1.222c0.478,0.627 0.703,0.769 1.596,0.769c0.433,0 1.081,-0.025 1.691,-0.121c0.328,-0.833 0.895,-1.6 1.588,-1.962c-3.996,-0.411 -5.903,-2.399 -5.903,-5.098c0,-1.162 0.495,-2.286 1.336,-3.233c-0.276,-0.94 -0.623,-2.857 0.106,-3.587c1.798,0 2.885,1.166 3.146,1.481c0.896,-0.307 1.88,-0.481 2.914,-0.481c1.036,0 2.024,0.174 2.922,0.483c0.258,-0.313 1.346,-1.483 3.148,-1.483c0.732,0.731 0.381,2.656 0.102,3.594c0.836,0.945 1.328,2.066 1.328,3.226c0,2.697 -1.904,4.684 -5.894,5.097c1.098,0.573 1.899,2.183 1.899,3.396v2.734c0,0.104 -0.023,0.179 -0.035,0.268c4.676,-1.639 8.035,-6.079 8.035,-11.315c0,-6.627 -5.373,-12 -12,-12z"
-									></path></g
-								></g
+						<span class="text-xl icon-[akar-icons--more-vertical]"></span>
+					</div>
+				</summary>
+				<ul
+					class="shadow menu dropdown-content bg-base-300 rounded-lg min-w-max divide-y divide-neutral-content/30"
+				>
+					<li>
+						<a class="btn btn-sm rounded-lg btn-ghost mb-2" href={editUrls.github_repo}>
+							<p>View repo on</p>
+							<span class="text-2xl icon-[akar-icons--github-fill]"></span>
+						</a>
+					</li>
+
+					{#if user === undefined}
+						<li>
+							<button
+								class="btn btn-outline btn-sm text-accent hover:btn-ghost hover:btn-accent hover:text-base-content"
+								on:click|preventDefault={() =>
+									(window.location.href =
+										'http://localhost:3000/login?redirect_uri=http://localhost:5173' +
+										data.url.slice(25))}
 							>
-						</svg>
-					</button>
-				{:else}
-					<details class="dropdown">
-						<summary class="btn btn-circle p-2"
-							><img src={user.avatarUrl} class="w-12 rounded-full" /></summary
-						>
-						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-300 rounded-box">
-							<li>
-								<a
+								Login with
+								<span class="text-2xl icon-[akar-icons--github-fill]"></span>
+							</button>
+						</li>
+					{:else}
+						<li class="flex flex-row items-center w-fit pt-2">
+							<div class="btn btn-circle">
+								<img
+									src={user.avatarUrl}
+									title="GitHub user avatar"
+									alt="GitHub user avatar"
+									class="rounded-full"
+								/>
+							</div>
+							<div class="flex flex-col gap-0 p-0">
+								<p class="font-medium italic mt-1">Hi, {user?.username}!</p>
+								<button
+									class="btn hover:bg-accent/80 btn-sm"
 									on:click|preventDefault={() => {
 										window.location.href =
 											'http://localhost:3000/logout?redirect_uri=http://localhost:5173' +
 											data.url.slice(25);
 										user = undefined;
-									}}>Logout</a
+									}}
 								>
-							</li>
-						</ul>
-					</details>
-				{/if}
-			</div>
-			<div class="flex flex-1 justify-end">
+									<span class="icon-[akar-icons--sign-out] mr-2 text-lg"></span>
+									<p class="">LogOut</p>
+								</button>
+							</div>
+						</li>
+					{/if}
+				</ul>
+			</details>
+			<!-- desktop github options -->
+			<div class="hidden sm:flex">
+				<div class="flex flex-1 justify-end">
+					<a
+						class="flex items-center rounded-lg btn-ghost flex-shrink-0 w-8 p-1"
+						href={editUrls.github_repo}
+					>
+						<span class="text-2xl icon-[akar-icons--github-fill]"></span>
+					</a>
+				</div>
 				{#if user === undefined}
 					<button
 						class="btn btn-outline btn-sm text-accent hover:btn-ghost hover:btn-accent hover:text-base-content"
@@ -351,13 +367,13 @@
 			</div>
 		</div>
 	</div>
-</div>
+</main>
 
 {#if data.isTest}
 	{#if edit}
 		<PdfCutter id={data.id} url={data.url} show={removePdfCutter} />
 	{:else}
-		{#if data?.questions.length === 0}
+		{#if data.questions?.length === 0}
 			<div class="flex justify-center mb-2">
 				<div class="text-center">
 					<span class="text-5xl icon-[solar--sad-circle-broken]"></span>
@@ -397,20 +413,22 @@
 		<canvas bind:this={pageCanvas} style="display: none" />
 		<canvas bind:this={fullCanvas} style="display: none" />
 		{#each data?.questions as question, index}
-			<div class="w-fit m-16 justify-center">
-				<canvas data-id={index} bind:this={canvases[index]} />
-				<div class="flex justify-around items-start {isExpanded ? 'flex-wrap':''}">
-					<div class="collapse collapse-arrow rounded-3xl {isExpanded?'mb-3':'w-fit'}">
-						<input type="checkbox" bind:checked={isExpanded} />
+			<div class="w-fit xl:mx-48 lg:mx-16 md:m-8 m-2 mb-4 justify-center">
+				<div class="overflow-hidden rounded-lg p-1">
+					<canvas class="w-full h-full" data-id={index} bind:this={canvases[index]} />
+				</div>
+				<div class="flex justify-start items-start {isExpanded[index] ? 'flex-wrap' : ''}">
+					<div
+						class="collapse collapse-arrow rounded-3xl {isExpanded[index] ? 'mb-3' : 'w-fit mr-4'}"
+					>
+						<input type="checkbox" on:click={() => toggleExpanded(index)} />
 						<div
-							class="collapse-title flex items-center justify-start text-lg font-extrabold bg-secondary/70 text-bold rounded-3xl w-fit peer-checked:bg-secondary/20 sm:text-xl"
+							class="collapse-title flex items-center justify-start bg-secondary/70 rounded-3xl max-w-min font-extrabold text-lg sm:text-xl"
 						>
 							<span class="icon-[solar--chat-line-bold-duotone] text-3xl mr-3"></span>
 							Answers
 						</div>
-						<div
-							class="bg-secondary/50 pt-4 collapse-content flex flex-1 flex-col peer-checked:bg-secondary/20 rounded-3xl"
-						>
+						<div class="bg-secondary/50 pt-4 collapse-content flex flex-1 flex-col rounded-3xl">
 							<div class="flex justify-center flex-1">
 								<Answers {user} question={question.id} bind:this={answers[index]} />
 							</div>
@@ -418,7 +436,7 @@
 					</div>
 
 					{#if user}
-						<div class="collapse rounded-3xl m-1 {isExpanded?'':'w-full'}">
+						<div class="collapse rounded-3xl {isExpanded ? '' : 'w-full'}">
 							<input type="checkbox" />
 							<div
 								class="collapse-title flex items-center justify-center text-lg font-extrabold bg-primary/70 text-bold rounded-3xl w-fit"
@@ -426,7 +444,7 @@
 								<span class="icon-[solar--add-circle-bold-duotone] text-3xl mr-2"></span>
 								Add your answer
 							</div>
-							<div class="bg-primary/60 collapse-content flex flex-1 flex-col rounded-3xl">
+							<div class="bg-primary/50 collapse-content flex flex-1 flex-col rounded-3xl">
 								<ReplyBox
 									closeCallback={() => {
 										showReplyBoxFor = null;

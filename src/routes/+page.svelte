@@ -22,7 +22,7 @@
 </svelte:head>
 
 {#if $shouldShowBanner && browser}
-<!-- FEATURE BANNER -->
+	<!-- FEATURE BANNER -->
 	<div class="bg-info bg-opacity-50 text-content p-4">
 		<div class="flex items-center justify-between">
 			<div><!-- justifier --></div>

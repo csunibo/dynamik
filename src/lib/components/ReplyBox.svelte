@@ -1,5 +1,4 @@
 <script lang="ts">
-	console.log('ciaop');
 	import { Carta, CartaEditor } from 'carta-md';
 	import { emoji } from '@cartamd/plugin-emoji';
 	import { slash } from '@cartamd/plugin-slash';
@@ -55,23 +54,23 @@
 </script>
 
 <div class="flex justify-center flex-1">
-	<div class="flex w-5/6 flex-col gap-1 p-4">
+	<div class="flex w-5/6 flex-col gap-1 p-4 pb-1">
 		<!-- <h2 class="text-lg mx-5 pl-16 font-bold bg-slate-700">Reply to {recipientName}</h2> -->
 		<div class="flex flex-1 w-full">
 			<CartaEditor bind:value={unfinishedReply} mode="tabs" theme="github" {carta} />
 		</div>
-		<div class="flex flex-row-reverse justify-around mt-2">
+		<div class="flex flex-row-reverse justify-around mt-3">
 			<button
-				class="btn btn-outline btn-base-100 hover:btn-secondary"
+				class="btn btn-accent hover:bg-accent/85"
 				type="submit"
 				on:click|preventDefault={() => {
 					sendComment(questionId, questionIndex, parentAnswerId);
 				}}
 			>
-				add answer
+				ADD YOUR ANSWER
 			</button>
-			<button class="btn btn-outline hover:btn-neutral" on:click|preventDefault={closeCallback()}
-				>cancel</button
+			<button class="btn btn-outline hover:btn-error" on:click|preventDefault={closeCallback()}
+				>CANCEL</button
 			>
 		</div>
 	</div>
