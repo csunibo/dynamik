@@ -53,8 +53,6 @@ export function yearToFlatTeachings(d: Degree, y: number): string[] {
     });
   }
 
-  //if (studyDiagram.mandatory) res = res.concat(studyDiagram.mandatory);
-  //if (studyDiagram.electives) res = res.concat(studyDiagram.electives);
   return res;
 }
 

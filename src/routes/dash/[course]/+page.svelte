@@ -44,12 +44,6 @@
 			if (e) electives.push({ year: i, teachings: namesToTeachings(e) });
 		}
 
-		//for (const t of degree.years) {
-		//	const m = year.teachings.mandatory;
-		//	const e = year.teachings.electives;
-		//
-		//}
-
 		return { mandatory, electives };
 	}
 
