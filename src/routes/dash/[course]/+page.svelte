@@ -3,7 +3,6 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import {
-		yearToFlatTeachings,
 		allMandatoryTeachingsFromYear,
 		allElectivesTeachingsFromYear,
 		type Degree,
@@ -13,7 +12,6 @@
 	import ListTeaching from './ListTeaching.svelte';
 	import type { TeachingsBatch } from './ListTeaching.svelte';
 	import { RISORSE_BASE_URL } from '$lib/const';
-	import dayjs from 'dayjs';
 
 	export let data: PageData;
 	let activeYears: string[] = [];

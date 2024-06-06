@@ -2,13 +2,12 @@
 	import { page } from '$app/stores';
 
 	import Line from '$lib/components/Line.svelte';
-	import { allTeachingsMandatoryElectives, type Degree, type Year } from '$lib/teachings';
+	import { allTeachingsMandatoryElectives, type Degree } from '$lib/teachings';
 	import { EDIT_URLS } from '$lib/const';
 	import { doneFiles, anyFileDone } from '$lib/todo-file';
 
 	import type { PageData } from './$types';
 	import FuzzySearch from './FuzzySearch.svelte';
-	import { derived } from 'svelte/store';
 	export let data: PageData;
 
 	let fuzzy: FuzzySearch;
