@@ -2,11 +2,18 @@
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import type { Degree, Teaching } from '$lib/teachings';
+	import {
+		yearToFlatTeachings,
+		allMandatoryTeachingsFromYear,
+		allElectivesTeachingsFromYear,
+		type Degree,
+		type Teaching
+	} from '$lib/teachings';
 	import { getLoginUrl, getWhoAmI } from '$lib/upld';
 	import ListTeaching from './ListTeaching.svelte';
 	import type { TeachingsBatch } from './ListTeaching.svelte';
 	import { RISORSE_BASE_URL } from '$lib/const';
+	import dayjs from 'dayjs';
 
 	export let data: PageData;
 	let activeYears: string[] = [];
@@ -25,17 +32,23 @@
 	}
 
 	function reorganizeTeachings(degree: Degree) {
-		if (!degree.years) return { mandatory: [], electives: [] };
+		if (!degree.teachings) return { mandatory: [], electives: [] };
 		const mandatory: TeachingsBatch[] = [];
 		const electives: TeachingsBatch[] = [];
 
-		for (const year of degree.years) {
-			const m = year.teachings.mandatory;
-			const e = year.teachings.electives;
+		for (let i = 0; i <= 3; i++) {
+			const m = allMandatoryTeachingsFromYear(degree, i);
+			const e = allElectivesTeachingsFromYear(degree, i);
 
-			if (m) mandatory.push({ year: year.year, teachings: namesToTeachings(m) });
-			if (e) electives.push({ year: year.year, teachings: namesToTeachings(e) });
+			if (m) mandatory.push({ year: i, teachings: namesToTeachings(m) });
+			if (e) electives.push({ year: i, teachings: namesToTeachings(e) });
 		}
+
+		//for (const t of degree.years) {
+		//	const m = year.teachings.mandatory;
+		//	const e = year.teachings.electives;
+		//
+		//}
 
 		return { mandatory, electives };
 	}

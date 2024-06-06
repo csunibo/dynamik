@@ -26,11 +26,11 @@
 				<hr class="my-8 border-primary" />
 			{/if}
 			<h2 class="text-center text-2xl">{degree.name}</h2>
-			{#if degree.years}
-				{#each degree.years as year}
-					<h3 class="text-center text-xl font-bold my-4">{year.year}</h3>
+			{#if degree.teachings}
+				{#each [1, 2, 3] as year}
+					<h3 class="text-center text-xl font-bold my-4">{year}</h3>
 					<div class="grid grid-cols-4 gap-4">
-						{#each yearToFlatTeachings(year) as teaching}
+						{#each yearToFlatTeachings(degree, year) as teaching}
 							<div>
 								<h4 class="font-bold">{teaching}</h4>
 								{#if data.activeTeachings[i].includes(teaching)}

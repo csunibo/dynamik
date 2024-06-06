@@ -2,12 +2,13 @@
 	import { page } from '$app/stores';
 
 	import Line from '$lib/components/Line.svelte';
-	import type { Degree, Year } from '$lib/teachings';
+	import { allTeachingsMandatoryElectives, type Degree, type Year } from '$lib/teachings';
 	import { EDIT_URLS } from '$lib/const';
 	import { doneFiles, anyFileDone } from '$lib/todo-file';
 
 	import type { PageData } from './$types';
 	import FuzzySearch from './FuzzySearch.svelte';
+	import { derived } from 'svelte/store';
 	export let data: PageData;
 
 	let fuzzy: FuzzySearch;
@@ -70,19 +71,12 @@
 		reverseMode = !reverseMode;
 	}
 
-	// Computes either all mandatory teachings or elective teachings for a year
-	function getTeachings(y: Year, electives: boolean): string[] | undefined {
-		if (!y) return undefined;
-		const studyDiagram = y.teachings;
-		if (!studyDiagram) return undefined;
-		return electives ? studyDiagram.electives : studyDiagram.mandatory;
-	}
-
 	// Checks if a teaching is part of a certain degree
 	function isInDegree(teachingName: string, degree: Degree, elective: boolean): boolean {
-		const years = degree.years;
-		if (!years) return false;
-		return !!years.find((y) => getTeachings(y, elective)?.includes(teachingName));
+		const t = degree.teachings;
+		if (!t) return false;
+
+		return allTeachingsMandatoryElectives(degree, !elective).includes(teachingName);
 	}
 
 	// Skims through degrees looking for a given teaching
