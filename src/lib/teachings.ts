@@ -135,7 +135,4 @@ export { TEACHINGS };
 
 // DEGREES
 import DEGREES from '../config/degrees.json' assert { type: 'Degree[]' };
-import { text } from '@sveltejs/kit';
-import { expoOut } from 'svelte/easing';
-import { derived } from 'svelte/store';
 export { DEGREES };
