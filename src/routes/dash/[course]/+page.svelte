@@ -11,7 +11,7 @@
 	import { getLoginUrl, getWhoAmI } from '$lib/upld';
 	import ListTeaching from './ListTeaching.svelte';
 	import type { TeachingsBatch } from './ListTeaching.svelte';
-	import { RISORSE_BASE_URL } from '$lib/const';
+	import { MAX_YEARS_FOR_DEGREE, RISORSE_BASE_URL } from '$lib/const';
 
 	export let data: PageData;
 	let activeYears: string[] = [];
@@ -34,7 +34,7 @@
 		const mandatory: TeachingsBatch[] = [];
 		const electives: TeachingsBatch[] = [];
 
-		for (let i = 0; i <= 3; i++) {
+		for (let i = 0; i <= MAX_YEARS_FOR_DEGREE; i++) {
 			const m = allMandatoryTeachingsFromYear(degree, i);
 			const e = allElectivesTeachingsFromYear(degree, i);
 
