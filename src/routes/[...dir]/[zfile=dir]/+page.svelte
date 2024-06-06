@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 
 	import Line from '$lib/components/Line.svelte';
-	import { allTeachingsMandatoryElectives, type Degree } from '$lib/teachings';
+	import { teachingsFilter, type Degree } from '$lib/teachings';
 	import { EDIT_URLS } from '$lib/const';
 	import { doneFiles, anyFileDone } from '$lib/todo-file';
 
@@ -75,7 +75,7 @@
 		const t = degree.teachings;
 		if (!t) return false;
 
-		return allTeachingsMandatoryElectives(degree, !elective).includes(teachingName);
+		return teachingsFilter(degree, undefined, !elective).includes(teachingName);
 	}
 
 	// Skims through degrees looking for a given teaching

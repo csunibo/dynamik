@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { yearToFlatTeachings } from '$lib/teachings';
+	import { teachingsFilter } from '$lib/teachings';
 
 	const WORKFLOW_NAMES = ['filenames', 'build-and-deploy'];
 	const WORKFLOW_URL = (project: string, workflow: string) =>
@@ -30,7 +30,7 @@
 				{#each [1, 2, 3] as year}
 					<h3 class="text-center text-xl font-bold my-4">{year}</h3>
 					<div class="grid grid-cols-4 gap-4">
-						{#each yearToFlatTeachings(degree, year) as teaching}
+						{#each teachingsFilter(degree, year) as teaching}
 							<div>
 								<h4 class="font-bold">{teaching}</h4>
 								{#if data.activeTeachings[i].includes(teaching)}

@@ -43,68 +43,17 @@ export async function isTeachingActive(fetch: typeof window.fetch, teaching: Tea
 	return isTeachingActiveFromName(fetch, teaching.url);
 }
 
-export function yearToFlatTeachings(d: Degree, y: number): string[] {
+export function teachingsFilter(d: Degree, year?: number, mandatory?: boolean): string[] {
 	let res: string[] = [];
 
-	if (d.teachings) {
-		d.teachings.forEach((x) => {
-			if ((x.year && x.year == y) || (!x.year && y == 0)) res = res.concat(x.name);
-		});
-	}
-
-	return res;
-}
-
-export function allMandatoryTeachingsFromYear(d: Degree, y: number): string[] {
-	let res: string[] = [];
-
-	if (d.teachings) {
-		d.teachings.forEach((x) => {
-			if ((x.year && x.year == y) || (!x.year && y == 0)) {
-				if (x.mandatory) {
-					res = res.concat(x.name);
-				}
-			}
-		});
-	}
-
-	return res;
-}
-
-export function allElectivesTeachingsFromYear(d: Degree, y: number): string[] {
-	let res: string[] = [];
-
-	if (d.teachings) {
-		d.teachings.forEach((x) => {
-			if ((x.year && x.year == y) || (!x.year && y == 0)) {
-				if (!x.mandatory) {
-					res = res.concat(x.name);
-				}
-			}
-		});
-	}
-
-	return res;
-}
-
-export function allTeachingsMandatoryElectives(d: Degree, mandatory: boolean): string[] {
-	let res: string[] = [];
-	if (d.teachings) {
-		d.teachings.forEach((x) => {
-			if (x.mandatory == mandatory) {
-				res = res.concat(x.name);
-			}
-		});
-	}
-	return res;
-}
-
-export function allTeachingsToString(d: Degree): string[] {
-	let res: string[] = [];
-
-	if (d.teachings) {
-		d.teachings.forEach((x) => (res = res.concat(x.name)));
-	}
+	d.teachings?.forEach((x) => {
+		if (
+			(year == undefined || (x.year && x.year == year) || (!x.year && year == 0)) &&
+			(mandatory == undefined || x.mandatory == mandatory)
+		) {
+			res = res.concat(x.name);
+		}
+	});
 
 	return res;
 }
@@ -115,7 +64,7 @@ export async function getActiveTeachings(
 ): Promise<string[]> {
 	const years = degree.years;
 	if (!years) return [];
-	const allTeachings = allTeachingsToString(degree);
+	const allTeachings = teachingsFilter(degree);
 	const activeTeachings = await filterAsync(allTeachings, (t) =>
 		isTeachingActiveFromName(fetch, t)
 	);

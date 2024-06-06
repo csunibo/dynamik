@@ -2,12 +2,7 @@
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import {
-		allMandatoryTeachingsFromYear,
-		allElectivesTeachingsFromYear,
-		type Degree,
-		type Teaching
-	} from '$lib/teachings';
+	import { teachingsFilter, type Degree, type Teaching } from '$lib/teachings';
 	import { getLoginUrl, getWhoAmI } from '$lib/upld';
 	import ListTeaching from './ListTeaching.svelte';
 	import type { TeachingsBatch } from './ListTeaching.svelte';
@@ -35,8 +30,8 @@
 		const electives: TeachingsBatch[] = [];
 
 		for (let i = 0; i <= MAX_YEARS_FOR_DEGREE; i++) {
-			const m = allMandatoryTeachingsFromYear(degree, i);
-			const e = allElectivesTeachingsFromYear(degree, i);
+			const m = teachingsFilter(degree, i, true);
+			const e = teachingsFilter(degree, i, false);
 
 			if (m) mandatory.push({ year: i, teachings: namesToTeachings(m) });
 			if (e) electives.push({ year: i, teachings: namesToTeachings(e) });
