@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { teachingsFilter } from '$lib/teachings';
+	import { MAX_YEARS_FOR_DEGREE } from '$lib/const';
 
 	const WORKFLOW_NAMES = ['filenames', 'build-and-deploy'];
 	const WORKFLOW_URL = (project: string, workflow: string) =>
@@ -27,7 +28,7 @@
 			{/if}
 			<h2 class="text-center text-2xl">{degree.name}</h2>
 			{#if degree.teachings}
-				{#each [1, 2, 3] as year}
+				{#each [...Array(MAX_YEARS_FOR_DEGREE).keys()].map((i) => i + 1) as year}
 					<h3 class="text-center text-xl font-bold my-4">{year}</h3>
 					<div class="grid grid-cols-4 gap-4">
 						{#each teachingsFilter(degree, year) as teaching}
