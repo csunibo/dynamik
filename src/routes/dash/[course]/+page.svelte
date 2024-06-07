@@ -25,7 +25,8 @@
 	}
 
 	function reorganizeTeachings(degree: Degree) {
-		if (degree.teachings != null) return { mandatory: [], electives: [] };
+		if (degree.teachings != null && degree.teachings.length == 0)
+			return { mandatory: [], electives: [] };
 		const mandatory: TeachingsBatch[] = [];
 		const electives: TeachingsBatch[] = [];
 
