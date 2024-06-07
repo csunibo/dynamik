@@ -17,3 +17,4 @@ export const EDIT_URLS = (path: string) => {
 		github_dev: `${GH_DEV_BASE_URL}/${repo}/blob/main/${filePath}`
 	};
 };
+export const MAX_YEARS_FOR_DEGREE = 3;

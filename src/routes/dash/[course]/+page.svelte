@@ -2,11 +2,11 @@
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import type { Degree, Teaching } from '$lib/teachings';
+	import { teachingsFilter, type Degree, type Teaching } from '$lib/teachings';
 	import { getLoginUrl, getWhoAmI } from '$lib/upld';
 	import ListTeaching from './ListTeaching.svelte';
 	import type { TeachingsBatch } from './ListTeaching.svelte';
-	import { RISORSE_BASE_URL } from '$lib/const';
+	import { MAX_YEARS_FOR_DEGREE, RISORSE_BASE_URL } from '$lib/const';
 
 	export let data: PageData;
 	let activeYears: string[] = [];
@@ -25,16 +25,17 @@
 	}
 
 	function reorganizeTeachings(degree: Degree) {
-		if (!degree.years) return { mandatory: [], electives: [] };
+		if (degree.teachings != null && degree.teachings.length == 0)
+			return { mandatory: [], electives: [] };
 		const mandatory: TeachingsBatch[] = [];
 		const electives: TeachingsBatch[] = [];
 
-		for (const year of degree.years) {
-			const m = year.teachings.mandatory;
-			const e = year.teachings.electives;
+		for (let i = 0; i <= MAX_YEARS_FOR_DEGREE; i++) {
+			const m = teachingsFilter(degree, i, true);
+			const e = teachingsFilter(degree, i, false);
 
-			if (m) mandatory.push({ year: year.year, teachings: namesToTeachings(m) });
-			if (e) electives.push({ year: year.year, teachings: namesToTeachings(e) });
+			if (m != null && m.length != 0) mandatory.push({ year: i, teachings: namesToTeachings(m) });
+			if (e != null && e.length != 0) electives.push({ year: i, teachings: namesToTeachings(e) });
 		}
 
 		return { mandatory, electives };
@@ -54,7 +55,7 @@
 <div class="max-w-5xl p-4 mx-auto">
 	<nav class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
 		<div class="navbar-start">
-			{#if login}
+			{#if login != null}
 				{#await login then login}
 					{#if 'error' in login}
 						<a class="btn btn-square btn-ghost" href={getLoginUrl($page.url)}> Login </a>

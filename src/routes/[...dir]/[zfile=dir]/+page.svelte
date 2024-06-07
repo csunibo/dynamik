@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 
 	import Line from '$lib/components/Line.svelte';
-	import type { Degree, Year } from '$lib/teachings';
+	import { teachingsFilter, type Degree } from '$lib/teachings';
 	import { EDIT_URLS } from '$lib/const';
 	import { doneFiles, anyFileDone } from '$lib/todo-file';
 
@@ -70,25 +70,16 @@
 		reverseMode = !reverseMode;
 	}
 
-	// Computes either all mandatory teachings or elective teachings for a year
-	function getTeachings(y: Year, electives: boolean): string[] | undefined {
-		if (!y) return undefined;
-		const studyDiagram = y.teachings;
-		if (!studyDiagram) return undefined;
-		return electives ? studyDiagram.electives : studyDiagram.mandatory;
-	}
-
 	// Checks if a teaching is part of a certain degree
 	function isInDegree(teachingName: string, degree: Degree, elective: boolean): boolean {
-		const years = degree.years;
-		if (!years) return false;
-		return !!years.find((y) => getTeachings(y, elective)?.includes(teachingName));
+		if (degree.teachings != null) return false;
+		return teachingsFilter(degree, undefined, !elective).includes(teachingName);
 	}
 
 	// Skims through degrees looking for a given teaching
 	function skimDegrees(teachingName: string, electives: boolean): string | undefined {
 		const degree = data.degrees.find((d) => isInDegree(teachingName, d, electives));
-		return degree ? degree.id : undefined;
+		return degree != null ? degree.id : undefined;
 	}
 
 	// Picks a containing degree for this teaching
@@ -100,10 +91,10 @@
 		if (teaching?.degree) return teaching.degree;
 		// Plan C: any degree featuring this teaching as mandatory
 		const mandatoryDegree = skimDegrees(teachingName, false);
-		if (mandatoryDegree) return mandatoryDegree;
+		if (mandatoryDegree != null) return mandatoryDegree;
 		// Plan D: any degree featuring this teaching as an elective
 		const electiveDegree = skimDegrees(teachingName, true);
-		if (electiveDegree) return electiveDegree;
+		if (electiveDegree != null) return electiveDegree;
 		// Plan E: give up
 		return null;
 	}
@@ -150,7 +141,7 @@
 							<span class="text-xl icon-[akar-icons--home-alt1]"></span>
 						</a>
 					</li>
-					{#if degree}
+					{#if degree != null}
 						<li>
 							<a class="flex items-center" href={'/dash/' + degree}>
 								<span class="text-xl icon-[ic--round-school]"></span>
@@ -207,7 +198,7 @@
 	</div>
 
 	<div class="grid gap-5 grid-cols-dir md:grid-cols-dir-full mx-4 text-lg">
-		{#if data.manifest.directories}
+		{#if data.manifest.directories != null}
 			{@const directories = data.manifest.directories.sort((a, b) => a.name.localeCompare(b.name))}
 			{#if !reverseMode}
 				{#each directories.reverse() as dir}
@@ -219,7 +210,7 @@
 				{/each}
 			{/if}
 		{/if}
-		{#if data.manifest.files}
+		{#if data.manifest.files != null}
 			{@const files = data.manifest.files.sort((a, b) => a.name.localeCompare(b.name))}
 			{#if !reverseMode}
 				{#each files.reverse() as file}

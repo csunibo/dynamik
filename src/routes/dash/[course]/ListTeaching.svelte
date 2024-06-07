@@ -24,8 +24,9 @@
 <ul class="menu p-2">
 	{#each years as year}
 		{#if year.teachings.length > 0}
+			{@const type = year.year != 0 ? year.year.toString() + ' anno' : 'Generali'}
 			<li class="menu-title">
-				<span class="text-2xl mt-5 italic">{year.year} anno {title}</span>
+				<span class="text-2xl mt-5 italic">{type} {title}</span>
 			</li>
 			<div class="divider mt-0"></div>
 			<div class="flex flex-row flex-wrap">
