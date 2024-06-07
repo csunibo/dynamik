@@ -33,8 +33,8 @@
 			const m = teachingsFilter(degree, i, true);
 			const e = teachingsFilter(degree, i, false);
 
-			if (m != null) mandatory.push({ year: i, teachings: namesToTeachings(m) });
-			if (e != null) electives.push({ year: i, teachings: namesToTeachings(e) });
+			if (m != null && m.length != 0) mandatory.push({ year: i, teachings: namesToTeachings(m) });
+			if (e != null && e.length != 0) electives.push({ year: i, teachings: namesToTeachings(e) });
 		}
 
 		return { mandatory, electives };
