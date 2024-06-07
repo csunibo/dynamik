@@ -25,7 +25,7 @@
 	}
 
 	function reorganizeTeachings(degree: Degree) {
-		if (!degree.teachings) return { mandatory: [], electives: [] };
+		if (degree.teachings != null) return { mandatory: [], electives: [] };
 		const mandatory: TeachingsBatch[] = [];
 		const electives: TeachingsBatch[] = [];
 
@@ -33,8 +33,8 @@
 			const m = teachingsFilter(degree, i, true);
 			const e = teachingsFilter(degree, i, false);
 
-			if (m) mandatory.push({ year: i, teachings: namesToTeachings(m) });
-			if (e) electives.push({ year: i, teachings: namesToTeachings(e) });
+			if (m != null) mandatory.push({ year: i, teachings: namesToTeachings(m) });
+			if (e != null) electives.push({ year: i, teachings: namesToTeachings(e) });
 		}
 
 		return { mandatory, electives };
@@ -54,7 +54,7 @@
 <div class="max-w-5xl p-4 mx-auto">
 	<nav class="navbar flex bg-base-200 text-neutral-content rounded-box shadow-sm px-5 mb-5">
 		<div class="navbar-start">
-			{#if login}
+			{#if login != null}
 				{#await login then login}
 					{#if 'error' in login}
 						<a class="btn btn-square btn-ghost" href={getLoginUrl($page.url)}> Login </a>

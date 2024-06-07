@@ -27,7 +27,7 @@
 				<hr class="my-8 border-primary" />
 			{/if}
 			<h2 class="text-center text-2xl">{degree.name}</h2>
-			{#if degree.teachings}
+			{#if degree.teachings != null}
 				{#each [...Array(MAX_YEARS_FOR_DEGREE).keys()].map((i) => i + 1) as year}
 					<h3 class="text-center text-xl font-bold my-4">{year}</h3>
 					<div class="grid grid-cols-4 gap-4">
@@ -38,7 +38,7 @@
 									<div class="flex gap-2">
 										{#each WORKFLOW_NAMES as workflow}
 											{@const url = data.teachings.get(teaching)?.url}
-											{#if url}
+											{#if url != null}
 												{@const href = WORKFLOW_URL(url, workflow)}
 												{@const src = `${href}/badge.svg`}
 												<a {href}>

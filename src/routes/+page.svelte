@@ -57,7 +57,7 @@
 		</div>
 		<ul class="menu p-2 text-lg">
 			{#each data.degrees as degree}
-				{#if degree.teachings}
+				{#if degree.teachings != null}
 					<Line name={degree.name} icon={degree.icon} href="{base}/dash/{degree.id}" />
 				{:else}
 					<Line name={degree.name} icon={degree.icon} href="{base}/{degree.id}" />
