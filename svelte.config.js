@@ -1,11 +1,9 @@
-import staticAdapter from '@sveltejs/adapter-static';
 import vercelAdapter from '@sveltejs/adapter-vercel';
 import nodeAdapter from '@sveltejs/adapter-node';
 
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 const BASE_PATH = process.env.BASE_PATH || '';
-const GITHUB_PAGES = process.env.GITHUB_ACTIONS === 'true';
 const CSUNIBO_DEPLOY = process.env.CSUNIBO_DEPLOY === 'true';
 
 /**
@@ -13,9 +11,7 @@ const CSUNIBO_DEPLOY = process.env.CSUNIBO_DEPLOY === 'true';
  * @returns {import('@sveltejs/kit').Adapter}
  */
 function chooseAdapter() {
-	if (GITHUB_PAGES) {
-		return staticAdapter({ fallback: '404.html' });
-	} else if (CSUNIBO_DEPLOY) {
+	if (CSUNIBO_DEPLOY) {
 		return nodeAdapter();
 	} else {
 		return vercelAdapter();
