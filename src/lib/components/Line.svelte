@@ -4,6 +4,7 @@
 	import type { File, Directory } from '$lib/api';
 	import { formatDate } from '$lib/date';
 	import { getDoneStatus } from '$lib/todo-file';
+	import { GH_PAGES_BASE_URL } from '$lib/const';
 
 	export let data: File | Directory;
 	// export let customUrl: string | undefined = undefined;
@@ -18,27 +19,10 @@
 	 * This function is especially created for '/libri/'.
 	 */
 	function isUsingExternalBase(data: File | Directory) {
-		if (data.url.startsWith('https://csunibo.github.io')) {
+		if (data.url.startsWith(GH_PAGES_BASE_URL)) {
 			return false;
 		}
 		return true;
-	}
-
-	let isSpinning = false;
-	async function downloadFile() {
-		isSpinning = true;
-		const url = data.url;
-		const response = await fetch(url);
-		const blob = await response.blob();
-		const urlObject = window.URL.createObjectURL(new Blob([blob]));
-		const a = document.createElement('a');
-		a.href = urlObject;
-		a.download = data.name;
-		document.body.appendChild(a);
-		a.click();
-		a.remove();
-		isSpinning = false;
-		URL.revokeObjectURL(urlObject);
 	}
 
 	$: isDone = getDoneStatus(data.url);
@@ -101,15 +85,16 @@
 			{#if isFile}
 				{isFile && data.size != '0 B' ? data.size : '-'}
 				{#if data.size != '0 B'}
-					<button class="flex text-lg ml-3" on:click={downloadFile}>
-						<span
-							class="text-accent text-3xl {isSpinning
-								? 'icon-[eos-icons--loading]'
-								: 'icon-[solar--download-square-bold]'}"
-						></span>
-					</button>
+					<a
+						class="flex text-lg ml-3"
+						href={GH_PAGES_BASE_URL + base + '/' + data.name}
+						download
+						target="_blank"
+					>
+						<span class="text-accent text-3xl icon-[solar--download-square-bold]"></span>
+					</a>
 				{:else}
-					<button disabled class="flex text-lg ml-3" on:click={downloadFile}>
+					<button disabled class="flex text-lg ml-3">
 						<span class="text-neutral text-3xl icon-[solar--download-square-bold]"></span>
 					</button>
 				{/if}
