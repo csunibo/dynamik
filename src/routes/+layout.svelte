@@ -11,6 +11,7 @@
 		if (window.location.pathname === '/' && isKnownCourse($settings.defaultCourse)) {
 			window.location.href = `/dash/${$settings.defaultCourse}`;
 		}
+		console.log('diocane');
 	});
 
 	const isKnownCourse = (course: string) => {
