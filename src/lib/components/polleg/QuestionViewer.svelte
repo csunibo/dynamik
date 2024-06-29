@@ -3,14 +3,92 @@
 	import ReplyBox from '$lib/components/polleg/ReplyBox.svelte';
 	import Answers from '$lib/components/polleg/Answers.svelte';
 	import { EDIT_URLS } from '$lib/const';
+	import type { OnProgressParameters } from 'pdfjs-dist';
+	import type { PDFPageProxy } from 'pdfjs-dist/types/src/display/api';
+	import { onMount } from 'svelte';
+    
+	const scale = 3;
+	let loaded = 0.0; // percentage
+	let width = 0,
+		height = 0;
+	let pages: PDFPageProxy[] = [];
+	let numPages: number;
 
-
+	let pageCanvas: HTMLCanvasElement, fullCanvas: HTMLCanvasElement;
 	export let canvases: HTMLCanvasElement[];
-
+    export let user;
 
 	let showReplyBoxFor: number = null;
 	let answers: Answers[] = [];
 	let values: string[] = [];
+
+	async function init() {
+		if (data.questions) {
+			if (data.questions.length === 0) return;
+			const pageCtx = pageCanvas.getContext('2d')!;
+			const fullCtx = fullCanvas.getContext('2d')!;
+
+			const { GlobalWorkerOptions, getDocument } = await import('pdfjs-dist');
+			GlobalWorkerOptions.workerSrc = new URL(
+				'pdfjs-dist/build/pdf.worker.min.mjs',
+				import.meta.url
+			).toString();
+
+			const loadingPdf = getDocument(data.url);
+			loadingPdf.onProgress = (params: OnProgressParameters) => {
+				loaded = params.loaded / params.total;
+			};
+			const pdf = await loadingPdf.promise;
+			numPages = pdf.numPages;
+
+			for (let i = 1; i <= pdf.numPages; i++) {
+				const page = await pdf.getPage(i);
+				pages.push(page);
+
+				// rendering onto the temporary canvas
+				const viewport = page.getViewport({ scale });
+				width = Math.max(fullCanvas?.width, viewport.width);
+				height += viewport.height;
+			}
+
+			fullCanvas.width = width;
+			fullCanvas.height = height;
+			let currHeight = 0;
+			for (const page of pages) {
+				const viewport = page.getViewport({ scale });
+				pageCanvas.width = viewport.width;
+				pageCanvas.height = viewport.height;
+				await page.render({
+					canvasContext: pageCtx,
+					viewport: viewport
+				}).promise;
+
+				// copying it over to the full canvas
+				fullCtx.drawImage(pageCanvas, 0, currHeight);
+				currHeight += viewport.height;
+
+				// cleanup
+				pageCtx.clearRect(0, 0, viewport.width, viewport.height);
+				pageCanvas.width = 0;
+				pageCanvas.height = 0;
+			}
+
+			for (let i = 0; i < data.questions.length; i++) {
+				const canvas = canvases[i];
+				const question = data.questions[i];
+				let sHeight: number = (question.end - question.start) * scale;
+				canvas.height = sHeight;
+				canvas.width = width;
+				canvas.style.width = `100%`;
+				const ctx = canvas.getContext('2d');
+				ctx?.drawImage(fullCanvas, 0, -question.start * scale);
+			}
+		}
+	}
+
+	onMount(init);
+
+
 
 	function sendAnswerCallback(res: { id: any }, index: string | number) {
 		if (res.id) {
@@ -139,3 +217,6 @@
 		</div>
 	{/each}
 </div>
+
+<canvas bind:this={pageCanvas} style="display: none" />
+<canvas bind:this={fullCanvas} style="display: none" />
