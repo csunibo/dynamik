@@ -18,3 +18,11 @@ export const EDIT_URLS = (path: string) => {
 	};
 };
 export const MAX_YEARS_FOR_DEGREE = 3;
+
+
+export const POLLEG_BASE_URL = 
+	import.meta.env.VITE_RISORSE_BASE_URL || 'http://polleg.students.cs.unibo.it';
+export const DOCUMENT_URL = (id: string) => `${POLLEG_BASE_URL}/documents/${id}`;
+export const QUESTION_URL = (id: number) => `${POLLEG_BASE_URL}/questions/${id}`;
+export const ANSWER_URL = (id: number) => `${POLLEG_BASE_URL}/answers/${id}`;
+export const VOTE_URL = (id: number) => `${ANSWER_URL(id)}/vote`;
