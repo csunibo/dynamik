@@ -5,6 +5,8 @@
 	import { teachingsFilter, type Degree } from '$lib/teachings';
 	import { EDIT_URLS } from '$lib/const';
 	import { doneFiles, anyFileDone } from '$lib/todo-file';
+  import { auth, logout, AUTHENTICATED } from '$lib/stores/auth';
+  import { LOGIN_URL } from '$lib/auth';
 
 	import type { PageData } from './$types';
 	import FuzzySearch from './FuzzySearch.svelte';
@@ -50,7 +52,7 @@
 		return null;
 	}
 
-	$: degree = urlParts ? guessDegree(urlParts[0]) : null;
+	$: degree = guessDegree(urlParts[0]);
 
 	const getPartHref = (part: string) =>
 		$page.url.pathname
@@ -99,14 +101,28 @@
 			</ul>
 		</div>
 	</div>
-	<div class="navbar-end">
-		<div class="flex flex-1 justify-end">
-			<a
-				class="sm:ml-2 p-1 flex items-center rounded-lg btn-ghost flex-shrink-0 w-8"
-				href={editUrls.github_repo}
-			>
-				<span class="text-2xl icon-[akar-icons--github-fill]"></span>
-			</a>
+  <div class="navbar-end">
+    <div class="flex flex-1 justify-end">
+      {#if $auth.state == AUTHENTICATED}
+        <button class="btn" on:click|preventDefault={() => logout()}>
+          Logout
+          <div class="avatar">
+            <div class="w-8 rounded-full">
+              <img src={$auth.user.avatarUrl} />
+            </div>
+          </div>
+        </button>
+      {:else}
+        <a 
+        class="sm:ml-2 p-1 flex flex-shrink-0"
+          href={LOGIN_URL($page.url)}>Login</a>
+      {/if}
+      <a
+        class="sm:ml-2 p-1 flex items-center rounded-lg btn-ghost flex-shrink-0 w-8"
+        href={editUrls.github_repo}
+        >
+        <span class="text-2xl icon-[akar-icons--github-fill]"></span>
+      </a>
 		</div>
 	</div>
 	{#if !!fuzzy}

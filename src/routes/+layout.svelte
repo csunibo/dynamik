@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import settings from '$lib/settings';
 	import { DEGREES } from '$lib/teachings';
+	import { checkAuth } from '$lib/stores/auth';
 
 	onMount(() => {
 		settings.subscribe(() => {
@@ -11,7 +12,7 @@
 		if (window.location.pathname === '/' && isKnownCourse($settings.defaultCourse)) {
 			window.location.href = `/dash/${$settings.defaultCourse}`;
 		}
-		console.log('diocane');
+    checkAuth();
 	});
 
 	const isKnownCourse = (course: string) => {
