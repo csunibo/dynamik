@@ -46,6 +46,37 @@
 
 	$: title = genTitle(urlParts);
 
+	// Checks if a teaching is part of a certain degree
+	function isInDegree(teachingName: string, degree: Degree, elective: boolean): boolean {
+		if (degree.teachings != null) return false;
+		return teachingsFilter(degree, undefined, !elective).includes(teachingName);
+	}
+
+	// Skims through degrees looking for a given teaching
+	function skimDegrees(teachingName: string, electives: boolean): string | undefined {
+		const degree = data.degrees.find((d) => isInDegree(teachingName, d, electives));
+		return degree != null ? degree.id : undefined;
+	}
+
+	// Picks a containing degree for this teaching
+	function guessDegree(teachingName: string): string | null {
+		// Plan A: "from" url parameter
+		if (data.from) return data.from;
+		// Plan B: "degree" field in Teachings
+		const teaching = data.teachings.get(teachingName);
+		if (teaching?.degree) return teaching.degree;
+		// Plan C: any degree featuring this teaching as mandatory
+		const mandatoryDegree = skimDegrees(teachingName, false);
+		if (mandatoryDegree != null) return mandatoryDegree;
+		// Plan D: any degree featuring this teaching as an elective
+		const electiveDegree = skimDegrees(teachingName, true);
+		if (electiveDegree != null) return electiveDegree;
+		// Plan E: give up
+		return null;
+	}
+
+	$: degree = guessDegree(urlParts[0]);
+
 	// --- Sorting ---
 	let reverseMode = true; // partiamo in ordine A-Z
 
@@ -75,7 +106,7 @@
 </svelte:head>
 
 <main class="max-w-6xl min-w-fit p-4 mx-auto">
-	<Navbar {urlParts} {title} {fuzzy} {data} />
+	<Navbar {title} {fuzzy} {degree} />
 	<div class="flex flex-1 justify-start mr-4 mb-3">
 		{#if $isDone}
 			<button
