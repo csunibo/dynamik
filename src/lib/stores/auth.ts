@@ -1,5 +1,6 @@
 import { WHOAMI_URL, LOGOUT_URI } from '$lib/auth';
 import { writable } from 'svelte/store';
+import { page } from '$app/stores';
 
 export const AUTHENTICATED = 'authenticated';
 export const UNAUTHENTICATED = 'unauthenticated';
@@ -44,7 +45,7 @@ export const checkAuth = async () => {
 }
 
 export const logout = async () => {
-  await fetch(LOGOUT_URI, { credentials: 'include' })
+  await fetch(LOGOUT_URI(page.url), { credentials: 'include' })
   store.set(defaultState);
 }
 
