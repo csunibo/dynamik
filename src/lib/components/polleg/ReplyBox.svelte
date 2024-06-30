@@ -19,7 +19,6 @@
 	export let parentAnswerId: number = null;
 
 	function composeRecipientName() {
-		console.log(parentAuthor);
 		let res = `Queston ${questionIndex + 1}`;
 
 		if (parentAuthor != '') {

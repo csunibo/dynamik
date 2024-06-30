@@ -9,7 +9,7 @@
 	import PdfCutter from '$lib/components/polleg/PdfCutter.svelte';
 	import Instructions from '$lib/components/polleg/Instructions.svelte';
 	import PdfViewer from '$lib/components/polleg/PdfViewer.svelte';
-	import QuestionViewer from '$lib/components/polleg/QuestionViewer.svelte';
+	import QuestionList from '$lib/components/polleg/QuestionList.svelte';
 	import { page } from '$app/stores';
 	import { base } from '$app/paths';
 
@@ -43,7 +43,7 @@
 	onMount(init);
 
 	async function removePdfCutter(dataRet: PageData) {
-		edit = false;
+		editMode = false;
 		data.questions = dataRet.questions;
 		if (data.questions == null) {
 			data.questions = [];
@@ -71,14 +71,15 @@
 	<Navbar title={$page.params.file} />
 
 	{#if data.isExam}
-		{#if editMode}
-			<PdfCutter id={data.id} url={data.url} show={removePdfCutter} />
-		{:else if data.questions?.length !== 0}
-			<QuestionViewer {canvases} {user} {data} />
+		{#if data.questions?.length !== 0}
+			<QuestionList {canvases} {user} {data} />
 		{:else}
 			<!-- If the questions aren't present show instructions and pdf -->
 			<Instructions isAdmin={user?.admin} {setEditMode} />
 			<PdfViewer url={data.url} width={'90%'} height={'900vh'} />
+			{#if editMode}
+				<PdfCutter id={data.id} url={data.url} show={removePdfCutter} {setEditMode} />
+			{/if}
 		{/if}
 	{:else}
 		<!-- If it's not an exam, view the pdf -->

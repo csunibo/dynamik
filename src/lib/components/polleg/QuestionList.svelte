@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { toast } from '@zerodevx/svelte-toast';
 	import ReplyBox from '$lib/components/polleg/ReplyBox.svelte';
-	import Answers from '$lib/components/polleg/Answers.svelte';
+	import AnswerList from '$lib/components/polleg/AnswerList.svelte';
 	import { EDIT_URLS } from '$lib/const';
 	import type { OnProgressParameters } from 'pdfjs-dist';
 	import type { PDFPageProxy } from 'pdfjs-dist/types/src/display/api';
@@ -186,7 +186,7 @@
 					</div>
 					<div class="bg-secondary/50 pt-4 collapse-content flex flex-1 flex-col rounded-3xl">
 						<div class="flex justify-center flex-1">
-							<Answers {user} question={question.id} bind:this={answers[index]} />
+							<AnswerList {user} question={question.id} bind:this={answers[index]} />
 						</div>
 					</div>
 				</div>

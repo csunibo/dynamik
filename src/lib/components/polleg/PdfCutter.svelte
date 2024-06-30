@@ -9,6 +9,7 @@
 	const ENDPOINT = POLLEG_BASE_URL + '/documents';
 	export let url: string;
 	export let id: string;
+	export let setEditMode: (flag: boolean) => void;
 	export let show: (string) => void;
 
 	// let url = new URL(prompt('Document URL')!);
@@ -38,6 +39,16 @@
 	let initialScrollTop = 0;
 
 	onMount(async () => {
+		toast.push(
+			'Instructions: use left click to start selecting; use right click to delete a selection.',
+			{
+				theme: {
+					'--toastColor': 'mintcream',
+					'--toastBackground': 'rgba(244,67,54,0.9)',
+					'--toastBarBackground': '#E74C3C'
+				}
+			}
+		);
 		editContext = editCanvas.getContext('2d');
 		opacityContext = opacityCanvas.getContext('2d');
 
@@ -284,6 +295,7 @@
 					'--toastBarBackground': '#E74C3C'
 				}
 			});
+			setEditMode(false);
 			// location.reload();
 		}
 	}
@@ -295,7 +307,7 @@
 	on:contextmenu|preventDefault={() => {}}
 />
 
-<div id="container" style="text-align: center">
+<div id="container" style="text-align: center;">
 	<canvas bind:this={pageCanvas} style="display: none" />
 	<canvas bind:this={fullCanvas} class="canvasFixed" />
 	<canvas bind:this={editCanvas} class="canvasFixed"></canvas>
