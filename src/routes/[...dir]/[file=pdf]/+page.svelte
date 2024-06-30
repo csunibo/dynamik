@@ -74,7 +74,7 @@
 		{#if editMode}
 			<PdfCutter id={data.id} url={data.url} show={removePdfCutter} />
 		{:else if data.questions?.length !== 0}
-			<QuestionViewer {canvases} {user} />
+			<QuestionViewer {canvases} {user} {data} />
 		{:else}
 			<!-- If the questions aren't present show instructions and pdf -->
 			<Instructions isAdmin={user?.admin} {setEditMode} />

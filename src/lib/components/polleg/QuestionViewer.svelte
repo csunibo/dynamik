@@ -5,8 +5,9 @@
 	import { EDIT_URLS } from '$lib/const';
 	import type { OnProgressParameters } from 'pdfjs-dist';
 	import type { PDFPageProxy } from 'pdfjs-dist/types/src/display/api';
+	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-    
+
 	const scale = 3;
 	let loaded = 0.0; // percentage
 	let width = 0,
@@ -16,7 +17,8 @@
 
 	let pageCanvas: HTMLCanvasElement, fullCanvas: HTMLCanvasElement;
 	export let canvases: HTMLCanvasElement[];
-    export let user;
+	export let user;
+	export let data;
 
 	let showReplyBoxFor: number = null;
 	let answers: Answers[] = [];
@@ -87,8 +89,6 @@
 	}
 
 	onMount(init);
-
-
 
 	function sendAnswerCallback(res: { id: any }, index: string | number) {
 		if (res.id) {
