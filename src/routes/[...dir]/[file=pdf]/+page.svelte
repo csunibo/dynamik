@@ -8,8 +8,7 @@
 
 	import PdfCutter from '$lib/components/polleg/PdfCutter.svelte';
 	import Instructions from '$lib/components/polleg/Instructions.svelte';
-	import PdfViewer from '$lib/components/polleg/PdfViewer.svelte';
-	import QuestionList from '$lib/components/polleg/QuestionList.svelte';
+	import PDFViewer from '$lib/components/polleg/PDFViewer.svelte';
 	import { page } from '$app/stores';
 	import { base } from '$app/paths';
 
@@ -20,21 +19,6 @@
 
 	let user: { avatarUrl: any; admin: any } | undefined = undefined;
 	let editMode: boolean = false;
-
-	let canvases: HTMLCanvasElement[] = [];
-
-	let parentPath = '/';
-
-	onDestroy(() => {
-		pageUnsubscribe();
-	});
-
-	const pageUnsubscribe = page.subscribe((page) => {
-		const path = page.params.dir.split('/');
-		path.push(page.params.file);
-		path.pop();
-		parentPath = base + '/' + path.join('/');
-	});
 
 	async function init() {
 		await fetchUser();
@@ -70,21 +54,17 @@
 <main class="max-w-6xl min-w-fit p-4 mx-auto">
 	<Navbar title={$page.params.file} />
 
-	{#if data.isExam}
-		{#if data.questions?.length !== 0}
-			<QuestionList {canvases} {user} {data} />
-		{:else}
-			<!-- If the questions aren't present show instructions and pdf -->
-			<Instructions isAdmin={user?.admin} {setEditMode} />
-			<PdfViewer url={data.url} width={'90%'} height={'900vh'} />
-			{#if editMode}
-				<PdfCutter id={data.id} url={data.url} show={removePdfCutter} {setEditMode} />
-			{/if}
-		{/if}
-	{:else}
-		<!-- If it's not an exam, view the pdf -->
-		<PdfViewer url={data.url} width={'90%'} height={'900vh'} />
-	{/if}
+  <PDFViewer {user} {data} />
+  {#if data.questions?.length !== 0 && false}
+    <!-- If the questions aren't present show instructions and pdf -->
+    <Instructions isAdmin={user?.admin} {setEditMode} />
+    <PdfViewer url={data.url} width={'90%'} height={'900vh'} />
+    {#if editMode}
+      <PdfCutter id={data.id} url={data.url} show={removePdfCutter} {setEditMode} />
+    {/if}
+  {/if}
+  <!-- If it's not an exam, view the pdf -->
+  <!-- <PdfViewer url={data.url} width={'90%'} height={'900vh'} /> -->
 </main>
 
 <style>
