@@ -83,6 +83,5 @@ export const renderBox = (pdf: FullPDF, canvas: HTMLCanvasElement, box: Box) => 
   canvas.height = box.height;
   canvas.width = box.width;
   const ctx = canvas.getContext('2d');
-  console.log(box.y)
   ctx?.drawImage(pdf.canvas, 0, -box.y);
 }

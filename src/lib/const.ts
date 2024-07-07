@@ -21,7 +21,7 @@ export const MAX_YEARS_FOR_DEGREE = 3;
 
 
 export const AUTH_BASE_URL =
-  import.meta.env.VITE_AUTH_BASE_URL || 'http://localhost:3000';
+  import.meta.env.VITE_AUTH_BASE_URL || 'https://cslogin.students.cs.unibo.it';
 export const LOGIN_URL = (current_uri: string) =>
   `${AUTH_BASE_URL}/login?redirect_uri=${current_uri}`;
 export const WHOAMI_URL = `${AUTH_BASE_URL}/whoami`;
@@ -29,7 +29,7 @@ export const LOGOUT_URI = (current_uri: string) => `${AUTH_BASE_URL}/logout?redi
 
 
 export const POLLEG_BASE_URL =
-  import.meta.env.VITE_POLLEG_BASE_URL || 'http://localhost:3001';
+  import.meta.env.VITE_POLLEG_BASE_URL || 'https://polleg.students.cs.unibo.it';
 export const DOCUMENT_URL = (id: string) => `${POLLEG_BASE_URL}/documents/${id}`;
 export const QUESTION_URL = (id: number) => `${POLLEG_BASE_URL}/questions/${id}`;
 export const ANSWER_URL = (id: number) => `${POLLEG_BASE_URL}/answers/${id}`;

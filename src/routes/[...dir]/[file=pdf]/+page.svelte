@@ -17,32 +17,13 @@
 
 	export let data: PageData;
 
-	let user: { avatarUrl: any; admin: any } | undefined = undefined;
 	let editMode: boolean = false;
-
-	async function init() {
-		await fetchUser();
-	}
-
-	onMount(init);
 
 	async function removePdfCutter(dataRet: PageData) {
 		editMode = false;
 		data.questions = dataRet.questions;
 		if (data.questions == null) {
 			data.questions = [];
-		}
-		await init();
-	}
-
-	async function fetchUser() {
-		let res = await fetch(WHOAMI_URL, {
-			method: 'GET',
-			credentials: 'include'
-		});
-
-		if (res.status == 200) {
-			user = await res.json();
 		}
 	}
 
@@ -54,7 +35,7 @@
 <main class="max-w-6xl min-w-fit p-4 mx-auto">
 	<Navbar title={$page.params.file} />
 
-  <PDFViewer {user} {data} />
+  <PDFViewer {data} questions={data.questions} />
   {#if data.questions?.length !== 0 && false}
     <!-- If the questions aren't present show instructions and pdf -->
     <Instructions isAdmin={user?.admin} {setEditMode} />

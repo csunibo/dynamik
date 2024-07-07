@@ -4,14 +4,15 @@
 	import AnswerList from '$lib/components/polleg/AnswerList.svelte';
 	import PDFBox from '$lib/components/polleg/PDFBox.svelte';
 	import { EDIT_URLS } from '$lib/const';
-	import { type FullPDF, type Box, extractFullPDF } from '$lib/pdfcanvas';
+	import type { Question } from '$lib/polleg';
+	import { type FullPDF, type Box, type Page, extractFullPDF, SCALE } from '$lib/pdfcanvas';
 	import type { OnProgressParameters } from 'pdfjs-dist';
 	import type { PDFPageProxy } from 'pdfjs-dist/types/src/display/api';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 
-	export let user;
 	export let data;
+  export let questions: Question[];
 
   // TODO: remove
 	let showReplyBoxFor: number = null;
@@ -23,6 +24,21 @@
 	let boxes: Box[] = [];
 	let loaded = 0.0; // percentage
   $: percentage = Math.floor(loaded * 100)
+
+  const allBoxes = (boxes: Page[], questions: Question[]) => {
+    const q = []
+    const width = Math.max(...boxes.map(box => box.width))
+    for(const question of questions) {
+      q.push({
+        x: 0,
+        y: question.start * SCALE,
+        height: (question.end - question.start) * SCALE,
+        width,
+        question,
+      })
+    }
+    return [...boxes, ...q]
+  }
 
 	const init = async () => {
     const { GlobalWorkerOptions, getDocument } = await import('pdfjs-dist');
@@ -37,38 +53,10 @@
     };
     const rawPdf = await loadingPdf.promise;
     pdf = await extractFullPDF(fullCanvas, rawPdf);
-    boxes = pdf.pages;
+    boxes = allBoxes(pdf.pages, questions);
 	}
 
 	onMount(init);
-
-	function sendAnswerCallback(res: { id: any }, index: string | number) {
-		if (res.id) {
-			toast.push('Success!', {
-				theme: {
-					'--toastColor': 'mintcream',
-					'--toastBackground': 'rgba(72,187,120,0.9)',
-					'--toastBarBackground': '#2F855A'
-				}
-			});
-			answers[index].addComment(res);
-		} else {
-			toast.push('Error!', {
-				theme: {
-					'--toastColor': 'mintcream',
-					'--toastBackground': 'rgba(244,67,54,0.9)',
-					'--toastBarBackground': '#e74c3c'
-				}
-			});
-		}
-	}
-
-	$: isExpanded = [];
-
-	function toggleExpanded(index: number) {
-		if (isExpanded[index] == undefined) isExpanded[index] = true;
-		else isExpanded[index] = !isExpanded[index];
-	}
 </script>
 
 {#if pdf == null || loaded != 1}
