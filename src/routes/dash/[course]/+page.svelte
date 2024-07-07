@@ -3,10 +3,9 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { teachingsFilter, type Degree, type Teaching } from '$lib/teachings';
-	import { LOGIN_URL, WHOAMI_URL } from '$lib/auth';
 	import ListTeaching from './ListTeaching.svelte';
 	import type { TeachingsBatch } from './ListTeaching.svelte';
-	import { MAX_YEARS_FOR_DEGREE, RISORSE_BASE_URL } from '$lib/const';
+	import { MAX_YEARS_FOR_DEGREE, RISORSE_BASE_URL, LOGIN_URL, WHOAMI_URL } from '$lib/const';
 
 	export let data: PageData;
 	let activeYears: string[] = [];

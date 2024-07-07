@@ -3,10 +3,9 @@
 
 	import Line from '$lib/components/Line.svelte';
 	import { teachingsFilter, type Degree } from '$lib/teachings';
-	import { EDIT_URLS } from '$lib/const';
+	import { EDIT_URLS, LOGIN_URL } from '$lib/const';
 	import { doneFiles, anyFileDone } from '$lib/todo-file';
-  	import { auth, logout, AUTHENTICATED } from '$lib/stores/auth';
-  	import { LOGIN_URL } from '$lib/auth';
+  import { auth, logout, AUTHENTICATED } from '$lib/stores/auth';
 
 	import type { PageData } from './$types';
 	import FuzzySearch from './FuzzySearch.svelte';

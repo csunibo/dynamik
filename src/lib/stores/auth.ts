@@ -1,4 +1,4 @@
-import { WHOAMI_URL, LOGOUT_URI } from '$lib/auth';
+import { WHOAMI_URL, LOGOUT_URI } from '$lib/const';
 import { writable } from 'svelte/store';
 import { page } from '$app/stores';
 

@@ -14,7 +14,7 @@
 	import { base } from '$app/paths';
 
 	import Navbar from '$lib/components/Navbar.svelte';
-	import { WHOAMI_URL } from '$lib/auth';
+	import { WHOAMI_URL } from '$lib/const';
 
 	export let data: PageData;
 
