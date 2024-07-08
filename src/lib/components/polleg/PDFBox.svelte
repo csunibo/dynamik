@@ -1,15 +1,36 @@
 <script lang="ts">
+import { onMount } from 'svelte'
 import type { FullPDF, Box } from '$lib/pdfcanvas';
+import IntersectionObserver from 'svelte-intersection-observer';
 import { renderBox } from '$lib/pdfcanvas';
-import { onMount } from 'svelte';
 
 export let pdf: FullPDF;
 export let box: Box;
 let canvas: HTMLCanvasElement;
+let parent: HTMLSpanElement;
+let visible: bool = false;
 
-onMount(() => renderBox(pdf, canvas, box))
+onMount(() => console.log('mounted', canvas))
+
+const render = () => {
+  if(!visible)
+    return
+
+  console.log(canvas, visible)
+  renderBox(pdf, canvas, box)
+}
+
+$: visible, render(); 
 </script>
 
-<div class="overflow-hidden rounded-xl mb-6 max-w-6xl">
-  <canvas class="h-full w-full" bind:this={canvas} />
-</div>
+<IntersectionObserver once element={parent} bind:intersecting={visible}>
+  <div
+    class="overflow-hidden rounded-xl bg-white mb-6 flex items-center justify-center"
+    style={`aspect-ratio: ${box.width/box.height}`}
+    bind:this={parent}>
+    {#if !visible}
+      <span class="loading loading-spinner loading-lg"></span>
+    {/if}
+    <canvas class="h-full w-full" style={`display: ${visible ? 'block' : 'none'}`} bind:this={canvas} />
+  </div>
+</IntersectionObserver>

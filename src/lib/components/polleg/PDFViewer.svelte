@@ -64,7 +64,7 @@
     <progress class="progress w-56" value={percentage} max="100"></progress>
   </main>
 {:else}
-<main class="flex flex-1 flex-col">
+<main class="flex flex-1 flex-col mb-6 max-w-6xl">
   {#each boxes as box, index}
     <PDFBox {pdf} {box} />
     {#if box.question}
