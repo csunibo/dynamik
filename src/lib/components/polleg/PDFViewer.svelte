@@ -3,9 +3,10 @@
 	import ReplyBox from '$lib/components/polleg/ReplyBox.svelte';
 	import AnswerList from '$lib/components/polleg/AnswerList.svelte';
 	import PDFBox from '$lib/components/polleg/PDFBox.svelte';
+	import Question from '$lib/components/polleg/Question.svelte';
 	import { EDIT_URLS } from '$lib/const';
 	import type { Question } from '$lib/polleg';
-	import { type FullPDF, type Box, type Page, extractFullPDF, SCALE } from '$lib/pdfcanvas';
+	import { type FullPDF, type Box, extractFullPDF, SCALE } from '$lib/pdfcanvas';
 	import type { OnProgressParameters } from 'pdfjs-dist';
 	import type { PDFPageProxy } from 'pdfjs-dist/types/src/display/api';
 	import { page } from '$app/stores';
@@ -24,19 +25,48 @@
 	let loaded = 0.0; // percentage
   $: percentage = Math.floor(loaded * 100)
 
-  const allBoxes = (boxes: Page[], questions: Question[]) => {
-    const q = []
-    const width = Math.max(...boxes.map(box => box.width))
-    for(const question of questions) {
-      q.push({
-        x: 0,
-        y: question.start * SCALE,
-        height: (question.end - question.start) * SCALE,
-        width,
-        question,
-      })
+  const splitBoxes = (boxes: Box[], cuts: Question[]) => {
+    cuts.sort((a, b) => a.start > b.start)
+
+    let boxI = 0;
+    for (const cut of cuts) {
+      const start = cut.start * SCALE
+      const end = cut.end * SCALE
+      // Pick the correct box to split
+      while(boxI < boxes.length) {
+        const box = boxes[boxI]
+        if(box.y <= start && start <= box.y + box.height)
+          break
+        else
+          boxI++
+      }
+      const box = boxes[boxI]
+
+      // TODO: we may need to handle splits going across multiple pages
+      // Although it is probably very unlikely
+      const newBoxes = []
+      const b1h = start - box.y
+      const b1 = {
+        ...box,
+        height: b1h,
+        question: cut
+      }
+      if(b1.height <= 0)
+        throw Error('PDF height before question split is 0')
+
+      newBoxes.push(b1)
+      const b2 = {
+        ...box,
+        y: box.y + b1h,
+        height: box.height - b1h
+      }
+      if(b2.height > 0)
+        newBoxes.push(b2)
+
+      boxes = [...boxes.slice(0, boxI), ...newBoxes, ...boxes.slice(boxI+1)]
     }
-    return [...boxes, ...q]
+
+    return boxes
   }
 
 	const init = async () => {
@@ -52,7 +82,7 @@
     };
     const rawPdf = await loadingPdf.promise;
     pdf = await extractFullPDF(rawPdf);
-    boxes = allBoxes(pdf.pages, questions || []);
+    boxes = splitBoxes(pdf.pages, questions || []);
 	}
 
 	onMount(init);
@@ -68,7 +98,7 @@
   {#each boxes as box, index}
     <PDFBox {pdf} {box} />
     {#if box.question}
-        TODO: QUESTION
+      <Question question={box.question} />
     {/if}
   {/each}
 </main>

@@ -45,39 +45,20 @@
 
 	const customSort = () => {
 		data.answers = data?.answers?.sort(function (a: any, b: any) {
-			let x: number = a.count;
-			let y: number = b.count;
-			if (x > y) {
-				return -1;
-			}
-			if (x < y) {
-				return 1;
-			}
-			return 0;
 		});
 	};
-
-	// when visible changes (i.e., is set to true) trigger the loading
-	$: visible, load();
 </script>
 
-{#if visible}
-	{#if data?.answers == null || data?.answers?.length == 0}
-		<div
-			class="flex justify-center text-xl text-center font-semibold items-center mt-2 text-base-content/50"
-		>
-			There are no solutions yet.<br />Be the first to add one!
-		</div>
-	{:else}
-		<div class="flex w-full flex-col gap-2 items-center">
-			{#each data?.answers || [] as answer, index}
-				<SingleAnswer {user} {answer} {index} {question} />
-			{/each}
-		</div>
-	{/if}
-{/if}
-{#if !visible}
-	<IntersectionObserver once element={spinner} bind:intersecting={visible}>
-		<span bind:this={spinner} class="loading loading-spinner loading-md"></span>
-	</IntersectionObserver>
+{#if data?.answers == null || data?.answers?.length == 0}
+  <div
+    class="flex justify-center text-xl text-center font-semibold items-center mt-2 text-base-content/50"
+  >
+    There are no solutions yet.<br />Be the first to add one!
+  </div>
+{:else}
+  <div class="flex w-full flex-col gap-2 items-center">
+    {#each data?.answers || [] as answer, index}
+      <SingleAnswer {user} {answer} {index} {question} />
+    {/each}
+  </div>
 {/if}

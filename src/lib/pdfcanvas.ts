@@ -122,7 +122,6 @@ export const renderBox = (pdf: FullPDF, canvas: HTMLCanvasElement, box: Box) => 
     ctx.drawImage(pdf.canvases[canvasI], 0, -off);
     ctx.drawImage(pdf.canvases[canvasI + 1], 0, pdf.maxHeight - off);
   } else {
-    console.log(off, canvasI)
     ctx.drawImage(pdf.canvases[canvasI], 0, -off);
   }
 }

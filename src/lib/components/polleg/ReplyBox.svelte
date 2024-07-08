@@ -10,9 +10,8 @@
 		extensions: [emoji(), slash(), code()]
 	});
 
-	export let unfinishedReply: string;
-	export let closeCallback: () => void;
-	export let sendAnswerCallback: () => void;
+	let body: string;
+	export let submit: (content: string) => void;
 	export let questionIndex: number = -1;
 	export let questionId: number;
 	export let parentAuthor: string = '';
@@ -29,9 +28,9 @@
 	}
 
 	async function sendComment(qid: number, index: number, parent: number) {
-		let answer = { question: qid, content: unfinishedReply };
+		let answer = { question: qid, content: body };
 		if (parent != null) {
-			answer = { question: qid, content: unfinishedReply, parent: parent };
+			answer = { question: qid, content: body, parent: parent };
 		}
 		let res = await (
 			await fetch(POLLEG_BASE_URL + '/answers', {
@@ -45,34 +44,23 @@
 		).json();
 
 		if (res.id) {
-			unfinishedReply = '';
-			closeCallback();
+			body = '';
 		}
-		sendAnswerCallback(res, index);
+		submit(res, index);
 	}
 
 	const recipientName = composeRecipientName();
 </script>
 
-<div class="flex justify-center flex-1">
-	<div class="flex w-5/6 flex-col gap-1 p-4 pb-1">
-		<!-- <h2 class="text-lg mx-5 pl-16 font-bold bg-slate-700">Reply to {recipientName}</h2> -->
-		<div class="flex flex-1 w-full">
-			<CartaEditor bind:value={unfinishedReply} mode="tabs" theme="github" {carta} />
-		</div>
-		<div class="flex flex-row-reverse justify-around mt-3">
-			<button
-				class="btn btn-accent hover:bg-accent/85"
-				type="submit"
-				on:click|preventDefault={() => {
-					sendComment(questionId, questionIndex, parentAnswerId);
-				}}
-			>
-				ADD YOUR ANSWER
-			</button>
-			<button class="btn btn-outline hover:btn-error" on:click|preventDefault={closeCallback()}
-				>CANCEL</button
-			>
-		</div>
-	</div>
+<div class="rounded-xl max-w-4xl w-full flex flex-col items-center justify-center mb-4">
+  <div class="w-full">
+    <CartaEditor bind:value={body} mode="tabs" theme="github" {carta} />
+  </div>
+  <div class="flex w-full justify-end py-3">
+    <button class="btn btn-seconday btn-sm" on:click|preventDefault={() => {
+        sendComment(questionId, questionIndex, parentAnswerId);
+      }}>
+      Submit
+    </button>
+  </div>
 </div>

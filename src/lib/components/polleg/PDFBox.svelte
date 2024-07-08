@@ -1,5 +1,4 @@
 <script lang="ts">
-import { onMount } from 'svelte'
 import type { FullPDF, Box } from '$lib/pdfcanvas';
 import IntersectionObserver from 'svelte-intersection-observer';
 import { renderBox } from '$lib/pdfcanvas';
@@ -10,13 +9,10 @@ let canvas: HTMLCanvasElement;
 let parent: HTMLSpanElement;
 let visible: bool = false;
 
-onMount(() => console.log('mounted', canvas))
-
 const render = () => {
   if(!visible)
     return
 
-  console.log(canvas, visible)
   renderBox(pdf, canvas, box)
 }
 
