@@ -19,7 +19,6 @@
 	let answers: Answers[] = [];
 	let values: string[] = [];
 
-	let fullCanvas: HTMLCanvasElement;
 	let pdf: FullPDF | null = null;
 	let boxes: Box[] = [];
 	let loaded = 0.0; // percentage
@@ -52,7 +51,7 @@
       loaded = params.loaded / params.total;
     };
     const rawPdf = await loadingPdf.promise;
-    pdf = await extractFullPDF(fullCanvas, rawPdf);
+    pdf = await extractFullPDF(rawPdf);
     boxes = allBoxes(pdf.pages, questions || []);
 	}
 
@@ -125,5 +124,3 @@
   </div>
 {/each}
 -->
-
-<canvas bind:this={fullCanvas} style="display: none" />

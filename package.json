@@ -67,6 +67,7 @@
 		"@cartamd/plugin-emoji": "^3.1.0",
 		"@cartamd/plugin-slash": "^3.1.0",
 		"@zerodevx/svelte-toast": "^0.9.5",
+		"canvas-size": "^2.0.0",
 		"carta-md": "^3.5.0",
 		"pdfjs": "^2.5.3",
 		"pdfjs-dist": "^4.0.379",
