@@ -119,8 +119,8 @@ export const renderBox = (pdf: FullPDF, canvas: HTMLCanvasElement, box: Box) => 
   const off = box.y % pdf.maxHeight;
   if (off + box.height > pdf.maxHeight) {
     // This box sits between two canvases
-    console.log('TODO')
-    // ctx.drawImage(pdf.canvases[], 0, -box.y);
+    ctx.drawImage(pdf.canvases[canvasI], 0, -off);
+    ctx.drawImage(pdf.canvases[canvasI + 1], 0, pdf.maxHeight - off);
   } else {
     console.log(off, canvasI)
     ctx.drawImage(pdf.canvases[canvasI], 0, -off);
