@@ -53,7 +53,7 @@
     };
     const rawPdf = await loadingPdf.promise;
     pdf = await extractFullPDF(fullCanvas, rawPdf);
-    boxes = allBoxes(pdf.pages, questions);
+    boxes = allBoxes(pdf.pages, questions || []);
 	}
 
 	onMount(init);
