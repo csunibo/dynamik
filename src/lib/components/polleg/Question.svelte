@@ -1,6 +1,8 @@
 <script lang="ts">
-import type { Question } from '$lib/polleg';
-import { QUESTION_URL } from '$lib/const';
+import type { Question, Answer } from '$lib/polleg';
+import { QUESTION_URL, ANSWERS_URL } from '$lib/const';
+
+import Answer from '$lib/components/polleg/Answer.svelte';
 
 import ReplyBox from '$lib/components/polleg/ReplyBox.svelte';
 
@@ -10,7 +12,7 @@ let expanded: bool = false;
 let loading: bool = true;
 let spinner: HTMLSpanElement;
 
-const sortCriteria = () => {
+const sortCriteria = (a: Anwer, b: Anwer) => {
   let x: number = a.count;
   let y: number = b.count;
   if (x > y) {
@@ -36,6 +38,27 @@ const load = async () => {
   loading = false
 };
 
+const addAnswer = async (body: string, parent?: number): bool => {
+  let answer = { question: question.id, content: body };
+  if (parent)
+    answer.parent = parent;
+
+  let req = await fetch(ANSWERS_URL, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(answer),
+    method: 'PUT',
+    credentials: 'include'
+  });
+
+  let res = await req.json();
+  const success = 'id' in res; // An ID is provided when a new answer is inserted succesffuly
+  if (success)
+    load()
+  return success
+}
+
 $: expanded, load();
 
 </script>
@@ -45,9 +68,11 @@ $: expanded, load();
     {#if loading}
     <span bind:this={spinner} class="loading loading-spinner loading-md my-4" />
     {:else}
-      {JSON.stringify(question.answers)}
+      {#each question.answers as answer}
+        <Answer {answer} />
+      {/each}
     {/if}
-    <ReplyBox submit={} />
+    <ReplyBox submit={addAnswer} />
   {/if}
   <button class="btn btn-primary" on:click|preventDefault={() => {expanded = !expanded; loading = true}}>
     {!expanded ? 'Show answers' : 'Hide answers'}

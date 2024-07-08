@@ -30,7 +30,10 @@ export const LOGOUT_URI = (current_uri: string) => `${AUTH_BASE_URL}/logout?redi
 
 export const POLLEG_BASE_URL =
   import.meta.env.VITE_POLLEG_BASE_URL || 'https://polleg.students.cs.unibo.it';
-export const DOCUMENT_URL = (id: string) => `${POLLEG_BASE_URL}/documents/${id}`;
-export const QUESTION_URL = (id: number) => `${POLLEG_BASE_URL}/questions/${id}`;
-export const ANSWER_URL = (id: number) => `${POLLEG_BASE_URL}/answers/${id}`;
+export const DOCUMENTS_URL = `${POLLEG_BASE_URL}/documents`
+export const QUESTIONS_URL = `${POLLEG_BASE_URL}/questions`;
+export const ANSWERS_URL = `${POLLEG_BASE_URL}/answers`;
+export const DOCUMENT_URL = (id: string) => `${DOCUMENTS_URL}/${id}`;
+export const QUESTION_URL = (id: number) => `${QUESTIONS_URL}/${id}`;
+export const ANSWER_URL = (id: number) => `${ANSWER_URL}/${id}`;
 export const VOTE_URL = (id: number) => `${ANSWER_URL(id)}/vote`;

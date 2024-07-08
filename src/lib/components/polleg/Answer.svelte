@@ -1,10 +1,8 @@
 <script lang="ts">
-	import ReplyBox from './ReplyBox.svelte';
-	import Reply from './Reply.svelte';
-	import { toast } from '@zerodevx/svelte-toast';
 	import { ANSWER_URL, VOTE_URL } from '$lib/const';
+	import Reply from '$lib/components/polleg/Reply.svelte';
+  import { auth } from '$lib/stores/auth';
 
-	export let user;
 	export let answer;
 	export let index;
 	export let question;
@@ -20,27 +18,12 @@
 		});
 
 		if (res.status == 200) {
-			toast.push('Delete done!', {
-				theme: {
-					'--toastColor': 'mintcream',
-					'--toastBackground': 'rgba(72,187,120,0.9)',
-					'--toastBarBackground': '#2F855A'
-				}
-			});
-
 			let newAns = data?.answers?.filter(function (item: any) {
 				return item.id != id;
 			});
 			data.answers = newAns;
 		} else {
 			res = await res.json();
-			toast.push('Error: ' + res.error, {
-				theme: {
-					'--toastColor': 'mintcream',
-					'--toastBackground': 'rgba(244,67,54,0.9)',
-					'--toastBarBackground': '#e74c3c'
-				}
-			});
 		}
 	};
 	const vote = async (index: number, answerId: number, newVote: number) => {
@@ -75,16 +58,8 @@
 			data.answers[index].count = data.answers[index].upvotes - data.answers[index].downvotes;
 			data.answers[index].vote = newVote;
 			//customSort();
-		} else {
-			toast.push('Error: ' + res.error, {
-				theme: {
-					'--toastColor': 'mintcream',
-					'--toastBackground': 'rgba(244,67,54,0.9)',
-					'--toastBarBackground': '#e74c3c'
-				}
-			});
 		}
-	};
+  };
 </script>
 
 <div class="w-full flex flex-row rounded-lg bg-base-100 border-secondary shadow-md p-6">
@@ -100,7 +75,7 @@
 		</button>
 
 		<!-- Vote Count -->
-		<span class="text-xl p-2 font-semibold">{answer.count}</span>
+		<span class="text-xl p-2 font-semibold">{answer.upvotes-answer.downvotes}</span>
 
 		<!-- Downvote Button -->
 		<button
@@ -134,7 +109,7 @@
 		</div>
 
 		<div class="flex justify-end">
-			{#if user}
+			{#if $auth.user}
 				<button
 					class="btn"
 					on:click|preventDefault={() => {
@@ -146,7 +121,7 @@
 					}}><span class="icon-[solar--reply-outline] text-primary text-3xl"></span></button
 				>
 			{/if}
-			{#if user?.username == answer?.user || user?.admin}
+			{#if $auth.user?.username == answer?.user || user?.admin}
 				<button class="btn ml-5" on:click|preventDefault={() => deleteAnswer(answer.id)}>
 					<span class="icon-[solar--trash-bin-minimalistic-bold] text-error text-3xl"></span>
 				</button>
@@ -155,6 +130,8 @@
 
 		{#if showReplyBoxFor === index}
 			<div class="w-full z-10">
+        TODO: reply box I guess
+        <!--
 				<ReplyBox
 					closeCallback={() => {
 						showReplyBoxFor = null;
@@ -167,6 +144,7 @@
 					parentAuthor={answer.user}
 					parentAnswerId={answer.id}
 				/>
+        -->
 			</div>
 		{/if}
 
