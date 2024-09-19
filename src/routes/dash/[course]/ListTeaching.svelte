@@ -39,7 +39,7 @@
 						>
 							<a
 								href={disabled ? null : getUrl(teaching)}
-								class="flex flex-wrap max-w-xs text-center text-lg join-item justify-center"
+								class="flex flex-wrap max-w-xs text-center text-lg join-item h-full justify-center content-center"
 							>
 								{teaching.name ? teaching.name : teaching.url}
 							</a>
