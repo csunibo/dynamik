@@ -35,18 +35,18 @@
 						{@const disabled = !activeYears.includes(teaching)}
 						<li
 							class:disabled
-							class="flex flex-row xs:flex-1 justify-center border-base-content items-center m-2 border-2 rounded-md join"
+							class="flex flex-row xs:flex-1 justify-center border-base-content items-center content-center m-2 border-2 rounded-md join"
 						>
 							<a
 								href={disabled ? null : getUrl(teaching)}
-								class="flex-wrap max-w-xs text-center text-lg join-item"
+								class="flex flex-wrap max-w-xs text-center text-lg join-item justify-center"
 							>
 								{teaching.name ? teaching.name : teaching.url}
 							</a>
 							{#if teaching.chat != null && teaching.chat !== ''}
 								<a
 									href={disabled ? null : 'https://' + teaching.chat}
-									class="text-center join-item border-l-2"
+									class="flex text-center join-item border-l-2 border-base-content h-full justify-center"
 									title="Link alla community"
 								>
 									<span class="text-2xl icon-[akar-icons--people-group]"></span>
