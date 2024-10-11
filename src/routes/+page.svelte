@@ -50,7 +50,7 @@
 		<div class="m-10">
 			<h1 class="text-4xl font-semibold text-center">Risorse</h1>
 			<h3 class="text-2 font-semibold text-center">
-				Raccolte di materiali per lo studio da <span class="underline"
+				Materiali di studio condivisi creati da studenti per studenti, gestiti da <span class="underline"
 					><a href="https://csunibo.students.cs.unibo.it">CSUnibo</a></span
 				>
 			</h3>
