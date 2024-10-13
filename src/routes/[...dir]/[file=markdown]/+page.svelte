@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
-	import tocbot from 'tocbot';
+	import { init as tocInit } from 'tocbot';
 	// @ts-expect-error - katex auto-render is not typed
 	import autoRender from 'katex/dist/contrib/auto-render.mjs';
 	import { formatDate } from '$lib/date';
@@ -28,7 +28,7 @@
 		});
 
 		// build the table of contents by finding all the headings
-		tocbot.init({
+		tocInit({
 			tocSelector: '#toc',
 			contentSelector: '#markdown',
 			headingSelector: 'h2, h3, h4',
